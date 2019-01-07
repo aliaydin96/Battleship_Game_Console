@@ -1,0 +1,54 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             routines, CODE, READONLY
+    2 00000000                 THUMB
+    3 00000000                 EXPORT           DELAY
+    4 00000000         
+    5 00000000         DELAY   PROC
+    6 00000000 3801    LOOP    SUBS             R0, #1
+    7 00000002 D1FD            BNE              LOOP
+    8 00000004 4770            BX               LR
+    9 00000006                 ENDP
+   10 00000006 00 00           ALIGN
+   11 00000008                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\delay.d -o.\objects\delay.o -I.\RTE\_Target_1 -IC:\Ke
+il_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CMSI
+S\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" 
+--predefine="TM4C123GH6PM SETA 1" --list=.\listings\delay.lst delay.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+DELAY 00000000
+
+Symbol: DELAY
+   Definitions
+      At line 5 in file delay.s
+   Uses
+      At line 3 in file delay.s
+Comment: DELAY used once
+LOOP 00000000
+
+Symbol: LOOP
+   Definitions
+      At line 6 in file delay.s
+   Uses
+      At line 7 in file delay.s
+Comment: LOOP used once
+routines 00000000
+
+Symbol: routines
+   Definitions
+      At line 1 in file delay.s
+   Uses
+      None
+Comment: routines unused
+3 symbols
+337 symbols in table
