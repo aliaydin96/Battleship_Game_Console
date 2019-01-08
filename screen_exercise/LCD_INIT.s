@@ -32,10 +32,7 @@ LCD_INIT	PROC
 			BL		TRANSMIT
 			MOV		R5, #0XC
 			BL		TRANSMIT
-;			MOV		R5, #0X80
-;			BL		TRANSMIT
-;			MOV		R5, #0X40
-;			BL		TRANSMIT
+
 			POP		{LR}
 			BX		LR
 			ENDP

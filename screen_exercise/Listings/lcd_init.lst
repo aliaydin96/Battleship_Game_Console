@@ -42,15 +42,12 @@ ARM Macro Assembler    Page 1
    32 0000004C F7FF FFFE       BL               TRANSMIT
    33 00000050 F04F 050C       MOV              R5, #0XC
    34 00000054 F7FF FFFE       BL               TRANSMIT
-   35 00000058         ;   MOV  R5, #0X80
-   36 00000058         ;   BL  TRANSMIT
-   37 00000058         ;   MOV  R5, #0X40
-   38 00000058         ;   BL  TRANSMIT
-   39 00000058 F85D EB04       POP              {LR}
-   40 0000005C 4770            BX               LR
-   41 0000005E                 ENDP
-   42 0000005E 00 00           ALIGN
-   43 00000060                 END
+   35 00000058         
+   36 00000058 F85D EB04       POP              {LR}
+   37 0000005C 4770            BX               LR
+   38 0000005E                 ENDP
+   39 0000005E 00 00           ALIGN
+   40 00000060                 END
               400043FC 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\objects\lcd_init.d -o.\objects\lcd_init.o -I.\RTE\_Target_1 -
