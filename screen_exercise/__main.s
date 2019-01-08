@@ -1,50 +1,60 @@
 
 PORTA_DATA 		EQU 0x400043FC
-SSIDR			EQU	0X40008008
-
 
 			AREA 	main, CODE, READONLY
 			THUMB
-				
+			IMPORT	LCD_INIT
 			IMPORT Init
 			IMPORT DELAY
-			EXTERN PRINT
+			EXTERN TRANSMIT
 			EXPORT __main
 				
 __main
 			BL Init
+			BL	LCD_INIT
+		
 			
-loop
-			LDR 	R1,=PORTA_DATA
-			MOV 	R0,#0x08
-			STR 	R0,[R1]
-			MOV32 	R0, #1600000 ;100MS DELAY
-			BL		DELAY
-			MOV		R0, #0X80
-			STR		R0, [R1]
+			LDR R1,=PORTA_DATA		
+			LDR	R0,[R1]
+			ORR	R0,#0x40				
+			STR	R0,[R1]	
 			
-			MOV		R5, #0X21
-			BL		PRINT	
-			MOV		R5, #0X90
-			BL		PRINT
-			MOV		R5, #0X20
-			BL		PRINT
-			MOV		R5, #0XC
-			BL		PRINT
-
-			MOV		R5, #0X1F
-			BL		PRINT
-			MOV		R0, #0X40
-			STR		R0, [R1]
-			MOV		R5, #0X05
-			BL		PRINT
-			MOV		R4, #0X7
-			BL		PRINT
+			MOV		R5, #0x1f
+			BL		TRANSMIT
+			MOV		R5, #0X25
+			BL		TRANSMIT
 			MOV		R4, #0X0
-			BL		PRINT			
-			MOV		R4, #0X1F
-			BL		PRINT	
+			BL		TRANSMIT
+			MOV		R4, #0X00
+			BL		TRANSMIT			
+			MOV		R4, #0X0
+			BL		TRANSMIT
+			MOV		R4, #0X0
+			BL		TRANSMIT			
+			MOV		R4, #0X0
+			BL		TRANSMIT			
+			MOV		R5, #0X0
+			BL		TRANSMIT
+;			MOV		R5, #0X11
+;			BL		TRANSMIT
+;			MOV		R4, #0X11
+;			BL		TRANSMIT
+;			MOV		R4, #0X11
+;			BL		TRANSMIT			
+;			MOV		R4, #0X7E
+;			BL		TRANSMIT			
 			
+;			MOV		R4, #0X4
+;			BL		TRANSMIT
+;			MOV		R4, #0X1F
+;			BL		TRANSMIT
+			
+;			LDR R1,=PORTA_DATA		
+;			LDR	R0,[R1]
+;			BIC	R0,#0x40				
+;			STR	R0,[R1]	
+			
+FIN			B		FIN	
 			ALIGN
 			END
 			

@@ -8,55 +8,69 @@ ARM Macro Assembler    Page 1
     2 00000000 400043FC 
                        PORTA_DATA
                                EQU              0x400043FC
-    3 00000000 40008008 
-                       SSIDR   EQU              0X40008008
-    4 00000000         
-    5 00000000         
-    6 00000000                 AREA             main, CODE, READONLY
-    7 00000000                 THUMB
-    8 00000000         
-    9 00000000                 IMPORT           Init
-   10 00000000                 IMPORT           DELAY
-   11 00000000                 EXTERN           PRINT
-   12 00000000                 EXPORT           __main
-   13 00000000         
-   14 00000000         __main
-   15 00000000 F7FF FFFE       BL               Init
-   16 00000004         
-   17 00000004         loop
-   18 00000004 4919            LDR              R1,=PORTA_DATA
-   19 00000006 F04F 0008       MOV              R0,#0x08
-   20 0000000A 6008            STR              R0,[R1]
-   21 0000000C F646 2000 
-              F2C0 0018        MOV32            R0, #1600000 ;100MS DELAY
-   22 00000014 F7FF FFFE       BL               DELAY
-   23 00000018 F04F 0080       MOV              R0, #0X80
-   24 0000001C 6008            STR              R0, [R1]
-   25 0000001E         
-   26 0000001E F04F 0521       MOV              R5, #0X21
-   27 00000022 F7FF FFFE       BL               PRINT
-   28 00000026 F04F 0590       MOV              R5, #0X90
-   29 0000002A F7FF FFFE       BL               PRINT
-   30 0000002E F04F 0520       MOV              R5, #0X20
-   31 00000032 F7FF FFFE       BL               PRINT
-   32 00000036 F04F 050C       MOV              R5, #0XC
-   33 0000003A F7FF FFFE       BL               PRINT
-   34 0000003E         
-   35 0000003E F04F 051F       MOV              R5, #0X1F
-   36 00000042 F7FF FFFE       BL               PRINT
-   37 00000046 F04F 0040       MOV              R0, #0X40
-   38 0000004A 6008            STR              R0, [R1]
-   39 0000004C F04F 0505       MOV              R5, #0X05
-   40 00000050 F7FF FFFE       BL               PRINT
-   41 00000054 F04F 0407       MOV              R4, #0X7
-   42 00000058 F7FF FFFE       BL               PRINT
-   43 0000005C F04F 0400       MOV              R4, #0X0
-   44 00000060 F7FF FFFE       BL               PRINT
-   45 00000064 F04F 041F       MOV              R4, #0X1F
-   46 00000068 F7FF FFFE       BL               PRINT
-   47 0000006C         
-   48 0000006C                 ALIGN
-   49 0000006C                 END
+    3 00000000         
+    4 00000000                 AREA             main, CODE, READONLY
+    5 00000000                 THUMB
+    6 00000000                 IMPORT           LCD_INIT
+    7 00000000                 IMPORT           Init
+    8 00000000                 IMPORT           DELAY
+    9 00000000                 EXTERN           TRANSMIT
+   10 00000000                 EXPORT           __main
+   11 00000000         
+   12 00000000         __main
+   13 00000000 F7FF FFFE       BL               Init
+   14 00000004 F7FF FFFE       BL               LCD_INIT
+   15 00000008         
+   16 00000008         
+   17 00000008 4912            LDR              R1,=PORTA_DATA
+   18 0000000A 6808            LDR              R0,[R1]
+   19 0000000C F040 0040       ORR              R0,#0x40
+   20 00000010 6008            STR              R0,[R1]
+   21 00000012         
+   22 00000012 F04F 051F       MOV              R5, #0x1f
+   23 00000016 F7FF FFFE       BL               TRANSMIT
+   24 0000001A F04F 0525       MOV              R5, #0X25
+   25 0000001E F7FF FFFE       BL               TRANSMIT
+   26 00000022 F04F 0400       MOV              R4, #0X0
+   27 00000026 F7FF FFFE       BL               TRANSMIT
+   28 0000002A F04F 0400       MOV              R4, #0X00
+   29 0000002E F7FF FFFE       BL               TRANSMIT
+   30 00000032 F04F 0400       MOV              R4, #0X0
+   31 00000036 F7FF FFFE       BL               TRANSMIT
+   32 0000003A F04F 0400       MOV              R4, #0X0
+   33 0000003E F7FF FFFE       BL               TRANSMIT
+   34 00000042 F04F 0400       MOV              R4, #0X0
+   35 00000046 F7FF FFFE       BL               TRANSMIT
+   36 0000004A F04F 0500       MOV              R5, #0X0
+   37 0000004E F7FF FFFE       BL               TRANSMIT
+   38 00000052         ;   MOV  R5, #0X11
+   39 00000052         ;   BL  TRANSMIT
+   40 00000052         ;   MOV  R4, #0X11
+   41 00000052         ;   BL  TRANSMIT
+   42 00000052         ;   MOV  R4, #0X11
+   43 00000052         ;   BL  TRANSMIT   
+   44 00000052         ;   MOV  R4, #0X7E
+   45 00000052         ;   BL  TRANSMIT   
+   46 00000052         
+   47 00000052         ;   MOV  R4, #0X4
+   48 00000052         ;   BL  TRANSMIT
+   49 00000052         ;   MOV  R4, #0X1F
+   50 00000052         ;   BL  TRANSMIT
+   51 00000052         
+   52 00000052         ;   LDR R1,=PORTA_DATA  
+   53 00000052         ;   LDR R0,[R1]
+   54 00000052         ;   BIC R0,#0x40    
+   55 00000052         ;   STR R0,[R1] 
+   56 00000052         
+   57 00000052 E7FE    FIN     B                FIN
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   58 00000054                 ALIGN
+   59 00000054                 END
               400043FC 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\objects\__main.d -o.\objects\__main.o -I.\RTE\_Target_1 -IC:\
@@ -69,27 +83,27 @@ SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
+FIN 00000052
+
+Symbol: FIN
+   Definitions
+      At line 57 in file __main.s
+   Uses
+      At line 57 in file __main.s
+Comment: FIN used once
 __main 00000000
 
 Symbol: __main
    Definitions
-      At line 14 in file __main.s
-   Uses
       At line 12 in file __main.s
-Comment: __main used once
-loop 00000004
-
-Symbol: loop
-   Definitions
-      At line 17 in file __main.s
    Uses
-      None
-Comment: loop unused
+      At line 10 in file __main.s
+Comment: __main used once
 main 00000000
 
 Symbol: main
    Definitions
-      At line 6 in file __main.s
+      At line 4 in file __main.s
    Uses
       None
 Comment: main unused
@@ -106,17 +120,9 @@ Symbol: PORTA_DATA
    Definitions
       At line 2 in file __main.s
    Uses
-      At line 18 in file __main.s
+      At line 17 in file __main.s
 Comment: PORTA_DATA used once
-SSIDR 40008008
-
-Symbol: SSIDR
-   Definitions
-      At line 3 in file __main.s
-   Uses
-      None
-Comment: SSIDR unused
-2 symbols
+1 symbol
 
 
 
@@ -127,33 +133,40 @@ DELAY 00000000
 
 Symbol: DELAY
    Definitions
-      At line 10 in file __main.s
+      At line 8 in file __main.s
    Uses
-      At line 22 in file __main.s
-Comment: DELAY used once
+      None
+Comment: DELAY unused
 Init 00000000
 
 Symbol: Init
    Definitions
+      At line 7 in file __main.s
+   Uses
+      At line 13 in file __main.s
+Comment: Init used once
+LCD_INIT 00000000
+
+Symbol: LCD_INIT
+   Definitions
+      At line 6 in file __main.s
+   Uses
+      At line 14 in file __main.s
+Comment: LCD_INIT used once
+TRANSMIT 00000000
+
+Symbol: TRANSMIT
+   Definitions
       At line 9 in file __main.s
    Uses
-      At line 15 in file __main.s
-Comment: Init used once
-PRINT 00000000
-
-Symbol: PRINT
-   Definitions
-      At line 11 in file __main.s
-   Uses
+      At line 23 in file __main.s
+      At line 25 in file __main.s
       At line 27 in file __main.s
       At line 29 in file __main.s
       At line 31 in file __main.s
       At line 33 in file __main.s
-      At line 36 in file __main.s
-      At line 40 in file __main.s
-      At line 42 in file __main.s
-      At line 44 in file __main.s
-      At line 46 in file __main.s
+      At line 35 in file __main.s
+      At line 37 in file __main.s
 
-3 symbols
+4 symbols
 344 symbols in table
