@@ -68,11 +68,11 @@ Init		PROC
 			
 				
 			LDR	R1, =SSICPSR
-			MOV	R0, #2
+			MOV	R0, #6
 			STR R0, [R1]
 			
 			LDR R1, =SSICR0
-			MOV32 R0, #0X2C7
+			MOV32 R0, #0XC7
 			STR R0, [R1]
 
 			LDR R1, =SSICR1
