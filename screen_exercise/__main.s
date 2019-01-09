@@ -41,125 +41,124 @@ getsample	LDR		R1,=ADC0_PSSI; request a sample
 				
 loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			LDR		R0,[R1];
-			ANDS	R0,#0x04;
+			ANDS	R0,#0x0C;
 			BEQ		loop
 			
 			LDR		R1,=ADC0_ISC; clear the interrupt flag
 			LDR		R0,[R1];
-			ORR		R0,#0x04;
+			ORR		R0,#0x0C;
 			STR		R0,[R1]; Interrupt flag is cleared
 			
 			LDR		R1,=ADC0_SSFIFO2;
-			LDR		R8,[R1]; R2 is the data PE3
+			LDR		R8,[R1]; R8 is the data PE3
+			
+			
 			LDR		R1, =ADC0_SSFIFO3
 			LDR		R9,[R1]
-		
+
 			SUB		R0,R9,R6; check sampled data - previous > 1pix
 			CMP		R0,#70;
-			BGT		LEFT_RIGHT;
-;			SUB		R0,R8,R7; check sampled data - previous > 1pix
-;			CMP		R0,#160;
-;			BGT		UP_DOWN;
-;			SUB		R0,R7,R8;
-;			CMP		R0,#160; check previous - sampled data > 1 pix
-;			BLT		getsample;
-			SUB		R0,R6,R9;
-			CMP		R0,#70; check previous - sampled data > 1 pix
-			BLT		getsample;
-				
-LEFT_RIGHT	MOV		R6,R9;
+			MOVGT	R1, #1
+			SUB		R0,R8,R7; check sampled data - previous > 1pix
+			CMP		R0,#160;
+			MOVGT	R0, #1
+			ORR		R0, R1
+			BNE		CURSOR
+			BEQ 	getsample
+
+CURSOR	
+			BL		CLEAR
+			BL		BOUNDARY			
+			MOV		R2, #0X2
+			MOV		R10, #0X7
+			MOV		R6,R9;
 			MOV		R0,#73; get the first digit
-			UDIV	R3,R9,R0;
-			ADD		R3, #0X85
+			UDIV	R9,R9,R0;
+			ADD		R9, #0X85
 			
-			LDR R1,=PORTA_DATA
+			MOV		R7,R8;
+			MOV		R0,#170; get the first digit
+			UDIV	R8,R8,R0;
+			CMP		R8, #8
+			MOVCC	R4, #0X41
+			BCC		GO
+			CMP		R8, #16
+			MOVCC	R4, #0X42
+			SUBCC	R8, #8
+			BCC		GO
+			CMP		R8, #24
+			MOVCC	R4, #0X43
+			SUBCC	R8, #16
+
+GO			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
 			STR	R0,[R1]
 			
-			MOV	R5, R3
+			MOV	R5, R9
 			BL	TRANSMIT
-			MOV	R5, #0X42
+			MOV	R5, R4
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
-			STR	R0,[R1]	
+			STR	R0,[R1]
+
+
 			CMP	R3, #0X85
 			MOVEQ R5, #0XFF			
 			MOVNE R5, #0X0
 			BL	TRANSMIT
-			MOV R5, #0X2
+;			MOV R5, #0X2
+;			BL	TRANSMIT
+;			MOV	R5, #0X7
+;			BL	TRANSMIT			
+;			MOV	R5, #0X2
+;			BL	TRANSMIT
+;			MOV	R5, #0X0
+;			BL	TRANSMIT			
+
+			PUSH	{R8}
+			MOV	R0, R8	
+			MOV	R3, #0
+			CMP	R8, #0
+			BEQ ZERO
+			CMP	R8, #7
+			BEQ SEVEN
+			SUB	R8, #1
+			MOV R5, R2, LSL R8
 			BL	TRANSMIT
-			MOV	R5, #0X7
+			MOV	R5, R10, LSL R8
 			BL	TRANSMIT			
-			MOV	R5, #0X2
-			BL	TRANSMIT
+			MOV	R5, R2, LSL R8
+			BL	TRANSMIT	
 			MOV	R5, #0X0
 			BL	TRANSMIT			
-			B		getsample;	
+			POP	{R8}
+			B		getsample;			
+			
+ZERO			
+			MOV R5, #0X1  
+			BL	TRANSMIT
+			MOV	R5, #0X3
+			BL	TRANSMIT			
+			MOV	R5, #0X1
+			BL	TRANSMIT			
+			POP	{R8}
+			B		getsample;
 
-;UP_DOWN		MOV		R7,R8;
-;			MOV		R0,#170; get the first digit
-;			UDIV	R10,R8,R0;
-;			CMP		R10, #8
-;			MOVCS	R4, #0X42
-;			CMP		R10, #16
-;			MOVCC	R4, #0X42
-;			SUBCC	R10, #8
-;			MOVCS	R4, #0X41
-;			
-;			LDR R1,=PORTA_DATA
-;			LDR	R0,[R1]
-;			BIC	R0,#0x40				
-;			STR	R0,[R1]
-;			
-;			MOV	R5, #0X8F
-;			BL	TRANSMIT
-;			MOV	R5, R4
-;			BL	TRANSMIT
-;			
-;			LDR R1,=PORTA_DATA
-;			LDR	R0,[R1]
-;			ORR	R0,#0x40				
-;			STR	R0,[R1]	
-;			CMP	R4, #0X42
-;			BEQ	BLOCK2
+SEVEN
+			MOV R5, #0X80  
+			BL	TRANSMIT
+			MOV	R5, #0XC0
+			BL	TRANSMIT			
+			MOV	R5, #0X80
+			BL	TRANSMIT			
+			POP	{R8}
+			B		getsample;
+			
 
-;			B		getsample;
-
-;BLOCK2		PUSH	{R10}
-;			MOV R5, #0X0 
-;			BL	TRANSMIT
-;			SUBS R10, R10, R11
-;			BMI	BLOCK2_NEG
-;			MOV R5, #0X2 
-;			LSL R5, R10
-;			BL	TRANSMIT
-;			MOV	R5, #0X7 
-;			LSL R5, R10
-;			BL	TRANSMIT			
-;			MOV	R5, #0X2 
-;			LSL R5, R10
-;			BL	TRANSMIT
-;			B	BLOCK2_END
-;BLOCK2_NEG	
-;			MOV R5, #0X2 
-;			LSR R5, R10
-;			BL	TRANSMIT
-;			MOV	R5, #0X7 
-;			LSR R5, R10
-;			BL	TRANSMIT			
-;			MOV	R5, #0X2 
-;			LSR R5, R10
-;			BL	TRANSMIT
-;			
-;BLOCK2_END	MOV	R5, #0X0
-;			BL	TRANSMIT
-;			POP	{R10}
-;			MOV	R11, R10
-;			B		getsample;
 FIN							
 			B		FIN	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -169,15 +168,15 @@ CLEAR		PUSH	{R0,R1,LR}
 			MOV		R0,#0
 			MOV		R1, #503
 LOOP		MOV		R5, #0X0
-			PUSH	{R0,R1}
 			BL		TRANSMIT
-			POP		{R0,R1}
 			ADD		R0, #1
 			CMP		R0,R1
 			BNE		LOOP
 			POP		{R0,R1,LR}
 			BX		LR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+CLEARBOX
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;	BOUNDARY LINES BEGINNING

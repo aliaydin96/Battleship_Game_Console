@@ -36,6 +36,7 @@ ADC0_PP 		EQU 0x40038FC4 ; Sample rate
 ADC0_SSMUX3 	EQU 0x400380A0 ; Input channel select
 ADC0_SSCTL3 	EQU 0x400380A4 ; Sample sequence control
 ADC0_SSFIFO3 	EQU 0x400380A8 ; Channel 3 results	
+ADC0_SSPRI 		EQU 0x40038020
 ;SSI REGISTERS	
 RCGCSSI			EQU	0X400FE61C
 SSICR0			EQU	0X40008000
@@ -60,7 +61,7 @@ Init		PROC
 			
 			LDR R1, =RCGCADC ; Turn on ADC clock
 			LDR R0, [R1]
-			ORR R0, R0, #0x01 ; set bit 0 to enable ADC0 clock
+			ORR R0, R0, #0x03 ; set bit 0 to enable ADC0 clock
 			STR R0, [R1]
 			NOP
 			NOP
@@ -127,13 +128,13 @@ Init		PROC
 			; Setup GPIO to make PE2 input for ADC0
 			; Enable alternate functions
 			LDR R1, =PORTE_AFSEL
-			MOV R0, #0x0C ; set bit 3-2 to enable alt functions on PE3 AND PE2
+			MOV R0, #0x18 ; set bit 3-4 to enable alt functions on PE3 AND PE4
 			STR R0, [R1]
 			
 			
 			LDR R1, =PORTE_DIR
 			LDR R0, [R1]
-			BIC R0, R0, #0x0C ; set bit 3-2 to input for PE3 AND PE2
+			BIC R0, R0, #0x18 ; set bit 3-4 to input for PE3 AND PE2
 			STR R0, [R1]
 			; PCTL does not have to be configured
 			; since ADC0 is automatically selected when
@@ -141,12 +142,12 @@ Init		PROC
 			; Disable digital on PE3 AND PE2
 			LDR R1, =PORTE_DEN
 			LDR R0, [R1]
-			BIC R0, R0, #0x0C ; clear bit 3-2 to disable analog on PE3 AND PE2
+			BIC R0, R0, #0x18 ; clear bit 3-2 to disable analog on PE3 AND PE2
 			STR R0, [R1]
 			; Enable analog on PE3
 			LDR R1, =PORTE_AMSEL
 			LDR R0, [R1]
-			ORR R0, R0, #0x0C ; set bit 3-2 to enable analog on PE3 AND PE2
+			ORR R0, R0, #0x18 ; set bit 3-2 to enable analog on PE3 AND PE2
 			STR R0, [R1]
 			; Disable sequencer while ADC setup
 			LDR R1, =ADC0_ACTSS
@@ -160,8 +161,7 @@ Init		PROC
 			STR R0, [R1] ; trigger
 			; Select input channel
 			LDR R1, =ADC0_SSMUX2
-			LDR	R0, [R1]
-			BIC	R0, R0, #0x000F ;AIN0 IS INPUT
+			MOV	R0, #0x0 ;AIN0 IS INPUT
 			STR R0, [R1]
 			; Config sample sequence
 			LDR R1, =ADC0_SSCTL2
@@ -171,17 +171,22 @@ Init		PROC
 			
 			LDR R1, =ADC0_SSMUX3
 			LDR	R0, [R1]
-			ORR R0, R0, #0x0010  ;AIN1 IS INPUT
+			ORR R0, R0, #0x9  ;AIN9 IS INPUT
 			STR R0, [R1]
 			; Config sample sequence
 			LDR R1, =ADC0_SSCTL3
 			LDR R0, [R1]
 			ORR R0, R0, #0x6 ; set bits 2:1 (IE0, END0)
 			STR R0, [R1]
+			
+			LDR R1, =ADC0_SSPRI
+			LDR R0, [R1]
+			ORR R0, R0, #0x1000 ; set bits 3:0 to 1 for 125k sps
+			STR R0, [R1]			
 			; Set sample rate
 			LDR R1, =ADC0_PP
 			LDR R0, [R1]
-			ORR R0, R0, #0x01 ; set bits 3:0 to 1 for 125k sps
+			ORR R0, R0, #0x03 ; set bits 3:0 to 1 for 125k sps
 			STR R0, [R1]
 			; Done with setup, enable sequencer
 			LDR R1, =ADC0_ACTSS

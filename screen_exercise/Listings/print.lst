@@ -14,28 +14,30 @@ ARM Macro Assembler    Page 1
     6 00000000         
     7 00000000         TRANSMIT
                                PROC
-    8 00000000 4908            LDR              R1, =SSISR
-    9 00000002 6808    START   LDR              R0, [R1]
-   10 00000004 F010 0002       ANDS             R0, R0, #0X2
-   11 00000008 D0FB            BEQ              START
-   12 0000000A         
-   13 0000000A 6808    BUSY    LDR              R0, [R1]
-   14 0000000C F010 0010       ANDS             R0, R0, #0X10
-   15 00000010 D1FB            BNE              BUSY
-   16 00000012         
-   17 00000012 4905            LDR              R1, =SSIDR
-   18 00000014 600D            STR              R5, [R1]
-   19 00000016         
-   20 00000016 4903            LDR              R1, =SSISR
-   21 00000018 6808    CHECK   LDR              R0, [R1]
-   22 0000001A F010 0010       ANDS             R0, R0, #0X10
-   23 0000001E D1FB            BNE              CHECK
-   24 00000020 4770            BX               LR
-   25 00000022         
-   26 00000022         
-   27 00000022                 ENDP
-   28 00000022 00 00           ALIGN
-   29 00000024                 END
+    8 00000000 B403            PUSH             {R0, R1}
+    9 00000002 4909            LDR              R1, =SSISR
+   10 00000004 6808    START   LDR              R0, [R1]
+   11 00000006 F010 0002       ANDS             R0, R0, #0X2
+   12 0000000A D0FB            BEQ              START
+   13 0000000C         
+   14 0000000C 6808    BUSY    LDR              R0, [R1]
+   15 0000000E F010 0010       ANDS             R0, R0, #0X10
+   16 00000012 D1FB            BNE              BUSY
+   17 00000014         
+   18 00000014 4905            LDR              R1, =SSIDR
+   19 00000016 600D            STR              R5, [R1]
+   20 00000018         
+   21 00000018 4903            LDR              R1, =SSISR
+   22 0000001A 6808    CHECK   LDR              R0, [R1]
+   23 0000001C F010 0010       ANDS             R0, R0, #0X10
+   24 00000020 D1FB            BNE              CHECK
+   25 00000022 BC03            POP              {R0, R1}
+   26 00000024 4770            BX               LR
+   27 00000026         
+   28 00000026         
+   29 00000026                 ENDP
+   30 00000026 00 00           ALIGN
+   31 00000028                 END
               4000800C 
               40008008 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
@@ -49,29 +51,29 @@ S\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526"
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-BUSY 0000000A
+BUSY 0000000C
 
 Symbol: BUSY
    Definitions
-      At line 13 in file PRINT.s
+      At line 14 in file PRINT.s
    Uses
-      At line 15 in file PRINT.s
+      At line 16 in file PRINT.s
 Comment: BUSY used once
-CHECK 00000018
+CHECK 0000001A
 
 Symbol: CHECK
    Definitions
-      At line 21 in file PRINT.s
+      At line 22 in file PRINT.s
    Uses
-      At line 23 in file PRINT.s
+      At line 24 in file PRINT.s
 Comment: CHECK used once
-START 00000002
+START 00000004
 
 Symbol: START
    Definitions
-      At line 9 in file PRINT.s
+      At line 10 in file PRINT.s
    Uses
-      At line 11 in file PRINT.s
+      At line 12 in file PRINT.s
 Comment: START used once
 TRANSMIT 00000000
 
@@ -102,7 +104,7 @@ Symbol: SSIDR
    Definitions
       At line 2 in file PRINT.s
    Uses
-      At line 17 in file PRINT.s
+      At line 18 in file PRINT.s
 Comment: SSIDR used once
 SSISR 4000800C
 
@@ -110,8 +112,8 @@ Symbol: SSISR
    Definitions
       At line 1 in file PRINT.s
    Uses
-      At line 8 in file PRINT.s
-      At line 20 in file PRINT.s
+      At line 9 in file PRINT.s
+      At line 21 in file PRINT.s
 
 2 symbols
 343 symbols in table
