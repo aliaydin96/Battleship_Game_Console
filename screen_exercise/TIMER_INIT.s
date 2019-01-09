@@ -31,9 +31,7 @@ Timer0A_Handler	PROC
 			SUB R7, #1
 			CMP	R7, #20
 			BEQ TWENTY
-			
-
-			
+				
 			BL	N1
 			MOV	R5, #0X0
 			BL	TRANSMIT
@@ -109,7 +107,10 @@ ZERO		BL	N0
 			B FINISH
 FINISH		POP	{LR}
 			BX	LR
-	
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;	CLEAR 14X8 BOX BEGINNING
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CLEAR		PUSH {LR}
 			LDR R1,=PORTA_DATA		
 			LDR	R0,[R1]
@@ -149,6 +150,12 @@ LOOP		MOV	R5, #0X0	;CLEAR NUMBER PLACE
 			STR	R0,[R1]	
 			POP {LR}
 			BX	LR
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;	CLEAR 14X8 BOX FINISH
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;	NUMBERS	0-9	BEGINNING
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 N0			PUSH 	{LR}	
 			MOV		R5, #0X3E
 			BL		TRANSMIT
@@ -288,9 +295,13 @@ N9			PUSH 	{LR}
 			BL		TRANSMIT			
 			POP		{LR}
 			BX		LR
-			
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;	NUMBERS	0-9	FINISH
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;			
 			ENDP
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;	TIMER INITIALIZE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 TIMER_INIT	PROC
 			LDR R1, =SYSCTL_RCGCTIMER ; Start Timer0
 			LDR R2, [R1]
