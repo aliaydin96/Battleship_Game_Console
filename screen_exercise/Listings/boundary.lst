@@ -1,0 +1,216 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400043FC 
+                       PORTA_DATA
+                               EQU              0x400043FC
+    2 00000000         
+    3 00000000         
+    4 00000000                 AREA             routines, CODE, READONLY
+    5 00000000                 THUMB
+    6 00000000                 EXTERN           TRANSMIT
+    7 00000000                 EXPORT           BOUNDARY
+    8 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    9 00000000         ;;;;; BOUNDARY LINES BEGINNING
+   10 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   11 00000000         BOUNDARY
+   12 00000000 B500            PUSH             {LR}
+   13 00000002 F04F 0385       MOV              R3, #0X85
+   14 00000006 F04F 04C6       MOV              R4, #0XC6
+   15 0000000A         UPPER_LOWER_BOUND
+   16 0000000A 4937            LDR              R1,=PORTA_DATA
+   17 0000000C 6808            LDR              R0,[R1]
+   18 0000000E F020 0040       BIC              R0,#0x40
+   19 00000012 6008            STR              R0,[R1]
+   20 00000014         
+   21 00000014 F04F 0500       MOV              R5, #0
+   22 00000018 441D            ADD              R5, R3
+   23 0000001A F7FF FFFE       BL               TRANSMIT
+   24 0000001E F04F 0540       MOV              R5, #0X40
+   25 00000022 F7FF FFFE       BL               TRANSMIT
+   26 00000026         
+   27 00000026 4930            LDR              R1,=PORTA_DATA
+   28 00000028 6808            LDR              R0,[R1]
+   29 0000002A F040 0040       ORR              R0,#0x40
+   30 0000002E 6008            STR              R0,[R1]
+   31 00000030         
+   32 00000030 F04F 0580       MOV              R5, #0X80
+   33 00000034 F7FF FFFE       BL               TRANSMIT
+   34 00000038         
+   35 00000038 492B            LDR              R1,=PORTA_DATA
+   36 0000003A 6808            LDR              R0,[R1]
+   37 0000003C F020 0040       BIC              R0,#0x40
+   38 00000040 6008            STR              R0,[R1]
+   39 00000042         
+   40 00000042 F04F 0500       MOV              R5, #0
+   41 00000046 441D            ADD              R5, R3
+   42 00000048 F7FF FFFE       BL               TRANSMIT
+   43 0000004C F04F 0545       MOV              R5, #0X45
+   44 00000050 F7FF FFFE       BL               TRANSMIT
+   45 00000054         
+   46 00000054 4924            LDR              R1,=PORTA_DATA
+   47 00000056 6808            LDR              R0,[R1]
+   48 00000058 F040 0040       ORR              R0,#0x40
+   49 0000005C 6008            STR              R0,[R1]
+   50 0000005E         
+   51 0000005E F04F 0501       MOV              R5, #0X1
+   52 00000062 F7FF FFFE       BL               TRANSMIT
+   53 00000066         
+   54 00000066 F103 0301       ADD              R3, #1
+   55 0000006A 42A3            CMP              R3, R4
+   56 0000006C D1CD            BNE              UPPER_LOWER_BOUND
+   57 0000006E         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   58 0000006E F04F 0341       MOV              R3, #0X41
+   59 00000072 F04F 0445       MOV              R4, #0X45
+   60 00000076         
+   61 00000076         LEFT_RIGHT_BOUND
+   62 00000076         
+   63 00000076 491C            LDR              R1,=PORTA_DATA
+   64 00000078 6808            LDR              R0,[R1]
+   65 0000007A F020 0040       BIC              R0,#0x40
+   66 0000007E 6008            STR              R0,[R1]
+   67 00000080         
+   68 00000080 F04F 0500       MOV              R5, #0
+   69 00000084 F105 0585       ADD              R5, #0X85
+   70 00000088 F7FF FFFE       BL               TRANSMIT
+   71 0000008C F04F 0500       MOV              R5, #0
+   72 00000090 441D            ADD              R5, R3
+   73 00000092 F7FF FFFE       BL               TRANSMIT
+   74 00000096         
+   75 00000096 4914            LDR              R1,=PORTA_DATA
+   76 00000098 6808            LDR              R0,[R1]
+   77 0000009A F040 0040       ORR              R0,#0x40
+   78 0000009E 6008            STR              R0,[R1]
+   79 000000A0         
+   80 000000A0 F04F 05FF       MOV              R5, #0XFF
+   81 000000A4 F7FF FFFE       BL               TRANSMIT
+   82 000000A8         
+   83 000000A8 490F            LDR              R1,=PORTA_DATA
+   84 000000AA 6808            LDR              R0,[R1]
+   85 000000AC F020 0040       BIC              R0,#0x40
+   86 000000B0 6008            STR              R0,[R1]
+   87 000000B2         
+   88 000000B2 F04F 0500       MOV              R5, #0
+   89 000000B6 F105 05C5       ADD              R5, #0XC5
+   90 000000BA F7FF FFFE       BL               TRANSMIT
+   91 000000BE F04F 0500       MOV              R5, #0
+   92 000000C2 441D            ADD              R5, R3
+   93 000000C4 F7FF FFFE       BL               TRANSMIT
+   94 000000C8         
+   95 000000C8 4907            LDR              R1,=PORTA_DATA
+   96 000000CA 6808            LDR              R0,[R1]
+   97 000000CC F040 0040       ORR              R0,#0x40
+   98 000000D0 6008            STR              R0,[R1]
+   99 000000D2 F04F 05FF       MOV              R5, #0XFF
+  100 000000D6 F7FF FFFE       BL               TRANSMIT
+  101 000000DA         
+  102 000000DA F103 0301       ADD              R3, #1
+  103 000000DE 42A3            CMP              R3, R4
+  104 000000E0 D1C9            BNE              LEFT_RIGHT_BOUND
+  105 000000E2 F85D EB04       POP              {LR}
+  106 000000E6 4770            BX               LR
+  107 000000E8                 END
+              400043FC 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\boundary.d -o.\objects\boundary.o -I.\RTE\_Target_1 -
+IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\boundary.lst BOUNDARY
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+BOUNDARY 00000000
+
+Symbol: BOUNDARY
+   Definitions
+      At line 11 in file BOUNDARY.s
+   Uses
+      At line 7 in file BOUNDARY.s
+Comment: BOUNDARY used once
+LEFT_RIGHT_BOUND 00000076
+
+Symbol: LEFT_RIGHT_BOUND
+   Definitions
+      At line 61 in file BOUNDARY.s
+   Uses
+      At line 104 in file BOUNDARY.s
+Comment: LEFT_RIGHT_BOUND used once
+UPPER_LOWER_BOUND 0000000A
+
+Symbol: UPPER_LOWER_BOUND
+   Definitions
+      At line 15 in file BOUNDARY.s
+   Uses
+      At line 56 in file BOUNDARY.s
+Comment: UPPER_LOWER_BOUND used once
+routines 00000000
+
+Symbol: routines
+   Definitions
+      At line 4 in file BOUNDARY.s
+   Uses
+      None
+Comment: routines unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+PORTA_DATA 400043FC
+
+Symbol: PORTA_DATA
+   Definitions
+      At line 1 in file BOUNDARY.s
+   Uses
+      At line 16 in file BOUNDARY.s
+      At line 27 in file BOUNDARY.s
+      At line 35 in file BOUNDARY.s
+      At line 46 in file BOUNDARY.s
+      At line 63 in file BOUNDARY.s
+      At line 75 in file BOUNDARY.s
+      At line 83 in file BOUNDARY.s
+      At line 95 in file BOUNDARY.s
+
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+TRANSMIT 00000000
+
+Symbol: TRANSMIT
+   Definitions
+      At line 6 in file BOUNDARY.s
+   Uses
+      At line 23 in file BOUNDARY.s
+      At line 25 in file BOUNDARY.s
+      At line 33 in file BOUNDARY.s
+      At line 42 in file BOUNDARY.s
+      At line 44 in file BOUNDARY.s
+      At line 52 in file BOUNDARY.s
+      At line 70 in file BOUNDARY.s
+      At line 73 in file BOUNDARY.s
+      At line 81 in file BOUNDARY.s
+      At line 90 in file BOUNDARY.s
+      At line 93 in file BOUNDARY.s
+      At line 100 in file BOUNDARY.s
+
+1 symbol
+342 symbols in table

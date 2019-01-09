@@ -1,0 +1,123 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400043FC 
+                       PORTA_DATA
+                               EQU              0x400043FC
+    2 00000000         
+    3 00000000         
+    4 00000000                 AREA             routines, CODE, READONLY
+    5 00000000                 THUMB
+    6 00000000                 EXTERN           TRANSMIT
+    7 00000000                 EXPORT           CIVILIAN
+    8 00000000         
+    9 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   10 00000000         ;;;;;; CIVILIAN BEGINNING
+   11 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   12 00000000         CIVILIAN
+   13 00000000 B503            PUSH{R0,         R1, LR}
+   14 00000002 4918            LDR              R1,=PORTA_DATA
+   15 00000004 6808            LDR              R0,[R1]
+   16 00000006 F020 0040       BIC              R0,#0x40
+   17 0000000A 6008            STR              R0,[R1]
+   18 0000000C         
+   19 0000000C F04F 05AC       MOV              R5, #0XAC
+   20 00000010 F7FF FFFE       BL               TRANSMIT
+   21 00000014 F04F 0542       MOV              R5, #0X42
+   22 00000018 F7FF FFFE       BL               TRANSMIT
+   23 0000001C         
+   24 0000001C 4911            LDR              R1,=PORTA_DATA
+   25 0000001E 6808            LDR              R0,[R1]
+   26 00000020 F040 0040       ORR              R0,#0x40
+   27 00000024 6008            STR              R0,[R1]
+   28 00000026         
+   29 00000026 F04F 0520       MOV              R5, #0X20
+   30 0000002A F7FF FFFE       BL               TRANSMIT
+   31 0000002E F04F 0564       MOV              R5, #0X64
+   32 00000032 F7FF FFFE       BL               TRANSMIT
+   33 00000036 F04F 05E6       MOV              R5, #0XE6
+   34 0000003A F7FF FFFE       BL               TRANSMIT
+   35 0000003E F04F 05FF       MOV              R5, #0XFF
+   36 00000042 F7FF FFFE       BL               TRANSMIT
+   37 00000046 F04F 05E6       MOV              R5, #0XE6
+   38 0000004A F7FF FFFE       BL               TRANSMIT
+   39 0000004E F04F 0564       MOV              R5, #0X64
+   40 00000052 F7FF FFFE       BL               TRANSMIT
+   41 00000056 F04F 0520       MOV              R5, #0X20
+   42 0000005A F7FF FFFE       BL               TRANSMIT
+   43 0000005E E8BD 4003       POP{R0,          R1, LR}
+   44 00000062 4770            BX               LR
+   45 00000064                 END
+              400043FC 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\civilian.d -o.\objects\civilian.o -I.\RTE\_Target_1 -
+IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\civilian.lst CIVILIAN
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CIVILIAN 00000000
+
+Symbol: CIVILIAN
+   Definitions
+      At line 12 in file CIVILIAN.s
+   Uses
+      At line 7 in file CIVILIAN.s
+Comment: CIVILIAN used once
+routines 00000000
+
+Symbol: routines
+   Definitions
+      At line 4 in file CIVILIAN.s
+   Uses
+      None
+Comment: routines unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+PORTA_DATA 400043FC
+
+Symbol: PORTA_DATA
+   Definitions
+      At line 1 in file CIVILIAN.s
+   Uses
+      At line 14 in file CIVILIAN.s
+      At line 24 in file CIVILIAN.s
+
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+TRANSMIT 00000000
+
+Symbol: TRANSMIT
+   Definitions
+      At line 6 in file CIVILIAN.s
+   Uses
+      At line 20 in file CIVILIAN.s
+      At line 22 in file CIVILIAN.s
+      At line 30 in file CIVILIAN.s
+      At line 32 in file CIVILIAN.s
+      At line 34 in file CIVILIAN.s
+      At line 36 in file CIVILIAN.s
+      At line 38 in file CIVILIAN.s
+      At line 40 in file CIVILIAN.s
+      At line 42 in file CIVILIAN.s
+
+1 symbol
+340 symbols in table

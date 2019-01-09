@@ -14,6 +14,9 @@ PORTA_DATA 		EQU 0x400043FC
 			EXTERN OutChar
 			EXTERN TRANSMIT
 			EXTERN	TIMER_INIT
+			EXTERN  BATTLESHIP
+			EXTERN  BOUNDARY
+			EXTERN  CIVILIAN
 			EXTERN	Timer0A_Handler
 			EXPORT __main
 				
@@ -67,17 +70,16 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			BEQ 	getsample
 
 CURSOR	
-			BL		CLEAR
-			BL		BOUNDARY			
-			MOV		R2, #0X2
-			MOV		R10, #0X7
+;			BL		BOUNDARY
+;			BL		BATTLESHIP
+;			BL		CIVILIAN
 			MOV		R6,R9;
 			MOV		R0,#73; get the first digit
 			UDIV	R9,R9,R0;
 			ADD		R9, #0X85
 			
 			MOV		R7,R8;
-			MOV		R0,#170; get the first digit
+			MOV		R0,#171; get the first digit
 			UDIV	R8,R8,R0;
 			CMP		R8, #8
 			MOVCC	R4, #0X41
@@ -89,8 +91,25 @@ CURSOR
 			CMP		R8, #24
 			MOVCC	R4, #0X43
 			SUBCC	R8, #16
+			BL		CLEARBOX2
 
-GO			LDR R1,=PORTA_DATA
+GO			
+			CMP	R4, #0X41
+			BEQ	ROW1
+			CMP	R4, #0X42
+			BEQ ROW2
+			B	CURSOR_2
+			
+ROW1
+			BL CLEARBOX2
+			B	CURSOR_2
+ROW2
+			BL CLEARBOX1
+			BL CLEARBOX3
+			B	CURSOR_2			
+
+CURSOR_2	
+			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
 			STR	R0,[R1]
@@ -104,21 +123,12 @@ GO			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]
-
-
-			CMP	R3, #0X85
+			MOV		R2, #0X2
+			MOV		R10, #0X7
+			CMP	R9, #0X85
 			MOVEQ R5, #0XFF			
 			MOVNE R5, #0X0
-			BL	TRANSMIT
-;			MOV R5, #0X2
-;			BL	TRANSMIT
-;			MOV	R5, #0X7
-;			BL	TRANSMIT			
-;			MOV	R5, #0X2
-;			BL	TRANSMIT
-;			MOV	R5, #0X0
-;			BL	TRANSMIT			
-
+			BL	TRANSMIT		
 			PUSH	{R8}
 			MOV	R0, R8	
 			MOV	R3, #0
@@ -161,6 +171,8 @@ SEVEN
 
 FIN							
 			B		FIN	
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;	CLEAR WHOLE SCREEN
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -176,110 +188,92 @@ LOOP		MOV		R5, #0X0
 			BX		LR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-CLEARBOX
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;	BOUNDARY LINES BEGINNING
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-BOUNDARY	
-			PUSH	{LR}
-			MOV	R3, #0X85
-			MOV	R4, #0XC6
-UPPER_LOWER_BOUND
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;	CLEAR Y = 1 ROW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CLEARBOX1	PUSH{R0, R1, R2, LR}
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
 			STR	R0,[R1]
 			
-			MOV	R5, #0
-			ADD	R5, R3
+			MOV	R5, #0X86
 			BL	TRANSMIT
-			MOV	R5, #0X40
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]	
-			
-			MOV		R5, #0X80
-			BL		TRANSMIT	
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, #0
-			ADD	R5, R3
-			BL	TRANSMIT
-			MOV	R5, #0X45
+			MOV	R5, #0X41
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]
-
-			MOV		R5, #0X1
+			MOV	R2, #0X86
+			
+LOOP_C		MOV		R5, #0X0
 			BL		TRANSMIT
+			ADD	R2, #1
+			CMP	R2, #0XC5
+			BNE	LOOP_C
 			
-			ADD		R3, #1
-			CMP		R3, R4
-			BNE UPPER_LOWER_BOUND
-
-			MOV	R3, #0X41
-			MOV	R4, #0X45
-			
-LEFT_RIGHT_BOUND
-
+			POP{R0, R1, R2, LR}
+			BX	LR
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;	CLEAR Y = 2 ROW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CLEARBOX2	PUSH{R0, R1, R2, LR}
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
 			STR	R0,[R1]
 			
-			MOV	R5, #0
-			ADD	R5, #0X85
+			MOV	R5, #0X86
 			BL	TRANSMIT
-			MOV	R5, #0
-			ADD	R5, R3
+			MOV	R5, #0X42
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]
+			MOV	R2, #0X86
 			
-			MOV		R5, #0XFF
+LOOP_C_2	MOV		R5, #0X0
 			BL		TRANSMIT
+			ADD	R2, #1
+			CMP	R2, #0XC5
+			BNE	LOOP_C_2
 			
+			POP{R0, R1, R2, LR}
+			BX	LR			
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;	CLEAR Y = 3 ROW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CLEARBOX3	PUSH{R0, R1, R2, LR}
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
 			STR	R0,[R1]
 			
-			MOV	R5, #0
-			ADD	R5, #0XC5
+			MOV	R5, #0X86
 			BL	TRANSMIT
-			MOV	R5, #0
-			ADD	R5, R3
+			MOV	R5, #0X43
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]
-			MOV		R5, #0XFF
-			BL		TRANSMIT
+			MOV	R2, #0X86
 			
-			ADD	R3, #1
-			CMP	R3, R4
-			BNE	LEFT_RIGHT_BOUND
-			POP {LR}
-			BX LR 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;	BOUNDARY LINES FINISH
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+LOOP_C_3	MOV		R5, #0X0
+			BL		TRANSMIT
+			ADD	R2, #1
+			CMP	R2, #0XC5
+			BNE	LOOP_C_3
+			
+			POP{R0, R1, R2, LR}
+			BX	LR			
+			
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;	NUMBERS	0-9	BEGINNING
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

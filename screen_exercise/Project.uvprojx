@@ -403,11 +403,6 @@
               <FilePath>.\delay.s</FilePath>
             </File>
             <File>
-              <FileName>PRINT.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\PRINT.s</FilePath>
-            </File>
-            <File>
               <FileName>LCD_INIT.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\LCD_INIT.s</FilePath>
@@ -421,6 +416,26 @@
               <FileName>OutChar.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\OutChar.s</FilePath>
+            </File>
+            <File>
+              <FileName>BATTLESHIP.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\BATTLESHIP.s</FilePath>
+            </File>
+            <File>
+              <FileName>CIVILIAN.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\CIVILIAN.s</FilePath>
+            </File>
+            <File>
+              <FileName>TRANSMIT.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\TRANSMIT.s</FilePath>
+            </File>
+            <File>
+              <FileName>BOUNDARY.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\BOUNDARY.s</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,0 +1,166 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400043FC 
+                       PORTA_DATA
+                               EQU              0x400043FC
+    2 00000000         
+    3 00000000         
+    4 00000000                 AREA             routines, CODE, READONLY
+    5 00000000                 THUMB
+    6 00000000                 EXTERN           TRANSMIT
+    7 00000000                 EXPORT           BATTLESHIP
+    8 00000000         
+    9 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   10 00000000         ;;;;;; BATTLESHIP BEGINNING
+   11 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   
+   12 00000000 B503    BATTLESHIP
+                               PUSH{R0,         R1, LR}
+   13 00000002         
+   14 00000002 492B            LDR              R1,=PORTA_DATA
+   15 00000004 6808            LDR              R0,[R1]
+   16 00000006 F020 0040       BIC              R0,#0x40
+   17 0000000A 6008            STR              R0,[R1]
+   18 0000000C         
+   19 0000000C F04F 05AF       MOV              R5, #0XAF
+   20 00000010 F7FF FFFE       BL               TRANSMIT
+   21 00000014 F04F 0541       MOV              R5, #0X41
+   22 00000018 F7FF FFFE       BL               TRANSMIT
+   23 0000001C         
+   24 0000001C 4924            LDR              R1,=PORTA_DATA
+   25 0000001E 6808            LDR              R0,[R1]
+   26 00000020 F040 0040       ORR              R0,#0x40
+   27 00000024 6008            STR              R0,[R1]
+   28 00000026 F04F 05A0       MOV              R5, #0XA0
+   29 0000002A F7FF FFFE       BL               TRANSMIT
+   30 0000002E F04F 0510       MOV              R5, #0X10
+   31 00000032 F7FF FFFE       BL               TRANSMIT
+   32 00000036 F04F 0508       MOV              R5, #0X08
+   33 0000003A F7FF FFFE       BL               TRANSMIT
+   34 0000003E F04F 0510       MOV              R5, #0X10
+   35 00000042 F7FF FFFE       BL               TRANSMIT
+   36 00000046 F04F 0520       MOV              R5, #0X20
+   37 0000004A F7FF FFFE       BL               TRANSMIT
+   38 0000004E 4918            LDR              R1,=PORTA_DATA
+   39 00000050 6808            LDR              R0,[R1]
+   40 00000052 F020 0040       BIC              R0,#0x40
+   41 00000056 6008            STR              R0,[R1]
+   42 00000058         
+   43 00000058 F04F 05AC       MOV              R5, #0XAC
+   44 0000005C F7FF FFFE       BL               TRANSMIT
+   45 00000060 F04F 0542       MOV              R5, #0X42
+   46 00000064 F7FF FFFE       BL               TRANSMIT
+   47 00000068         
+   48 00000068 4911            LDR              R1,=PORTA_DATA
+   49 0000006A 6808            LDR              R0,[R1]
+   50 0000006C F040 0040       ORR              R0,#0x40
+   51 00000070 6008            STR              R0,[R1]
+   52 00000072         
+   53 00000072 F04F 05C0       MOV              R5, #0XC0
+   54 00000076 F7FF FFFE       BL               TRANSMIT
+   55 0000007A F04F 05C4       MOV              R5, #0XC4
+   56 0000007E F7FF FFFE       BL               TRANSMIT
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   57 00000082 F04F 053E       MOV              R5, #0X3E
+   58 00000086 F7FF FFFE       BL               TRANSMIT
+   59 0000008A F04F 053F       MOV              R5, #0X3F
+   60 0000008E F7FF FFFE       BL               TRANSMIT
+   61 00000092 F04F 053E       MOV              R5, #0X3E
+   62 00000096 F7FF FFFE       BL               TRANSMIT
+   63 0000009A F04F 05C4       MOV              R5, #0XC4
+   64 0000009E F7FF FFFE       BL               TRANSMIT
+   65 000000A2 F04F 05C0       MOV              R5, #0XC0
+   66 000000A6 F7FF FFFE       BL               TRANSMIT
+   67 000000AA E8BD 4003       POP{R0,          R1, LR}
+   68 000000AE 4770            BX               LR
+   69 000000B0         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   70 000000B0         ;;;;;; BATTLESHIP FINISH
+   71 000000B0         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    
+   72 000000B0                 END
+              400043FC 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\battleship.d -o.\objects\battleship.o -I.\RTE\_Target
+_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v
+5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION 
+SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\battleship.lst BA
+TTLESHIP.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+BATTLESHIP 00000000
+
+Symbol: BATTLESHIP
+   Definitions
+      At line 12 in file BATTLESHIP.s
+   Uses
+      At line 7 in file BATTLESHIP.s
+Comment: BATTLESHIP used once
+routines 00000000
+
+Symbol: routines
+   Definitions
+      At line 4 in file BATTLESHIP.s
+   Uses
+      None
+Comment: routines unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+PORTA_DATA 400043FC
+
+Symbol: PORTA_DATA
+   Definitions
+      At line 1 in file BATTLESHIP.s
+   Uses
+      At line 14 in file BATTLESHIP.s
+      At line 24 in file BATTLESHIP.s
+      At line 38 in file BATTLESHIP.s
+      At line 48 in file BATTLESHIP.s
+
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+TRANSMIT 00000000
+
+Symbol: TRANSMIT
+   Definitions
+      At line 6 in file BATTLESHIP.s
+   Uses
+      At line 20 in file BATTLESHIP.s
+      At line 22 in file BATTLESHIP.s
+      At line 29 in file BATTLESHIP.s
+      At line 31 in file BATTLESHIP.s
+      At line 33 in file BATTLESHIP.s
+      At line 35 in file BATTLESHIP.s
+      At line 37 in file BATTLESHIP.s
+      At line 44 in file BATTLESHIP.s
+      At line 46 in file BATTLESHIP.s
+      At line 54 in file BATTLESHIP.s
+      At line 56 in file BATTLESHIP.s
+      At line 58 in file BATTLESHIP.s
+      At line 60 in file BATTLESHIP.s
+      At line 62 in file BATTLESHIP.s
+      At line 64 in file BATTLESHIP.s
+      At line 66 in file BATTLESHIP.s
+
+1 symbol
+340 symbols in table
