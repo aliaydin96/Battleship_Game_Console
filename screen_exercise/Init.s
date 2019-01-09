@@ -33,6 +33,9 @@ ADC0_SSMUX2 	EQU 0x40038080 ; Input channel select
 ADC0_SSCTL2 	EQU 0x40038084 ; Sample sequence control
 ADC0_SSFIFO2 	EQU 0x40038088 ; Channel 2 results
 ADC0_PP 		EQU 0x40038FC4 ; Sample rate
+ADC0_SSMUX3 	EQU 0x400380A0 ; Input channel select
+ADC0_SSCTL3 	EQU 0x400380A4 ; Sample sequence control
+ADC0_SSFIFO3 	EQU 0x400380A8 ; Channel 3 results	
 ;SSI REGISTERS	
 RCGCSSI			EQU	0X400FE61C
 SSICR0			EQU	0X40008000
@@ -148,21 +151,32 @@ Init		PROC
 			; Disable sequencer while ADC setup
 			LDR R1, =ADC0_ACTSS
 			LDR R0, [R1]
-			BIC R0, R0, #0x04 ; clear bit 2 to disable seq 2
+			BIC R0, R0, #0x0C ; clear bit 2 to disable seq 2
 			STR R0, [R1]
 			; Select trigger source
 			LDR R1, =ADC0_EMUX
 			LDR R0, [R1]
-			BIC R0, R0, #0x0F00 ; clear bits 15:12 to select SOFTWARE
+			BIC R0, R0, #0xFF00 ; clear bits 15:12 to select SOFTWARE
 			STR R0, [R1] ; trigger
 			; Select input channel
 			LDR R1, =ADC0_SSMUX2
-			MOV	R0, #0X10 ;AIN0 AND AIN1 ARE INPUT
+			LDR	R0, [R1]
+			BIC	R0, R0, #0x000F ;AIN0 IS INPUT
 			STR R0, [R1]
 			; Config sample sequence
 			LDR R1, =ADC0_SSCTL2
 			LDR R0, [R1]
-			ORR R0, R0, #0x60 ; set bits 2:5 (IE0, END1)
+			ORR R0, R0, #0x6 ; set bits 2:1 (IE0, END0)
+			STR R0, [R1]
+			
+			LDR R1, =ADC0_SSMUX3
+			LDR	R0, [R1]
+			ORR R0, R0, #0x0010  ;AIN1 IS INPUT
+			STR R0, [R1]
+			; Config sample sequence
+			LDR R1, =ADC0_SSCTL3
+			LDR R0, [R1]
+			ORR R0, R0, #0x6 ; set bits 2:1 (IE0, END0)
 			STR R0, [R1]
 			; Set sample rate
 			LDR R1, =ADC0_PP
@@ -172,7 +186,7 @@ Init		PROC
 			; Done with setup, enable sequencer
 			LDR R1, =ADC0_ACTSS
 			LDR R0, [R1]
-			ORR R0, R0, #0x04 ; set bit 2 to enable seq 2
+			ORR R0, R0, #0x0C ; set bit 2 to enable seq 2
 			STR R0, [R1] ; sampling enabled but not initiated yet			
 			BX	LR
 			ENDP

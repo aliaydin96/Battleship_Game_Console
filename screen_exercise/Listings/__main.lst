@@ -9,638 +9,651 @@ ARM Macro Assembler    Page 1
                                EQU              0x40038004  ; Interrupt status
     2 00000000 40038088 
                        ADC0_SSFIFO2
-                               EQU              0x40038088  ; Channel 3 results
+                               EQU              0x40038088  ; Channel 2 results
                                                             
-    3 00000000 40038028 
+    3 00000000 400380A8 
+                       ADC0_SSFIFO3
+                               EQU              0x400380A8  ; Channel 3 results
+                                                             
+    4 00000000 40038028 
                        ADC0_PSSI
                                EQU              0x40038028  ; Initiate sample
-    4 00000000 4003800C 
+    5 00000000 4003800C 
                        ADC0_ISC
                                EQU              0x4003800C  ; ISC
-    5 00000000 4003808C 
+    6 00000000 4003808C 
                        ADC0_SSFSTAT2
                                EQU              0X4003808C
-    6 00000000 400043FC 
+    7 00000000 400043FC 
                        PORTA_DATA
                                EQU              0x400043FC
-    7 00000000         
-    8 00000000                 AREA             main, CODE, READONLY
-    9 00000000                 THUMB
-   10 00000000                 IMPORT           LCD_INIT
-   11 00000000                 IMPORT           Init
-   12 00000000                 IMPORT           DELAY
-   13 00000000                 EXTERN           OutChar
-   14 00000000                 EXTERN           TRANSMIT
-   15 00000000                 EXTERN           TIMER_INIT
-   16 00000000                 EXTERN           Timer0A_Handler
-   17 00000000                 EXPORT           __main
-   18 00000000         
-   19 00000000         __main
-   20 00000000 F7FF FFFE       BL               Init
-   21 00000004 F7FF FFFE       BL               LCD_INIT
-   22 00000008         
-   23 00000008 4970            LDR              R1,=PORTA_DATA
-   24 0000000A 6808            LDR              R0,[R1]
-   25 0000000C F040 0040       ORR              R0,#0x40
-   26 00000010 6008            STR              R0,[R1]
-   27 00000012         
+    8 00000000         
+    9 00000000                 AREA             main, CODE, READONLY
+   10 00000000                 THUMB
+   11 00000000                 IMPORT           LCD_INIT
+   12 00000000                 IMPORT           Init
+   13 00000000                 IMPORT           DELAY
+   14 00000000                 EXTERN           OutChar
+   15 00000000                 EXTERN           TRANSMIT
+   16 00000000                 EXTERN           TIMER_INIT
+   17 00000000                 EXTERN           Timer0A_Handler
+   18 00000000                 EXPORT           __main
+   19 00000000         
+   20 00000000         __main
+   21 00000000 F7FF FFFE       BL               Init
+   22 00000004 F7FF FFFE       BL               LCD_INIT
+   23 00000008         
+   24 00000008 4970            LDR              R1,=PORTA_DATA
+   25 0000000A 6808            LDR              R0,[R1]
+   26 0000000C F040 0040       ORR              R0,#0x40
+   27 00000010 6008            STR              R0,[R1]
    28 00000012         
-   29 00000012 F000 F854       BL               CLEAR
-   30 00000016 F000 F864       BL               BOUNDARY
-   31 0000001A         ;   BL  TIMER_INIT
-   32 0000001A         ;   MOV R7, #21  ;this counter for timer 
-   33 0000001A F04F 0600       MOV              R6,#0       ;
-   34 0000001E F04F 0700       MOV              R7, #0
-   35 00000022 F04F 0B00       MOV              R11, #0
-   36 00000026 496A    getsample
+   29 00000012         
+   30 00000012 F000 F855       BL               CLEAR
+   31 00000016 F000 F865       BL               BOUNDARY
+   32 0000001A         ;   BL  TIMER_INIT
+   33 0000001A         ;   MOV R7, #21  ;this counter for timer 
+   34 0000001A F04F 0600       MOV              R6,#0       ;
+   35 0000001E F04F 0700       MOV              R7, #0
+   36 00000022 F04F 0B00       MOV              R11, #0
+   37 00000026 496A    getsample
                                LDR              R1,=ADC0_PSSI 
                                                             ; request a sample
-   37 00000028 6808            LDR              R0,[R1]     ;
-   38 0000002A F040 0004       ORR              R0,R0,#0x04 ; get a sample
-   39 0000002E 6008            STR              R0,[R1]     ;
-   40 00000030         
-   41 00000030 4968    loop    LDR              R1,=ADC0_RIS ; check for interr
-                                                            up flag
-   42 00000032 6808            LDR              R0,[R1]     ;
-   43 00000034 F010 0004       ANDS             R0,#0x04    ;
+   38 00000028 6808            LDR              R0,[R1]     ;
+   39 0000002A F040 000C       ORR              R0,R0,#0x0C ; get a sample
+   40 0000002E 6008            STR              R0,[R1]     ;
+   41 00000030         
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   44 00000038 D0FA            BEQ              loop
-   45 0000003A         
-   46 0000003A 4967            LDR              R1,=ADC0_ISC ; clear the interr
+   42 00000030 4968    loop    LDR              R1,=ADC0_RIS ; check for interr
+                                                            up flag
+   43 00000032 6808            LDR              R0,[R1]     ;
+   44 00000034 F010 0004       ANDS             R0,#0x04    ;
+   45 00000038 D0FA            BEQ              loop
+   46 0000003A         
+   47 0000003A 4967            LDR              R1,=ADC0_ISC ; clear the interr
                                                             upt flag
-   47 0000003C 6808            LDR              R0,[R1]     ;
-   48 0000003E F040 0004       ORR              R0,#0x04    ;
-   49 00000042 6008            STR              R0,[R1]     ; Interrupt flag is
+   48 0000003C 6808            LDR              R0,[R1]     ;
+   49 0000003E F040 0004       ORR              R0,#0x04    ;
+   50 00000042 6008            STR              R0,[R1]     ; Interrupt flag is
                                                              cleared
-   50 00000044         
-   51 00000044 4965            LDR              R1,=ADC0_SSFIFO2 ;
-   52 00000046 F8D1 8000       LDR              R8,[R1]     ; R2 is the data
-   53 0000004A F8D1 9000       LDR              R9,[R1]
-   54 0000004E         
-   55 0000004E EBA9 0006       SUB              R0,R9,R6    ; check sampled dat
+   51 00000044         
+   52 00000044 4965            LDR              R1,=ADC0_SSFIFO2 ;
+   53 00000046 F8D1 8000       LDR              R8,[R1]     ; R2 is the data PE
+                                                            3
+   54 0000004A 4965            LDR              R1, =ADC0_SSFIFO3
+   55 0000004C F8D1 9000       LDR              R9,[R1]
+   56 00000050         
+   57 00000050 EBA9 0006       SUB              R0,R9,R6    ; check sampled dat
                                                             a - previous > 1pix
                                                             
-   56 00000052 2846            CMP              R0,#70      ;
-   57 00000054 DC03            BGT              LEFT_RIGHT  ;
-   58 00000056         ;   SUB  R0,R8,R7; check sampled data - previous > 1pix
-   59 00000056         ;   CMP  R0,#160;
-   60 00000056         ;   BGT  UP_DOWN;
-   61 00000056         ;   SUB  R0,R7,R8;
-   62 00000056         ;   CMP  R0,#160; check previous - sampled data > 1 pix
-   63 00000056         ;   BLT  getsample;
-   64 00000056 EBA6 0009       SUB              R0,R6,R9    ;
-   65 0000005A 2846            CMP              R0,#70      ; check previous - 
+   58 00000054 2846            CMP              R0,#70      ;
+   59 00000056 DC03            BGT              LEFT_RIGHT  ;
+   60 00000058         ;   SUB  R0,R8,R7; check sampled data - previous > 1pix
+   61 00000058         ;   CMP  R0,#160;
+   62 00000058         ;   BGT  UP_DOWN;
+   63 00000058         ;   SUB  R0,R7,R8;
+   64 00000058         ;   CMP  R0,#160; check previous - sampled data > 1 pix
+   65 00000058         ;   BLT  getsample;
+   66 00000058 EBA6 0009       SUB              R0,R6,R9    ;
+   67 0000005C 2846            CMP              R0,#70      ; check previous - 
                                                             sampled data > 1 pi
                                                             x
-   66 0000005C DBE3            BLT              getsample   ;
-   67 0000005E         
-   68 0000005E 464E    LEFT_RIGHT
+   68 0000005E DBE2            BLT              getsample   ;
+   69 00000060         
+   70 00000060 464E    LEFT_RIGHT
                                MOV              R6,R9       ;
-   69 00000060 F04F 0049       MOV              R0,#73      ; get the first dig
+   71 00000062 F04F 0049       MOV              R0,#73      ; get the first dig
                                                             it
-   70 00000064 FBB9 F3F0       UDIV             R3,R9,R0    ;
-   71 00000068 F103 0385       ADD              R3, #0X85
-   72 0000006C         
-   73 0000006C 4957            LDR              R1,=PORTA_DATA
-   74 0000006E 6808            LDR              R0,[R1]
-   75 00000070 F020 0040       BIC              R0,#0x40
-   76 00000074 6008            STR              R0,[R1]
-   77 00000076         
-   78 00000076 461D            MOV              R5, R3
-   79 00000078 F7FF FFFE       BL               TRANSMIT
-   80 0000007C F04F 0542       MOV              R5, #0X42
-   81 00000080 F7FF FFFE       BL               TRANSMIT
-   82 00000084         
-   83 00000084 4951            LDR              R1,=PORTA_DATA
-   84 00000086 6808            LDR              R0,[R1]
-   85 00000088 F040 0040       ORR              R0,#0x40
-   86 0000008C 6008            STR              R0,[R1]
-   87 0000008E 2B85            CMP              R3, #0X85
-   88 00000090 BF0C 25FF       MOVEQ            R5, #0XFF
-   89 00000094 2500            MOVNE            R5, #0X0
-   90 00000096 F7FF FFFE       BL               TRANSMIT
-   91 0000009A F04F 0502       MOV              R5, #0X2
-   92 0000009E F7FF FFFE       BL               TRANSMIT
-   93 000000A2 F04F 0507       MOV              R5, #0X7
-   94 000000A6 F7FF FFFE       BL               TRANSMIT
+   72 00000066 FBB9 F3F0       UDIV             R3,R9,R0    ;
+   73 0000006A F103 0385       ADD              R3, #0X85
+   74 0000006E         
+   75 0000006E 4957            LDR              R1,=PORTA_DATA
+   76 00000070 6808            LDR              R0,[R1]
+   77 00000072 F020 0040       BIC              R0,#0x40
+   78 00000076 6008            STR              R0,[R1]
+   79 00000078         
+   80 00000078 461D            MOV              R5, R3
+   81 0000007A F7FF FFFE       BL               TRANSMIT
+   82 0000007E F04F 0542       MOV              R5, #0X42
+   83 00000082 F7FF FFFE       BL               TRANSMIT
+   84 00000086         
+   85 00000086 4951            LDR              R1,=PORTA_DATA
+   86 00000088 6808            LDR              R0,[R1]
+   87 0000008A F040 0040       ORR              R0,#0x40
+   88 0000008E 6008            STR              R0,[R1]
+   89 00000090 2B85            CMP              R3, #0X85
+   90 00000092 BF0C 25FF       MOVEQ            R5, #0XFF
 
 
 
 ARM Macro Assembler    Page 3 
 
 
-   95 000000AA F04F 0502       MOV              R5, #0X2
-   96 000000AE F7FF FFFE       BL               TRANSMIT
-   97 000000B2 F04F 0500       MOV              R5, #0X0
-   98 000000B6 F7FF FFFE       BL               TRANSMIT
-   99 000000BA E7B4            B                getsample   ; 
-  100 000000BC         
-  101 000000BC         ;UP_DOWN  MOV  R7,R8;
-  102 000000BC         ;   MOV  R0,#170; get the first digit
-  103 000000BC         ;   UDIV R10,R8,R0;
-  104 000000BC         ;   CMP  R10, #8
-  105 000000BC         ;   MOVCS R4, #0X42
-  106 000000BC         ;   CMP  R10, #16
-  107 000000BC         ;   MOVCC R4, #0X42
-  108 000000BC         ;   SUBCC R10, #8
-  109 000000BC         ;   MOVCS R4, #0X41
-  110 000000BC         ;   
-  111 000000BC         ;   LDR R1,=PORTA_DATA
-  112 000000BC         ;   LDR R0,[R1]
-  113 000000BC         ;   BIC R0,#0x40    
-  114 000000BC         ;   STR R0,[R1]
-  115 000000BC         ;   
-  116 000000BC         ;   MOV R5, #0X8F
-  117 000000BC         ;   BL TRANSMIT
-  118 000000BC         ;   MOV R5, R4
-  119 000000BC         ;   BL TRANSMIT
-  120 000000BC         ;   
-  121 000000BC         ;   LDR R1,=PORTA_DATA
-  122 000000BC         ;   LDR R0,[R1]
-  123 000000BC         ;   ORR R0,#0x40    
-  124 000000BC         ;   STR R0,[R1] 
-  125 000000BC         ;   CMP R4, #0X42
-  126 000000BC         ;   BEQ BLOCK2
-  127 000000BC         
-  128 000000BC         ;   B  getsample;
-  129 000000BC         
-  130 000000BC         ;BLOCK2  PUSH {R10}
-  131 000000BC         ;   MOV R5, #0X0 
-  132 000000BC         ;   BL TRANSMIT
-  133 000000BC         ;   SUBS R10, R10, R11
-  134 000000BC         ;   BMI BLOCK2_NEG
-  135 000000BC         ;   MOV R5, #0X2 
-  136 000000BC         ;   LSL R5, R10
-  137 000000BC         ;   BL TRANSMIT
-  138 000000BC         ;   MOV R5, #0X7 
-  139 000000BC         ;   LSL R5, R10
-  140 000000BC         ;   BL TRANSMIT   
-  141 000000BC         ;   MOV R5, #0X2 
-  142 000000BC         ;   LSL R5, R10
-  143 000000BC         ;   BL TRANSMIT
-  144 000000BC         ;   B BLOCK2_END
-  145 000000BC         ;BLOCK2_NEG 
-  146 000000BC         ;   MOV R5, #0X2 
-  147 000000BC         ;   LSR R5, R10
-  148 000000BC         ;   BL TRANSMIT
-  149 000000BC         ;   MOV R5, #0X7 
-  150 000000BC         ;   LSR R5, R10
-  151 000000BC         ;   BL TRANSMIT   
-  152 000000BC         ;   MOV R5, #0X2 
-  153 000000BC         ;   LSR R5, R10
+   91 00000096 2500            MOVNE            R5, #0X0
+   92 00000098 F7FF FFFE       BL               TRANSMIT
+   93 0000009C F04F 0502       MOV              R5, #0X2
+   94 000000A0 F7FF FFFE       BL               TRANSMIT
+   95 000000A4 F04F 0507       MOV              R5, #0X7
+   96 000000A8 F7FF FFFE       BL               TRANSMIT
+   97 000000AC F04F 0502       MOV              R5, #0X2
+   98 000000B0 F7FF FFFE       BL               TRANSMIT
+   99 000000B4 F04F 0500       MOV              R5, #0X0
+  100 000000B8 F7FF FFFE       BL               TRANSMIT
+  101 000000BC E7B3            B                getsample   ; 
+  102 000000BE         
+  103 000000BE         ;UP_DOWN  MOV  R7,R8;
+  104 000000BE         ;   MOV  R0,#170; get the first digit
+  105 000000BE         ;   UDIV R10,R8,R0;
+  106 000000BE         ;   CMP  R10, #8
+  107 000000BE         ;   MOVCS R4, #0X42
+  108 000000BE         ;   CMP  R10, #16
+  109 000000BE         ;   MOVCC R4, #0X42
+  110 000000BE         ;   SUBCC R10, #8
+  111 000000BE         ;   MOVCS R4, #0X41
+  112 000000BE         ;   
+  113 000000BE         ;   LDR R1,=PORTA_DATA
+  114 000000BE         ;   LDR R0,[R1]
+  115 000000BE         ;   BIC R0,#0x40    
+  116 000000BE         ;   STR R0,[R1]
+  117 000000BE         ;   
+  118 000000BE         ;   MOV R5, #0X8F
+  119 000000BE         ;   BL TRANSMIT
+  120 000000BE         ;   MOV R5, R4
+  121 000000BE         ;   BL TRANSMIT
+  122 000000BE         ;   
+  123 000000BE         ;   LDR R1,=PORTA_DATA
+  124 000000BE         ;   LDR R0,[R1]
+  125 000000BE         ;   ORR R0,#0x40    
+  126 000000BE         ;   STR R0,[R1] 
+  127 000000BE         ;   CMP R4, #0X42
+  128 000000BE         ;   BEQ BLOCK2
+  129 000000BE         
+  130 000000BE         ;   B  getsample;
+  131 000000BE         
+  132 000000BE         ;BLOCK2  PUSH {R10}
+  133 000000BE         ;   MOV R5, #0X0 
+  134 000000BE         ;   BL TRANSMIT
+  135 000000BE         ;   SUBS R10, R10, R11
+  136 000000BE         ;   BMI BLOCK2_NEG
+  137 000000BE         ;   MOV R5, #0X2 
+  138 000000BE         ;   LSL R5, R10
+  139 000000BE         ;   BL TRANSMIT
+  140 000000BE         ;   MOV R5, #0X7 
+  141 000000BE         ;   LSL R5, R10
+  142 000000BE         ;   BL TRANSMIT   
+  143 000000BE         ;   MOV R5, #0X2 
+  144 000000BE         ;   LSL R5, R10
+  145 000000BE         ;   BL TRANSMIT
+  146 000000BE         ;   B BLOCK2_END
+  147 000000BE         ;BLOCK2_NEG 
+  148 000000BE         ;   MOV R5, #0X2 
+  149 000000BE         ;   LSR R5, R10
 
 
 
 ARM Macro Assembler    Page 4 
 
 
-  154 000000BC         ;   BL TRANSMIT
-  155 000000BC         ;   
-  156 000000BC         ;BLOCK2_END MOV R5, #0X0
-  157 000000BC         ;   BL TRANSMIT
-  158 000000BC         ;   POP {R10}
-  159 000000BC         ;   MOV R11, R10
-  160 000000BC         ;   B  getsample;
-  161 000000BC         FIN
-  162 000000BC E7FE            B                FIN
-  163 000000BE         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  164 000000BE         ;;;;;; CLEAR WHOLE SCREEN
-  165 000000BE         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  166 000000BE B503    CLEAR   PUSH             {R0,R1,LR}
-  167 000000C0 F04F 0000       MOV              R0,#0
-  168 000000C4 F240 11F7       MOV              R1, #503
-  169 000000C8 F04F 0500 
+  150 000000BE         ;   BL TRANSMIT
+  151 000000BE         ;   MOV R5, #0X7 
+  152 000000BE         ;   LSR R5, R10
+  153 000000BE         ;   BL TRANSMIT   
+  154 000000BE         ;   MOV R5, #0X2 
+  155 000000BE         ;   LSR R5, R10
+  156 000000BE         ;   BL TRANSMIT
+  157 000000BE         ;   
+  158 000000BE         ;BLOCK2_END MOV R5, #0X0
+  159 000000BE         ;   BL TRANSMIT
+  160 000000BE         ;   POP {R10}
+  161 000000BE         ;   MOV R11, R10
+  162 000000BE         ;   B  getsample;
+  163 000000BE         FIN
+  164 000000BE E7FE            B                FIN
+  165 000000C0         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  166 000000C0         ;;;;;; CLEAR WHOLE SCREEN
+  167 000000C0         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  168 000000C0 B503    CLEAR   PUSH             {R0,R1,LR}
+  169 000000C2 F04F 0000       MOV              R0,#0
+  170 000000C6 F240 11F7       MOV              R1, #503
+  171 000000CA F04F 0500 
                        LOOP    MOV              R5, #0X0
-  170 000000CC B403            PUSH             {R0,R1}
-  171 000000CE F7FF FFFE       BL               TRANSMIT
-  172 000000D2 BC03            POP              {R0,R1}
-  173 000000D4 F100 0001       ADD              R0, #1
-  174 000000D8 4288            CMP              R0,R1
-  175 000000DA D1F5            BNE              LOOP
-  176 000000DC E8BD 4003       POP              {R0,R1,LR}
-  177 000000E0 4770            BX               LR
-  178 000000E2         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  179 000000E2         
-  180 000000E2         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  181 000000E2         ;;;;; BOUNDARY LINES BEGINNING
-  182 000000E2         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  183 000000E2         BOUNDARY
-  184 000000E2 B500            PUSH             {LR}
-  185 000000E4 F04F 0385       MOV              R3, #0X85
-  186 000000E8 F04F 04C6       MOV              R4, #0XC6
-  187 000000EC         UPPER_LOWER_BOUND
-  188 000000EC 4937            LDR              R1,=PORTA_DATA
-  189 000000EE 6808            LDR              R0,[R1]
-  190 000000F0 F020 0040       BIC              R0,#0x40
-  191 000000F4 6008            STR              R0,[R1]
-  192 000000F6         
-  193 000000F6 F04F 0500       MOV              R5, #0
-  194 000000FA 441D            ADD              R5, R3
-  195 000000FC F7FF FFFE       BL               TRANSMIT
-  196 00000100 F04F 0540       MOV              R5, #0X40
-  197 00000104 F7FF FFFE       BL               TRANSMIT
-  198 00000108         
-  199 00000108 4930            LDR              R1,=PORTA_DATA
-  200 0000010A 6808            LDR              R0,[R1]
-  201 0000010C F040 0040       ORR              R0,#0x40
-  202 00000110 6008            STR              R0,[R1]
-  203 00000112         
-  204 00000112 F04F 0580       MOV              R5, #0X80
-  205 00000116 F7FF FFFE       BL               TRANSMIT
-  206 0000011A         
-  207 0000011A 492C            LDR              R1,=PORTA_DATA
-  208 0000011C 6808            LDR              R0,[R1]
-  209 0000011E F020 0040       BIC              R0,#0x40
-  210 00000122 6008            STR              R0,[R1]
-  211 00000124         
+  172 000000CE B403            PUSH             {R0,R1}
+  173 000000D0 F7FF FFFE       BL               TRANSMIT
+  174 000000D4 BC03            POP              {R0,R1}
+  175 000000D6 F100 0001       ADD              R0, #1
+  176 000000DA 4288            CMP              R0,R1
+  177 000000DC D1F5            BNE              LOOP
+  178 000000DE E8BD 4003       POP              {R0,R1,LR}
+  179 000000E2 4770            BX               LR
+  180 000000E4         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  181 000000E4         
+  182 000000E4         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  183 000000E4         ;;;;; BOUNDARY LINES BEGINNING
+  184 000000E4         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  185 000000E4         BOUNDARY
+  186 000000E4 B500            PUSH             {LR}
+  187 000000E6 F04F 0385       MOV              R3, #0X85
+  188 000000EA F04F 04C6       MOV              R4, #0XC6
+  189 000000EE         UPPER_LOWER_BOUND
+  190 000000EE 4937            LDR              R1,=PORTA_DATA
+  191 000000F0 6808            LDR              R0,[R1]
+  192 000000F2 F020 0040       BIC              R0,#0x40
+  193 000000F6 6008            STR              R0,[R1]
+  194 000000F8         
+  195 000000F8 F04F 0500       MOV              R5, #0
+  196 000000FC 441D            ADD              R5, R3
+  197 000000FE F7FF FFFE       BL               TRANSMIT
+  198 00000102 F04F 0540       MOV              R5, #0X40
+  199 00000106 F7FF FFFE       BL               TRANSMIT
+  200 0000010A         
+  201 0000010A 4930            LDR              R1,=PORTA_DATA
+  202 0000010C 6808            LDR              R0,[R1]
+  203 0000010E F040 0040       ORR              R0,#0x40
+  204 00000112 6008            STR              R0,[R1]
+  205 00000114         
+  206 00000114 F04F 0580       MOV              R5, #0X80
+  207 00000118 F7FF FFFE       BL               TRANSMIT
 
 
 
 ARM Macro Assembler    Page 5 
 
 
-  212 00000124 F04F 0500       MOV              R5, #0
-  213 00000128 441D            ADD              R5, R3
-  214 0000012A F7FF FFFE       BL               TRANSMIT
-  215 0000012E F04F 0545       MOV              R5, #0X45
-  216 00000132 F7FF FFFE       BL               TRANSMIT
-  217 00000136         
-  218 00000136 4925            LDR              R1,=PORTA_DATA
-  219 00000138 6808            LDR              R0,[R1]
-  220 0000013A F040 0040       ORR              R0,#0x40
-  221 0000013E 6008            STR              R0,[R1]
-  222 00000140         
-  223 00000140 F04F 0501       MOV              R5, #0X1
-  224 00000144 F7FF FFFE       BL               TRANSMIT
-  225 00000148         
-  226 00000148 F103 0301       ADD              R3, #1
-  227 0000014C 42A3            CMP              R3, R4
-  228 0000014E D1CD            BNE              UPPER_LOWER_BOUND
-  229 00000150         
-  230 00000150 F04F 0341       MOV              R3, #0X41
-  231 00000154 F04F 0445       MOV              R4, #0X45
-  232 00000158         
-  233 00000158         LEFT_RIGHT_BOUND
-  234 00000158         
-  235 00000158 491C            LDR              R1,=PORTA_DATA
-  236 0000015A 6808            LDR              R0,[R1]
-  237 0000015C F020 0040       BIC              R0,#0x40
-  238 00000160 6008            STR              R0,[R1]
-  239 00000162         
-  240 00000162 F04F 0500       MOV              R5, #0
-  241 00000166 F105 0585       ADD              R5, #0X85
-  242 0000016A F7FF FFFE       BL               TRANSMIT
-  243 0000016E F04F 0500       MOV              R5, #0
-  244 00000172 441D            ADD              R5, R3
-  245 00000174 F7FF FFFE       BL               TRANSMIT
-  246 00000178         
-  247 00000178 4914            LDR              R1,=PORTA_DATA
-  248 0000017A 6808            LDR              R0,[R1]
-  249 0000017C F040 0040       ORR              R0,#0x40
-  250 00000180 6008            STR              R0,[R1]
-  251 00000182         
-  252 00000182 F04F 05FF       MOV              R5, #0XFF
-  253 00000186 F7FF FFFE       BL               TRANSMIT
-  254 0000018A         
-  255 0000018A 4910            LDR              R1,=PORTA_DATA
-  256 0000018C 6808            LDR              R0,[R1]
-  257 0000018E F020 0040       BIC              R0,#0x40
-  258 00000192 6008            STR              R0,[R1]
-  259 00000194         
-  260 00000194 F04F 0500       MOV              R5, #0
-  261 00000198 F105 05C5       ADD              R5, #0XC5
-  262 0000019C F7FF FFFE       BL               TRANSMIT
-  263 000001A0 F04F 0500       MOV              R5, #0
-  264 000001A4 441D            ADD              R5, R3
-  265 000001A6 F7FF FFFE       BL               TRANSMIT
-  266 000001AA         
-  267 000001AA 4908            LDR              R1,=PORTA_DATA
-  268 000001AC 6808            LDR              R0,[R1]
-  269 000001AE F040 0040       ORR              R0,#0x40
-  270 000001B2 6008            STR              R0,[R1]
+  208 0000011C         
+  209 0000011C 492B            LDR              R1,=PORTA_DATA
+  210 0000011E 6808            LDR              R0,[R1]
+  211 00000120 F020 0040       BIC              R0,#0x40
+  212 00000124 6008            STR              R0,[R1]
+  213 00000126         
+  214 00000126 F04F 0500       MOV              R5, #0
+  215 0000012A 441D            ADD              R5, R3
+  216 0000012C F7FF FFFE       BL               TRANSMIT
+  217 00000130 F04F 0545       MOV              R5, #0X45
+  218 00000134 F7FF FFFE       BL               TRANSMIT
+  219 00000138         
+  220 00000138 4924            LDR              R1,=PORTA_DATA
+  221 0000013A 6808            LDR              R0,[R1]
+  222 0000013C F040 0040       ORR              R0,#0x40
+  223 00000140 6008            STR              R0,[R1]
+  224 00000142         
+  225 00000142 F04F 0501       MOV              R5, #0X1
+  226 00000146 F7FF FFFE       BL               TRANSMIT
+  227 0000014A         
+  228 0000014A F103 0301       ADD              R3, #1
+  229 0000014E 42A3            CMP              R3, R4
+  230 00000150 D1CD            BNE              UPPER_LOWER_BOUND
+  231 00000152         
+  232 00000152 F04F 0341       MOV              R3, #0X41
+  233 00000156 F04F 0445       MOV              R4, #0X45
+  234 0000015A         
+  235 0000015A         LEFT_RIGHT_BOUND
+  236 0000015A         
+  237 0000015A 491C            LDR              R1,=PORTA_DATA
+  238 0000015C 6808            LDR              R0,[R1]
+  239 0000015E F020 0040       BIC              R0,#0x40
+  240 00000162 6008            STR              R0,[R1]
+  241 00000164         
+  242 00000164 F04F 0500       MOV              R5, #0
+  243 00000168 F105 0585       ADD              R5, #0X85
+  244 0000016C F7FF FFFE       BL               TRANSMIT
+  245 00000170 F04F 0500       MOV              R5, #0
+  246 00000174 441D            ADD              R5, R3
+  247 00000176 F7FF FFFE       BL               TRANSMIT
+  248 0000017A         
+  249 0000017A 4914            LDR              R1,=PORTA_DATA
+  250 0000017C 6808            LDR              R0,[R1]
+  251 0000017E F040 0040       ORR              R0,#0x40
+  252 00000182 6008            STR              R0,[R1]
+  253 00000184         
+  254 00000184 F04F 05FF       MOV              R5, #0XFF
+  255 00000188 F7FF FFFE       BL               TRANSMIT
+  256 0000018C         
+  257 0000018C 490F            LDR              R1,=PORTA_DATA
+  258 0000018E 6808            LDR              R0,[R1]
+  259 00000190 F020 0040       BIC              R0,#0x40
+  260 00000194 6008            STR              R0,[R1]
+  261 00000196         
+  262 00000196 F04F 0500       MOV              R5, #0
+  263 0000019A F105 05C5       ADD              R5, #0XC5
+  264 0000019E F7FF FFFE       BL               TRANSMIT
+  265 000001A2 F04F 0500       MOV              R5, #0
+  266 000001A6 441D            ADD              R5, R3
 
 
 
 ARM Macro Assembler    Page 6 
 
 
-  271 000001B4 F04F 05FF       MOV              R5, #0XFF
-  272 000001B8 F7FF FFFE       BL               TRANSMIT
-  273 000001BC         
-  274 000001BC F103 0301       ADD              R3, #1
-  275 000001C0 42A3            CMP              R3, R4
-  276 000001C2 D1C9            BNE              LEFT_RIGHT_BOUND
-  277 000001C4 F85D EB04       POP              {LR}
-  278 000001C8 4770            BX               LR
-  279 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  280 000001CA         ;;;;; BOUNDARY LINES FINISH
-  281 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  282 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  283 000001CA         ;;;;; NUMBERS 0-9 BEGINNING
-  284 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  285 000001CA         ;N0   PUSH  {LR} 
-  286 000001CA         ;   MOV  R5, #0X3E
-  287 000001CA         ;   BL  TRANSMIT
-  288 000001CA         ;   MOV  R5, #0X51
-  289 000001CA         ;   BL  TRANSMIT
-  290 000001CA         ;   MOV  R5, #0X49
-  291 000001CA         ;   BL  TRANSMIT   
-  292 000001CA         ;   MOV  R5, #0X45
-  293 000001CA         ;   BL  TRANSMIT
-  294 000001CA         ;   MOV  R5, #0X3E
-  295 000001CA         ;   BL  TRANSMIT   
-  296 000001CA         ;   POP  {LR}
-  297 000001CA         ;   BX  LR
-  298 000001CA         
-  299 000001CA         ;N1   PUSH  {LR} 
-  300 000001CA         ;   MOV  R5, #0X0
-  301 000001CA         ;   BL  TRANSMIT
-  302 000001CA         ;   MOV  R5, #0X42
-  303 000001CA         ;   BL  TRANSMIT
-  304 000001CA         ;   MOV  R5, #0X7F
-  305 000001CA         ;   BL  TRANSMIT   
-  306 000001CA         ;   MOV  R5, #0X40
-  307 000001CA         ;   BL  TRANSMIT
-  308 000001CA         ;   MOV  R5, #0X0
-  309 000001CA         ;   BL  TRANSMIT   
-  310 000001CA         ;   POP  {LR}
-  311 000001CA         ;   BX  LR
-  312 000001CA         
-  313 000001CA         ;N2   PUSH  {LR} 
-  314 000001CA         ;   MOV  R5, #0X42
-  315 000001CA         ;   BL  TRANSMIT
-  316 000001CA         ;   MOV  R5, #0X61
-  317 000001CA         ;   BL  TRANSMIT
-  318 000001CA         ;   MOV  R5, #0X51
-  319 000001CA         ;   BL  TRANSMIT   
-  320 000001CA         ;   MOV  R5, #0X49
-  321 000001CA         ;   BL  TRANSMIT
-  322 000001CA         ;   MOV  R5, #0X46
-  323 000001CA         ;   BL  TRANSMIT   
-  324 000001CA         ;   POP  {LR}
-  325 000001CA         ;   BX  LR
-  326 000001CA         ; 
-  327 000001CA         ;N3   PUSH  {LR} 
-  328 000001CA         ;   MOV  R5, #0X21
-  329 000001CA         ;   BL  TRANSMIT
+  267 000001A8 F7FF FFFE       BL               TRANSMIT
+  268 000001AC         
+  269 000001AC 4907            LDR              R1,=PORTA_DATA
+  270 000001AE 6808            LDR              R0,[R1]
+  271 000001B0 F040 0040       ORR              R0,#0x40
+  272 000001B4 6008            STR              R0,[R1]
+  273 000001B6 F04F 05FF       MOV              R5, #0XFF
+  274 000001BA F7FF FFFE       BL               TRANSMIT
+  275 000001BE         
+  276 000001BE F103 0301       ADD              R3, #1
+  277 000001C2 42A3            CMP              R3, R4
+  278 000001C4 D1C9            BNE              LEFT_RIGHT_BOUND
+  279 000001C6 F85D EB04       POP              {LR}
+  280 000001CA 4770            BX               LR
+  281 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  282 000001CC         ;;;;; BOUNDARY LINES FINISH
+  283 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  284 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  285 000001CC         ;;;;; NUMBERS 0-9 BEGINNING
+  286 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  287 000001CC         ;N0   PUSH  {LR} 
+  288 000001CC         ;   MOV  R5, #0X3E
+  289 000001CC         ;   BL  TRANSMIT
+  290 000001CC         ;   MOV  R5, #0X51
+  291 000001CC         ;   BL  TRANSMIT
+  292 000001CC         ;   MOV  R5, #0X49
+  293 000001CC         ;   BL  TRANSMIT   
+  294 000001CC         ;   MOV  R5, #0X45
+  295 000001CC         ;   BL  TRANSMIT
+  296 000001CC         ;   MOV  R5, #0X3E
+  297 000001CC         ;   BL  TRANSMIT   
+  298 000001CC         ;   POP  {LR}
+  299 000001CC         ;   BX  LR
+  300 000001CC         
+  301 000001CC         ;N1   PUSH  {LR} 
+  302 000001CC         ;   MOV  R5, #0X0
+  303 000001CC         ;   BL  TRANSMIT
+  304 000001CC         ;   MOV  R5, #0X42
+  305 000001CC         ;   BL  TRANSMIT
+  306 000001CC         ;   MOV  R5, #0X7F
+  307 000001CC         ;   BL  TRANSMIT   
+  308 000001CC         ;   MOV  R5, #0X40
+  309 000001CC         ;   BL  TRANSMIT
+  310 000001CC         ;   MOV  R5, #0X0
+  311 000001CC         ;   BL  TRANSMIT   
+  312 000001CC         ;   POP  {LR}
+  313 000001CC         ;   BX  LR
+  314 000001CC         
+  315 000001CC         ;N2   PUSH  {LR} 
+  316 000001CC         ;   MOV  R5, #0X42
+  317 000001CC         ;   BL  TRANSMIT
+  318 000001CC         ;   MOV  R5, #0X61
+  319 000001CC         ;   BL  TRANSMIT
+  320 000001CC         ;   MOV  R5, #0X51
+  321 000001CC         ;   BL  TRANSMIT   
+  322 000001CC         ;   MOV  R5, #0X49
+  323 000001CC         ;   BL  TRANSMIT
+  324 000001CC         ;   MOV  R5, #0X46
+  325 000001CC         ;   BL  TRANSMIT   
 
 
 
 ARM Macro Assembler    Page 7 
 
 
-  330 000001CA         ;   MOV  R5, #0X41
-  331 000001CA         ;   BL  TRANSMIT
-  332 000001CA         ;   MOV  R5, #0X45
-  333 000001CA         ;   BL  TRANSMIT   
-  334 000001CA         ;   MOV  R5, #0X4B
-  335 000001CA         ;   BL  TRANSMIT
-  336 000001CA         ;   MOV  R5, #0X31
-  337 000001CA         ;   BL  TRANSMIT   
-  338 000001CA         ;   POP  {LR}
-  339 000001CA         ;   BX  LR
-  340 000001CA         
-  341 000001CA         ;N4   PUSH  {LR} 
-  342 000001CA         ;   MOV  R5, #0X18
-  343 000001CA         ;   BL  TRANSMIT
-  344 000001CA         ;   MOV  R5, #0X14
-  345 000001CA         ;   BL  TRANSMIT
-  346 000001CA         ;   MOV  R5, #0X12
-  347 000001CA         ;   BL  TRANSMIT   
-  348 000001CA         ;   MOV  R5, #0X7F
-  349 000001CA         ;   BL  TRANSMIT
-  350 000001CA         ;   MOV  R5, #0X10
-  351 000001CA         ;   BL  TRANSMIT   
-  352 000001CA         ;   POP  {LR}
-  353 000001CA         ;   BX  LR
-  354 000001CA         
-  355 000001CA         ;N5   PUSH  {LR} 
-  356 000001CA         ;   MOV  R5, #0X27
-  357 000001CA         ;   BL  TRANSMIT
-  358 000001CA         ;   MOV  R5, #0X45
-  359 000001CA         ;   BL  TRANSMIT
-  360 000001CA         ;   MOV  R5, #0X45
-  361 000001CA         ;   BL  TRANSMIT   
-  362 000001CA         ;   MOV  R5, #0X45
-  363 000001CA         ;   BL  TRANSMIT
-  364 000001CA         ;   MOV  R5, #0X39
-  365 000001CA         ;   BL  TRANSMIT   
-  366 000001CA         ;   POP  {LR}
-  367 000001CA         ;   BX  LR
-  368 000001CA         
-  369 000001CA         ;N6   PUSH  {LR} 
-  370 000001CA         ;   MOV  R5, #0X3C
-  371 000001CA         ;   BL  TRANSMIT
-  372 000001CA         ;   MOV  R5, #0X4A
-  373 000001CA         ;   BL  TRANSMIT
-  374 000001CA         ;   MOV  R5, #0X49
-  375 000001CA         ;   BL  TRANSMIT   
-  376 000001CA         ;   MOV  R5, #0X49
-  377 000001CA         ;   BL  TRANSMIT
-  378 000001CA         ;   MOV  R5, #0X30
-  379 000001CA         ;   BL  TRANSMIT   
-  380 000001CA         ;   POP  {LR}
-  381 000001CA         ;   BX  LR
-  382 000001CA         
-  383 000001CA         ;N7   PUSH  {LR} 
-  384 000001CA         ;   MOV  R5, #0X1
-  385 000001CA         ;   BL  TRANSMIT
-  386 000001CA         ;   MOV  R5, #0X71
-  387 000001CA         ;   BL  TRANSMIT
-  388 000001CA         ;   MOV  R5, #0X9
+  326 000001CC         ;   POP  {LR}
+  327 000001CC         ;   BX  LR
+  328 000001CC         ; 
+  329 000001CC         ;N3   PUSH  {LR} 
+  330 000001CC         ;   MOV  R5, #0X21
+  331 000001CC         ;   BL  TRANSMIT
+  332 000001CC         ;   MOV  R5, #0X41
+  333 000001CC         ;   BL  TRANSMIT
+  334 000001CC         ;   MOV  R5, #0X45
+  335 000001CC         ;   BL  TRANSMIT   
+  336 000001CC         ;   MOV  R5, #0X4B
+  337 000001CC         ;   BL  TRANSMIT
+  338 000001CC         ;   MOV  R5, #0X31
+  339 000001CC         ;   BL  TRANSMIT   
+  340 000001CC         ;   POP  {LR}
+  341 000001CC         ;   BX  LR
+  342 000001CC         
+  343 000001CC         ;N4   PUSH  {LR} 
+  344 000001CC         ;   MOV  R5, #0X18
+  345 000001CC         ;   BL  TRANSMIT
+  346 000001CC         ;   MOV  R5, #0X14
+  347 000001CC         ;   BL  TRANSMIT
+  348 000001CC         ;   MOV  R5, #0X12
+  349 000001CC         ;   BL  TRANSMIT   
+  350 000001CC         ;   MOV  R5, #0X7F
+  351 000001CC         ;   BL  TRANSMIT
+  352 000001CC         ;   MOV  R5, #0X10
+  353 000001CC         ;   BL  TRANSMIT   
+  354 000001CC         ;   POP  {LR}
+  355 000001CC         ;   BX  LR
+  356 000001CC         
+  357 000001CC         ;N5   PUSH  {LR} 
+  358 000001CC         ;   MOV  R5, #0X27
+  359 000001CC         ;   BL  TRANSMIT
+  360 000001CC         ;   MOV  R5, #0X45
+  361 000001CC         ;   BL  TRANSMIT
+  362 000001CC         ;   MOV  R5, #0X45
+  363 000001CC         ;   BL  TRANSMIT   
+  364 000001CC         ;   MOV  R5, #0X45
+  365 000001CC         ;   BL  TRANSMIT
+  366 000001CC         ;   MOV  R5, #0X39
+  367 000001CC         ;   BL  TRANSMIT   
+  368 000001CC         ;   POP  {LR}
+  369 000001CC         ;   BX  LR
+  370 000001CC         
+  371 000001CC         ;N6   PUSH  {LR} 
+  372 000001CC         ;   MOV  R5, #0X3C
+  373 000001CC         ;   BL  TRANSMIT
+  374 000001CC         ;   MOV  R5, #0X4A
+  375 000001CC         ;   BL  TRANSMIT
+  376 000001CC         ;   MOV  R5, #0X49
+  377 000001CC         ;   BL  TRANSMIT   
+  378 000001CC         ;   MOV  R5, #0X49
+  379 000001CC         ;   BL  TRANSMIT
+  380 000001CC         ;   MOV  R5, #0X30
+  381 000001CC         ;   BL  TRANSMIT   
+  382 000001CC         ;   POP  {LR}
+  383 000001CC         ;   BX  LR
+  384 000001CC         
 
 
 
 ARM Macro Assembler    Page 8 
 
 
-  389 000001CA         ;   BL  TRANSMIT   
-  390 000001CA         ;   MOV  R5, #0X5
-  391 000001CA         ;   BL  TRANSMIT
-  392 000001CA         ;   MOV  R5, #0X3
-  393 000001CA         ;   BL  TRANSMIT   
-  394 000001CA         ;   POP  {LR}
-  395 000001CA         ;   BX  LR
-  396 000001CA         
-  397 000001CA         ;N8   PUSH  {LR} 
-  398 000001CA         ;   MOV  R5, #0X36
-  399 000001CA         ;   BL  TRANSMIT
-  400 000001CA         ;   MOV  R5, #0X49
-  401 000001CA         ;   BL  TRANSMIT
-  402 000001CA         ;   MOV  R5, #0X49
-  403 000001CA         ;   BL  TRANSMIT   
-  404 000001CA         ;   MOV  R5, #0X49
-  405 000001CA         ;   BL  TRANSMIT
-  406 000001CA         ;   MOV  R5, #0X36
-  407 000001CA         ;   BL  TRANSMIT   
-  408 000001CA         ;   POP  {LR}
-  409 000001CA         ;   BX  LR
-  410 000001CA         
-  411 000001CA         ;N9   PUSH  {LR} 
-  412 000001CA         ;   MOV  R5, #0X6
-  413 000001CA         ;   BL  TRANSMIT
-  414 000001CA         ;   MOV  R5, #0X49
-  415 000001CA         ;   BL  TRANSMIT
-  416 000001CA         ;   MOV  R5, #0X49
-  417 000001CA         ;   BL  TRANSMIT   
-  418 000001CA         ;   MOV  R5, #0X29
-  419 000001CA         ;   BL  TRANSMIT
-  420 000001CA         ;   MOV  R5, #0X1E
-  421 000001CA         ;   BL  TRANSMIT   
-  422 000001CA         ;   POP  {LR}
-  423 000001CA         ;   BX  LR
-  424 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  425 000001CA         ;;;;; NUMBERS 0-9 FINISH
-  426 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
-  427 000001CA         
-  428 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  429 000001CA         ;;;;; CHAR A-Z BEGINNING
-  430 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  431 000001CA         ;A   
-  432 000001CA         ;   PUSH  {LR}
-  433 000001CA         ;   MOV  R5, #0X7E
-  434 000001CA         ;   BL  TRANSMIT
-  435 000001CA         ;   MOV  R5, #0X11
-  436 000001CA         ;   BL  TRANSMIT
-  437 000001CA         ;   MOV  R5, #0X11
-  438 000001CA         ;   BL  TRANSMIT   
-  439 000001CA         ;   MOV  R5, #0X11
-  440 000001CA         ;   BL  TRANSMIT
-  441 000001CA         ;   MOV  R5, #0X7E
-  442 000001CA         ;   BL  TRANSMIT 
-  443 000001CA         ;   POP  {LR}
-  444 000001CA         ;   BX  LR
-  445 000001CA         ;B_   PUSH  {LR} 
-  446 000001CA         ;   
-  447 000001CA         ;   POP  {LR}
+  385 000001CC         ;N7   PUSH  {LR} 
+  386 000001CC         ;   MOV  R5, #0X1
+  387 000001CC         ;   BL  TRANSMIT
+  388 000001CC         ;   MOV  R5, #0X71
+  389 000001CC         ;   BL  TRANSMIT
+  390 000001CC         ;   MOV  R5, #0X9
+  391 000001CC         ;   BL  TRANSMIT   
+  392 000001CC         ;   MOV  R5, #0X5
+  393 000001CC         ;   BL  TRANSMIT
+  394 000001CC         ;   MOV  R5, #0X3
+  395 000001CC         ;   BL  TRANSMIT   
+  396 000001CC         ;   POP  {LR}
+  397 000001CC         ;   BX  LR
+  398 000001CC         
+  399 000001CC         ;N8   PUSH  {LR} 
+  400 000001CC         ;   MOV  R5, #0X36
+  401 000001CC         ;   BL  TRANSMIT
+  402 000001CC         ;   MOV  R5, #0X49
+  403 000001CC         ;   BL  TRANSMIT
+  404 000001CC         ;   MOV  R5, #0X49
+  405 000001CC         ;   BL  TRANSMIT   
+  406 000001CC         ;   MOV  R5, #0X49
+  407 000001CC         ;   BL  TRANSMIT
+  408 000001CC         ;   MOV  R5, #0X36
+  409 000001CC         ;   BL  TRANSMIT   
+  410 000001CC         ;   POP  {LR}
+  411 000001CC         ;   BX  LR
+  412 000001CC         
+  413 000001CC         ;N9   PUSH  {LR} 
+  414 000001CC         ;   MOV  R5, #0X6
+  415 000001CC         ;   BL  TRANSMIT
+  416 000001CC         ;   MOV  R5, #0X49
+  417 000001CC         ;   BL  TRANSMIT
+  418 000001CC         ;   MOV  R5, #0X49
+  419 000001CC         ;   BL  TRANSMIT   
+  420 000001CC         ;   MOV  R5, #0X29
+  421 000001CC         ;   BL  TRANSMIT
+  422 000001CC         ;   MOV  R5, #0X1E
+  423 000001CC         ;   BL  TRANSMIT   
+  424 000001CC         ;   POP  {LR}
+  425 000001CC         ;   BX  LR
+  426 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  427 000001CC         ;;;;; NUMBERS 0-9 FINISH
+  428 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+  429 000001CC         
+  430 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  431 000001CC         ;;;;; CHAR A-Z BEGINNING
+  432 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  433 000001CC         ;A   
+  434 000001CC         ;   PUSH  {LR}
+  435 000001CC         ;   MOV  R5, #0X7E
+  436 000001CC         ;   BL  TRANSMIT
+  437 000001CC         ;   MOV  R5, #0X11
+  438 000001CC         ;   BL  TRANSMIT
+  439 000001CC         ;   MOV  R5, #0X11
+  440 000001CC         ;   BL  TRANSMIT   
+  441 000001CC         ;   MOV  R5, #0X11
+  442 000001CC         ;   BL  TRANSMIT
+  443 000001CC         ;   MOV  R5, #0X7E
 
 
 
 ARM Macro Assembler    Page 9 
 
 
-  448 000001CA         ;   BX  LR   
-  449 000001CA         ;C   PUSH  {LR} 
-  450 000001CA         ;   
-  451 000001CA         ;   POP  {LR}
-  452 000001CA         ;   BX  LR
-  453 000001CA         ;D   PUSH  {LR} 
-  454 000001CA         ;   
-  455 000001CA         ;   POP  {LR}
-  456 000001CA         ;   BX  LR
-  457 000001CA         ;E   PUSH  {LR} 
-  458 000001CA         ;   
-  459 000001CA         ;   POP  {LR}
-  460 000001CA         ;   BX  LR   
-  461 000001CA         
-  462 000001CA         ;I   PUSH  {LR} 
-  463 000001CA         ;   MOV  R5, #0X00
-  464 000001CA         ;   BL  TRANSMIT
-  465 000001CA         ;   MOV  R5, #0X41
-  466 000001CA         ;   BL  TRANSMIT
-  467 000001CA         ;   MOV  R5, #0X7F
-  468 000001CA         ;   BL  TRANSMIT   
-  469 000001CA         ;   MOV  R5, #0X41
-  470 000001CA         ;   BL  TRANSMIT
-  471 000001CA         ;   MOV  R5, #0X00
-  472 000001CA         ;   BL  TRANSMIT
-  473 000001CA         ;   POP  {LR}
-  474 000001CA         ;   BX  LR
-  475 000001CA         ; 
-  476 000001CA         ;K   PUSH  {LR}
-  477 000001CA         ;   MOV  R5, #0X7F
-  478 000001CA         ;   BL  TRANSMIT
-  479 000001CA         ;   MOV  R5, #0X8
-  480 000001CA         ;   BL  TRANSMIT
-  481 000001CA         ;   MOV  R5, #0X14
-  482 000001CA         ;   BL  TRANSMIT
-  483 000001CA         ;   MOV  R5, #0X22
-  484 000001CA         ;   BL  TRANSMIT   
-  485 000001CA         ;   MOV  R5, #0X41
-  486 000001CA         ;   BL  TRANSMIT
-  487 000001CA         ;   POP  {LR}
-  488 000001CA         ;   BX  LR 
-  489 000001CA         ;   
-  490 000001CA         ;L   PUSH  {LR}
-  491 000001CA         ;   MOV  R5, #0X7F
-  492 000001CA         ;   BL  TRANSMIT
-  493 000001CA         ;   MOV  R5, #0X40
-  494 000001CA         ;   BL  TRANSMIT
-  495 000001CA         ;   MOV  R5, #0X40
-  496 000001CA         ;   BL  TRANSMIT
-  497 000001CA         ;   MOV  R5, #0X40
-  498 000001CA         ;   BL  TRANSMIT   
-  499 000001CA         ;   MOV  R5, #0X40
-  500 000001CA         ;   BL  TRANSMIT   
-  501 000001CA         ;   POP  {LR}
-  502 000001CA         ;   BX  LR 
-  503 000001CA         
-  504 000001CA         
-  505 000001CA         
-  506 000001CA         ;M   PUSH  {LR}
+  444 000001CC         ;   BL  TRANSMIT 
+  445 000001CC         ;   POP  {LR}
+  446 000001CC         ;   BX  LR
+  447 000001CC         ;B_   PUSH  {LR} 
+  448 000001CC         ;   
+  449 000001CC         ;   POP  {LR}
+  450 000001CC         ;   BX  LR   
+  451 000001CC         ;C   PUSH  {LR} 
+  452 000001CC         ;   
+  453 000001CC         ;   POP  {LR}
+  454 000001CC         ;   BX  LR
+  455 000001CC         ;D   PUSH  {LR} 
+  456 000001CC         ;   
+  457 000001CC         ;   POP  {LR}
+  458 000001CC         ;   BX  LR
+  459 000001CC         ;E   PUSH  {LR} 
+  460 000001CC         ;   
+  461 000001CC         ;   POP  {LR}
+  462 000001CC         ;   BX  LR   
+  463 000001CC         
+  464 000001CC         ;I   PUSH  {LR} 
+  465 000001CC         ;   MOV  R5, #0X00
+  466 000001CC         ;   BL  TRANSMIT
+  467 000001CC         ;   MOV  R5, #0X41
+  468 000001CC         ;   BL  TRANSMIT
+  469 000001CC         ;   MOV  R5, #0X7F
+  470 000001CC         ;   BL  TRANSMIT   
+  471 000001CC         ;   MOV  R5, #0X41
+  472 000001CC         ;   BL  TRANSMIT
+  473 000001CC         ;   MOV  R5, #0X00
+  474 000001CC         ;   BL  TRANSMIT
+  475 000001CC         ;   POP  {LR}
+  476 000001CC         ;   BX  LR
+  477 000001CC         ; 
+  478 000001CC         ;K   PUSH  {LR}
+  479 000001CC         ;   MOV  R5, #0X7F
+  480 000001CC         ;   BL  TRANSMIT
+  481 000001CC         ;   MOV  R5, #0X8
+  482 000001CC         ;   BL  TRANSMIT
+  483 000001CC         ;   MOV  R5, #0X14
+  484 000001CC         ;   BL  TRANSMIT
+  485 000001CC         ;   MOV  R5, #0X22
+  486 000001CC         ;   BL  TRANSMIT   
+  487 000001CC         ;   MOV  R5, #0X41
+  488 000001CC         ;   BL  TRANSMIT
+  489 000001CC         ;   POP  {LR}
+  490 000001CC         ;   BX  LR 
+  491 000001CC         ;   
+  492 000001CC         ;L   PUSH  {LR}
+  493 000001CC         ;   MOV  R5, #0X7F
+  494 000001CC         ;   BL  TRANSMIT
+  495 000001CC         ;   MOV  R5, #0X40
+  496 000001CC         ;   BL  TRANSMIT
+  497 000001CC         ;   MOV  R5, #0X40
+  498 000001CC         ;   BL  TRANSMIT
+  499 000001CC         ;   MOV  R5, #0X40
+  500 000001CC         ;   BL  TRANSMIT   
+  501 000001CC         ;   MOV  R5, #0X40
+  502 000001CC         ;   BL  TRANSMIT   
 
 
 
 ARM Macro Assembler    Page 10 
 
 
-  507 000001CA         ;   MOV  R5, #0X7F
-  508 000001CA         ;   BL  TRANSMIT
-  509 000001CA         ;   MOV  R5, #0X02
-  510 000001CA         ;   BL  TRANSMIT
-  511 000001CA         ;   MOV  R5, #0XC
-  512 000001CA         ;   BL  TRANSMIT
-  513 000001CA         ;   MOV  R5, #0X2
-  514 000001CA         ;   BL  TRANSMIT   
-  515 000001CA         ;   MOV  R5, #0X7F
-  516 000001CA         ;   BL  TRANSMIT    
-  517 000001CA         ;   POP  {LR}
-  518 000001CA         ;   BX  LR
-  519 000001CA         
-  520 000001CA         ;N   PUSH  {LR}   
-  521 000001CA         ;   MOV  R5, #0X7F
-  522 000001CA         ;   BL  TRANSMIT
-  523 000001CA         ;   MOV  R5, #0X04
-  524 000001CA         ;   BL  TRANSMIT
-  525 000001CA         ;   MOV  R5, #0X8
-  526 000001CA         ;   BL  TRANSMIT
-  527 000001CA         ;   MOV  R5, #0X10
-  528 000001CA         ;   BL  TRANSMIT   
-  529 000001CA         ;   MOV  R5, #0X7F
-  530 000001CA         ;   BL  TRANSMIT   
-  531 000001CA         ;   POP  {LR}
-  532 000001CA         ;   BX  LR 
-  533 000001CA         
-  534 000001CA         ;S   PUSH  {LR}   
-  535 000001CA         ;   MOV  R5, #0X46
-  536 000001CA         ;   BL  TRANSMIT
-  537 000001CA         ;   MOV  R5, #0X49
-  538 000001CA         ;   BL  TRANSMIT
-  539 000001CA         ;   MOV  R5, #0X49
-  540 000001CA         ;   BL  TRANSMIT
-  541 000001CA         ;   MOV  R5, #0X49
-  542 000001CA         ;   BL  TRANSMIT   
-  543 000001CA         ;   MOV  R5, #0X31
-  544 000001CA         ;   BL  TRANSMIT   
-  545 000001CA         ;   POP  {LR}
-  546 000001CA         ;   BX  LR  
-  547 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  548 000001CA         ;;;;; CHAR A-Z FINISH
-  549 000001CA         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  550 000001CA 00 00           ALIGN
-  551 000001CC                 END
+  503 000001CC         ;   POP  {LR}
+  504 000001CC         ;   BX  LR 
+  505 000001CC         
+  506 000001CC         
+  507 000001CC         
+  508 000001CC         ;M   PUSH  {LR}
+  509 000001CC         ;   MOV  R5, #0X7F
+  510 000001CC         ;   BL  TRANSMIT
+  511 000001CC         ;   MOV  R5, #0X02
+  512 000001CC         ;   BL  TRANSMIT
+  513 000001CC         ;   MOV  R5, #0XC
+  514 000001CC         ;   BL  TRANSMIT
+  515 000001CC         ;   MOV  R5, #0X2
+  516 000001CC         ;   BL  TRANSMIT   
+  517 000001CC         ;   MOV  R5, #0X7F
+  518 000001CC         ;   BL  TRANSMIT    
+  519 000001CC         ;   POP  {LR}
+  520 000001CC         ;   BX  LR
+  521 000001CC         
+  522 000001CC         ;N   PUSH  {LR}   
+  523 000001CC         ;   MOV  R5, #0X7F
+  524 000001CC         ;   BL  TRANSMIT
+  525 000001CC         ;   MOV  R5, #0X04
+  526 000001CC         ;   BL  TRANSMIT
+  527 000001CC         ;   MOV  R5, #0X8
+  528 000001CC         ;   BL  TRANSMIT
+  529 000001CC         ;   MOV  R5, #0X10
+  530 000001CC         ;   BL  TRANSMIT   
+  531 000001CC         ;   MOV  R5, #0X7F
+  532 000001CC         ;   BL  TRANSMIT   
+  533 000001CC         ;   POP  {LR}
+  534 000001CC         ;   BX  LR 
+  535 000001CC         
+  536 000001CC         ;S   PUSH  {LR}   
+  537 000001CC         ;   MOV  R5, #0X46
+  538 000001CC         ;   BL  TRANSMIT
+  539 000001CC         ;   MOV  R5, #0X49
+  540 000001CC         ;   BL  TRANSMIT
+  541 000001CC         ;   MOV  R5, #0X49
+  542 000001CC         ;   BL  TRANSMIT
+  543 000001CC         ;   MOV  R5, #0X49
+  544 000001CC         ;   BL  TRANSMIT   
+  545 000001CC         ;   MOV  R5, #0X31
+  546 000001CC         ;   BL  TRANSMIT   
+  547 000001CC         ;   POP  {LR}
+  548 000001CC         ;   BX  LR  
+  549 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  550 000001CC         ;;;;; CHAR A-Z FINISH
+  551 000001CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  552 000001CC                 ALIGN
+  553 000001CC                 END
               400043FC 
               40038028 
               40038004 
               4003800C 
               40038088 
+              400380A8 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\objects\__main.d -o.\objects\__main.o -I.\RTE\_Target_1 -IC:\
+
+
+
+ARM Macro Assembler    Page 11 
+
+
 Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CM
 SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
 " --predefine="TM4C123GH6PM SETA 1" --list=.\listings\__main.lst __main.s
@@ -650,61 +663,61 @@ SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-BOUNDARY 000000E2
+BOUNDARY 000000E4
 
 Symbol: BOUNDARY
    Definitions
-      At line 183 in file __main.s
+      At line 185 in file __main.s
    Uses
-      At line 30 in file __main.s
+      At line 31 in file __main.s
 Comment: BOUNDARY used once
-CLEAR 000000BE
+CLEAR 000000C0
 
 Symbol: CLEAR
    Definitions
-      At line 166 in file __main.s
+      At line 168 in file __main.s
    Uses
-      At line 29 in file __main.s
+      At line 30 in file __main.s
 Comment: CLEAR used once
-FIN 000000BC
+FIN 000000BE
 
 Symbol: FIN
    Definitions
-      At line 161 in file __main.s
+      At line 163 in file __main.s
    Uses
-      At line 162 in file __main.s
+      At line 164 in file __main.s
 Comment: FIN used once
-LEFT_RIGHT 0000005E
+LEFT_RIGHT 00000060
 
 Symbol: LEFT_RIGHT
    Definitions
-      At line 68 in file __main.s
+      At line 70 in file __main.s
    Uses
-      At line 57 in file __main.s
+      At line 59 in file __main.s
 Comment: LEFT_RIGHT used once
-LEFT_RIGHT_BOUND 00000158
+LEFT_RIGHT_BOUND 0000015A
 
 Symbol: LEFT_RIGHT_BOUND
    Definitions
-      At line 233 in file __main.s
+      At line 235 in file __main.s
    Uses
-      At line 276 in file __main.s
+      At line 278 in file __main.s
 Comment: LEFT_RIGHT_BOUND used once
-LOOP 000000C8
+LOOP 000000CA
 
 Symbol: LOOP
    Definitions
-      At line 169 in file __main.s
+      At line 171 in file __main.s
    Uses
-      At line 175 in file __main.s
+      At line 177 in file __main.s
 Comment: LOOP used once
-UPPER_LOWER_BOUND 000000EC
+UPPER_LOWER_BOUND 000000EE
 
 Symbol: UPPER_LOWER_BOUND
    Definitions
-      At line 187 in file __main.s
+      At line 189 in file __main.s
    Uses
-      At line 228 in file __main.s
+      At line 230 in file __main.s
 Comment: UPPER_LOWER_BOUND used once
 __main 00000000
 
@@ -716,32 +729,32 @@ ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 Relocatable symbols
 
    Definitions
-      At line 19 in file __main.s
+      At line 20 in file __main.s
    Uses
-      At line 17 in file __main.s
+      At line 18 in file __main.s
 Comment: __main used once
 getsample 00000026
 
 Symbol: getsample
    Definitions
-      At line 36 in file __main.s
+      At line 37 in file __main.s
    Uses
-      At line 66 in file __main.s
-      At line 99 in file __main.s
+      At line 68 in file __main.s
+      At line 101 in file __main.s
 
 loop 00000030
 
 Symbol: loop
    Definitions
-      At line 41 in file __main.s
+      At line 42 in file __main.s
    Uses
-      At line 44 in file __main.s
+      At line 45 in file __main.s
 Comment: loop used once
 main 00000000
 
 Symbol: main
    Definitions
-      At line 8 in file __main.s
+      At line 9 in file __main.s
    Uses
       None
 Comment: main unused
@@ -756,17 +769,17 @@ ADC0_ISC 4003800C
 
 Symbol: ADC0_ISC
    Definitions
-      At line 4 in file __main.s
+      At line 5 in file __main.s
    Uses
-      At line 46 in file __main.s
+      At line 47 in file __main.s
 Comment: ADC0_ISC used once
 ADC0_PSSI 40038028
 
 Symbol: ADC0_PSSI
    Definitions
-      At line 3 in file __main.s
+      At line 4 in file __main.s
    Uses
-      At line 36 in file __main.s
+      At line 37 in file __main.s
 Comment: ADC0_PSSI used once
 ADC0_RIS 40038004
 
@@ -774,7 +787,7 @@ Symbol: ADC0_RIS
    Definitions
       At line 1 in file __main.s
    Uses
-      At line 41 in file __main.s
+      At line 42 in file __main.s
 Comment: ADC0_RIS used once
 ADC0_SSFIFO2 40038088
 
@@ -782,13 +795,21 @@ Symbol: ADC0_SSFIFO2
    Definitions
       At line 2 in file __main.s
    Uses
-      At line 51 in file __main.s
+      At line 52 in file __main.s
 Comment: ADC0_SSFIFO2 used once
+ADC0_SSFIFO3 400380A8
+
+Symbol: ADC0_SSFIFO3
+   Definitions
+      At line 3 in file __main.s
+   Uses
+      At line 54 in file __main.s
+Comment: ADC0_SSFIFO3 used once
 ADC0_SSFSTAT2 4003808C
 
 Symbol: ADC0_SSFSTAT2
    Definitions
-      At line 5 in file __main.s
+      At line 6 in file __main.s
    Uses
       None
 Comment: ADC0_SSFSTAT2 unused
@@ -796,21 +817,27 @@ PORTA_DATA 400043FC
 
 Symbol: PORTA_DATA
    Definitions
-      At line 6 in file __main.s
+      At line 7 in file __main.s
    Uses
-      At line 23 in file __main.s
-      At line 73 in file __main.s
-      At line 83 in file __main.s
-      At line 188 in file __main.s
-      At line 199 in file __main.s
-      At line 207 in file __main.s
-      At line 218 in file __main.s
-      At line 235 in file __main.s
-      At line 247 in file __main.s
-      At line 255 in file __main.s
-      At line 267 in file __main.s
+      At line 24 in file __main.s
+      At line 75 in file __main.s
+      At line 85 in file __main.s
+      At line 190 in file __main.s
+      At line 201 in file __main.s
 
-6 symbols
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Absolute symbols
+
+      At line 209 in file __main.s
+      At line 220 in file __main.s
+      At line 237 in file __main.s
+      At line 249 in file __main.s
+      At line 257 in file __main.s
+      At line 269 in file __main.s
+
+7 symbols
 
 
 
@@ -821,7 +848,7 @@ DELAY 00000000
 
 Symbol: DELAY
    Definitions
-      At line 12 in file __main.s
+      At line 13 in file __main.s
    Uses
       None
 Comment: DELAY unused
@@ -829,23 +856,23 @@ Init 00000000
 
 Symbol: Init
    Definitions
-      At line 11 in file __main.s
+      At line 12 in file __main.s
    Uses
-      At line 20 in file __main.s
+      At line 21 in file __main.s
 Comment: Init used once
 LCD_INIT 00000000
 
 Symbol: LCD_INIT
    Definitions
-      At line 10 in file __main.s
+      At line 11 in file __main.s
    Uses
-      At line 21 in file __main.s
+      At line 22 in file __main.s
 Comment: LCD_INIT used once
 OutChar 00000000
 
 Symbol: OutChar
    Definitions
-      At line 13 in file __main.s
+      At line 14 in file __main.s
    Uses
       None
 Comment: OutChar unused
@@ -853,7 +880,7 @@ TIMER_INIT 00000000
 
 Symbol: TIMER_INIT
    Definitions
-      At line 15 in file __main.s
+      At line 16 in file __main.s
    Uses
       None
 Comment: TIMER_INIT unused
@@ -861,42 +888,42 @@ TRANSMIT 00000000
 
 Symbol: TRANSMIT
    Definitions
-      At line 14 in file __main.s
+      At line 15 in file __main.s
    Uses
-      At line 79 in file __main.s
       At line 81 in file __main.s
-      At line 90 in file __main.s
+      At line 83 in file __main.s
       At line 92 in file __main.s
       At line 94 in file __main.s
       At line 96 in file __main.s
       At line 98 in file __main.s
-      At line 171 in file __main.s
-      At line 195 in file __main.s
+      At line 100 in file __main.s
+      At line 173 in file __main.s
       At line 197 in file __main.s
-      At line 205 in file __main.s
-      At line 214 in file __main.s
+      At line 199 in file __main.s
+      At line 207 in file __main.s
       At line 216 in file __main.s
+      At line 218 in file __main.s
 
 
 
 ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 External symbols
 
-      At line 224 in file __main.s
-      At line 242 in file __main.s
-      At line 245 in file __main.s
-      At line 253 in file __main.s
-      At line 262 in file __main.s
-      At line 265 in file __main.s
-      At line 272 in file __main.s
+      At line 226 in file __main.s
+      At line 244 in file __main.s
+      At line 247 in file __main.s
+      At line 255 in file __main.s
+      At line 264 in file __main.s
+      At line 267 in file __main.s
+      At line 274 in file __main.s
 
 Timer0A_Handler 00000000
 
 Symbol: Timer0A_Handler
    Definitions
-      At line 16 in file __main.s
+      At line 17 in file __main.s
    Uses
       None
 Comment: Timer0A_Handler unused
 7 symbols
-360 symbols in table
+361 symbols in table

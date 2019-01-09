@@ -1,5 +1,6 @@
 ADC0_RIS 		EQU 0x40038004 ; Interrupt status
-ADC0_SSFIFO2 	EQU 0x40038088 ; Channel 3 results
+ADC0_SSFIFO2 	EQU 0x40038088 ; Channel 2 results
+ADC0_SSFIFO3 	EQU 0x400380A8 ; Channel 3 results	
 ADC0_PSSI 		EQU 0x40038028 ; Initiate sample
 ADC0_ISC		EQU	0x4003800C ; ISC
 ADC0_SSFSTAT2	EQU	0X4003808C
@@ -35,7 +36,7 @@ __main
 			MOV		R11, #0
 getsample	LDR		R1,=ADC0_PSSI; request a sample
 			LDR		R0,[R1];
-			ORR		R0,R0,#0x04; get a sample
+			ORR		R0,R0,#0x0C; get a sample
 			STR		R0,[R1];
 				
 loop		LDR		R1,=ADC0_RIS; check for interrup flag
@@ -49,7 +50,8 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			STR		R0,[R1]; Interrupt flag is cleared
 			
 			LDR		R1,=ADC0_SSFIFO2;
-			LDR		R8,[R1]; R2 is the data
+			LDR		R8,[R1]; R2 is the data PE3
+			LDR		R1, =ADC0_SSFIFO3
 			LDR		R9,[R1]
 		
 			SUB		R0,R9,R6; check sampled data - previous > 1pix
