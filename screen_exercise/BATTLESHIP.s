@@ -11,44 +11,20 @@ PORTA_DATA 		EQU 0x400043FC
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;			
 BATTLESHIP	PUSH{R0, R1, LR}
 
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, #0XAF
-			BL	TRANSMIT
-			MOV	R5, #0X41
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]
-			MOV		R5, #0XA0
-			BL		TRANSMIT		
-			MOV		R5, #0X10
-			BL		TRANSMIT
-			MOV		R5, #0X08
-			BL		TRANSMIT		
-			MOV		R5, #0X10
-			BL		TRANSMIT
-			MOV		R5, #0X20
-			BL		TRANSMIT
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, #0XAC
-			BL	TRANSMIT
-			MOV	R5, #0X42
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]
+;			LDR R1,=PORTA_DATA
+;			LDR	R0,[R1]
+;			BIC	R0,#0x40				
+;			STR	R0,[R1]
+;			
+;			MOV	R5, #0XAC
+;			BL	TRANSMIT
+;			MOV	R5, #0X42
+;			BL	TRANSMIT
+;			
+;			LDR R1,=PORTA_DATA
+;			LDR	R0,[R1]
+;			ORR	R0,#0x40				
+;			STR	R0,[R1]
 			
 			MOV		R5, #0XC0
 			BL		TRANSMIT

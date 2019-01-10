@@ -18,12 +18,14 @@ PORTA_DATA 		EQU 0x400043FC
 			EXTERN  BOUNDARY
 			EXTERN  CIVILIAN
 			EXTERN	Timer0A_Handler
+			EXTERN	GPIOPortF_Handler
+			EXTERN 	GPIO_INIT
 			EXPORT __main
 				
 __main
 			BL Init
 			BL	LCD_INIT
-			
+			BL	GPIO_INIT
 			LDR R1,=PORTA_DATA		
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
@@ -75,46 +77,37 @@ CURSOR
 ;			BL		CIVILIAN
 			MOV		R6,R9;
 			MOV		R0,#73; get the first digit
-			UDIV	R9,R9,R0;
-			ADD		R9, #0X85
+			UDIV	R3,R9,R0;
+			ADD		R3, #0X84
 			
 			MOV		R7,R8;
 			MOV		R0,#171; get the first digit
 			UDIV	R8,R8,R0;
 			CMP		R8, #8
 			MOVCC	R4, #0X41
-			BCC		GO
+			BCC		ROW1
 			CMP		R8, #16
 			MOVCC	R4, #0X42
 			SUBCC	R8, #8
-			BCC		GO
+			BCC		ROW2
 			CMP		R8, #24
 			MOVCC	R4, #0X43
 			SUBCC	R8, #16
-			BL		CLEARBOX2
-
-GO			
-			CMP	R4, #0X41
-			BEQ	ROW1
-			CMP	R4, #0X42
-			BEQ ROW2
-			B	CURSOR_2
-			
+;			BL		CLEARBOX2
+			B	CURSOR_2		
 ROW1
-			BL CLEARBOX2
+;			BL CLEARBOX2
 			B	CURSOR_2
 ROW2
-			BL CLEARBOX1
-			BL CLEARBOX3
-			B	CURSOR_2			
-
+;			BL CLEARBOX1
+;			BL CLEARBOX3			
 CURSOR_2	
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
 			STR	R0,[R1]
 			
-			MOV	R5, R9
+			MOV	R5, R3
 			BL	TRANSMIT
 			MOV	R5, R4
 			BL	TRANSMIT
@@ -123,49 +116,56 @@ CURSOR_2
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]
-			MOV		R2, #0X2
-			MOV		R10, #0X7
-			CMP	R9, #0X85
+			
+			CMP	R3, #0X85
 			MOVEQ R5, #0XFF			
 			MOVNE R5, #0X0
 			BL	TRANSMIT		
-			PUSH	{R8}
-			MOV	R0, R8	
-			MOV	R3, #0
 			CMP	R8, #0
 			BEQ ZERO
 			CMP	R8, #7
 			BEQ SEVEN
 			SUB	R8, #1
-			MOV R5, R2, LSL R8
+			CMP	R3, #0X84
+			MOVEQ	R0, #0XFF
+			MOVNE	R0, #0X2
+			MOVEQ	R5, R0
+			MOVNE R5, R0, LSL R8
 			BL	TRANSMIT
-			MOV	R5, R10, LSL R8
-			BL	TRANSMIT			
-			MOV	R5, R2, LSL R8
+			MOV	R0, #0X7
+			MOV	R5, R0, LSL R8
+			BL	TRANSMIT
+			MOV	R0, #0X2			
+			MOV	R5, R0, LSL R8
 			BL	TRANSMIT	
 			MOV	R5, #0X0
 			BL	TRANSMIT			
-			POP	{R8}
 			B		getsample;			
 			
-ZERO			
-			MOV R5, #0X1  
+ZERO		
+			CMP	R3, #0X84
+			MOVEQ R5, #0XFF
+			MOVNE R5, #0X1  
 			BL	TRANSMIT
 			MOV	R5, #0X3
 			BL	TRANSMIT			
 			MOV	R5, #0X1
+			BL	TRANSMIT
+			MOV	R5, #0X0
 			BL	TRANSMIT			
-			POP	{R8}
 			B		getsample;
 
 SEVEN
-			MOV R5, #0X80  
+			CMP	R3, #0X84
+			MOVEQ R5, #0XFF
+			MOVNE R5, #0X80  
 			BL	TRANSMIT
 			MOV	R5, #0XC0
 			BL	TRANSMIT			
 			MOV	R5, #0X80
+			BL	TRANSMIT
+			MOV	R5, #0X0
 			BL	TRANSMIT			
-			POP	{R8}
 			B		getsample;
 			
 

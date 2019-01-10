@@ -10,21 +10,22 @@ PORTA_DATA 		EQU 0x400043FC
 ;;;;;;	CIVILIAN	BEGINNING
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CIVILIAN
-			PUSH{R0, R1, LR}
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, #0XAC
-			BL	TRANSMIT
-			MOV	R5, #0X42
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]
+			PUSH{R0, R1, R3, R4, LR}
+;			LDR R1,=PORTA_DATA
+;			LDR	R0,[R1]
+;			BIC	R0,#0x40				
+;			STR	R0,[R1]
+;			ADD	R3, #4
+;			MOV	R5, R3
+;			BL	TRANSMIT
+;			ADD	R4, #1
+;			MOV	R5, R4
+;			BL	TRANSMIT
+;			
+;			LDR R1,=PORTA_DATA
+;			LDR	R0,[R1]
+;			ORR	R0,#0x40				
+;			STR	R0,[R1]
 			
 			MOV		R5, #0X20
 			BL		TRANSMIT
@@ -40,7 +41,7 @@ CIVILIAN
 			BL		TRANSMIT
 			MOV		R5, #0X20
 			BL		TRANSMIT
-			POP{R0, R1, LR}
+			POP{R0, R1, R3, R4, LR}
 			BX 		LR
 			END
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

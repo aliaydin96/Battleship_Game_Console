@@ -162,7 +162,7 @@ ARM Macro Assembler    Page 3
                                                             ; Turn on ADC clock
                                                             
    63 00000016 6808            LDR              R0, [R1]
-   64 00000018 F040 0003       ORR              R0, R0, #0x03 ; set bit 0 to en
+   64 00000018 F040 0001       ORR              R0, R0, #0x01 ; set bit 0 to en
                                                             able ADC0 clock
    65 0000001C 6008            STR              R0, [R1]
    66 0000001E BF00            NOP
@@ -245,7 +245,7 @@ ARM Macro Assembler    Page 4
   128 00000094         ; Setup GPIO to make PE2 input for ADC0
   129 00000094         ; Enable alternate functions
   130 00000094 492A            LDR              R1, =PORTE_AFSEL
-  131 00000096 F04F 0018       MOV              R0, #0x18   ; set bit 3-4 to en
+  131 00000096 F04F 000C       MOV              R0, #0xC    ; set bit 3-4 to en
                                                             able alt functions 
                                                             on PE3 AND PE4
   132 0000009A 6008            STR              R0, [R1]
@@ -253,9 +253,9 @@ ARM Macro Assembler    Page 4
   134 0000009C         
   135 0000009C 4929            LDR              R1, =PORTE_DIR
   136 0000009E 6808            LDR              R0, [R1]
-  137 000000A0 F020 0018       BIC              R0, R0, #0x18 ; set bit 3-4 to 
-                                                            input for PE3 AND P
-                                                            E2
+  137 000000A0 F020 000C       BIC              R0, R0, #0xC ; set bit 3-4 to i
+                                                            nput for PE3 AND PE
+                                                            2
   138 000000A4 6008            STR              R0, [R1]
   139 000000A6         ; PCTL does not have to be configured
 
@@ -269,16 +269,16 @@ ARM Macro Assembler    Page 5
   142 000000A6         ; Disable digital on PE3 AND PE2
   143 000000A6 4928            LDR              R1, =PORTE_DEN
   144 000000A8 6808            LDR              R0, [R1]
-  145 000000AA F020 0018       BIC              R0, R0, #0x18 ; clear bit 3-2 t
-                                                            o disable analog on
-                                                             PE3 AND PE2
+  145 000000AA F020 000C       BIC              R0, R0, #0xC ; clear bit 3-2 to
+                                                             disable analog on 
+                                                            PE3 AND PE2
   146 000000AE 6008            STR              R0, [R1]
   147 000000B0         ; Enable analog on PE3
   148 000000B0 4926            LDR              R1, =PORTE_AMSEL
   149 000000B2 6808            LDR              R0, [R1]
-  150 000000B4 F040 0018       ORR              R0, R0, #0x18 ; set bit 3-2 to 
-                                                            enable analog on PE
-                                                            3 AND PE2
+  150 000000B4 F040 000C       ORR              R0, R0, #0xC ; set bit 3-2 to e
+                                                            nable analog on PE3
+                                                             AND PE2
   151 000000B8 6008            STR              R0, [R1]
   152 000000BA         ; Disable sequencer while ADC setup
   153 000000BA 4925            LDR              R1, =ADC0_ACTSS
@@ -306,7 +306,7 @@ ARM Macro Assembler    Page 5
   171 000000E0         
   172 000000E0 491F            LDR              R1, =ADC0_SSMUX3
   173 000000E2 6808            LDR              R0, [R1]
-  174 000000E4 F040 0009       ORR              R0, R0, #0x9 ;AIN9 IS INPUT
+  174 000000E4 F040 0001       ORR              R0, R0, #0x1 ;AIN9 IS INPUT
   175 000000E8 6008            STR              R0, [R1]
   176 000000EA         ; Config sample sequence
   177 000000EA 491E            LDR              R1, =ADC0_SSCTL3
@@ -329,7 +329,7 @@ ARM Macro Assembler    Page 5
 ARM Macro Assembler    Page 6 
 
 
-  189 00000102 F040 0003       ORR              R0, R0, #0x03 ; set bits 3:0 to
+  189 00000102 F040 0001       ORR              R0, R0, #0x01 ; set bits 3:0 to
                                                              1 for 125k sps
   190 00000106 6008            STR              R0, [R1]
   191 00000108         ; Done with setup, enable sequencer

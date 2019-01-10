@@ -61,7 +61,7 @@ Init		PROC
 			
 			LDR R1, =RCGCADC ; Turn on ADC clock
 			LDR R0, [R1]
-			ORR R0, R0, #0x03 ; set bit 0 to enable ADC0 clock
+			ORR R0, R0, #0x01 ; set bit 0 to enable ADC0 clock
 			STR R0, [R1]
 			NOP
 			NOP
@@ -128,13 +128,13 @@ Init		PROC
 			; Setup GPIO to make PE2 input for ADC0
 			; Enable alternate functions
 			LDR R1, =PORTE_AFSEL
-			MOV R0, #0x18 ; set bit 3-4 to enable alt functions on PE3 AND PE4
+			MOV R0, #0xC ; set bit 3-4 to enable alt functions on PE3 AND PE4
 			STR R0, [R1]
 			
 			
 			LDR R1, =PORTE_DIR
 			LDR R0, [R1]
-			BIC R0, R0, #0x18 ; set bit 3-4 to input for PE3 AND PE2
+			BIC R0, R0, #0xC ; set bit 3-4 to input for PE3 AND PE2
 			STR R0, [R1]
 			; PCTL does not have to be configured
 			; since ADC0 is automatically selected when
@@ -142,12 +142,12 @@ Init		PROC
 			; Disable digital on PE3 AND PE2
 			LDR R1, =PORTE_DEN
 			LDR R0, [R1]
-			BIC R0, R0, #0x18 ; clear bit 3-2 to disable analog on PE3 AND PE2
+			BIC R0, R0, #0xC ; clear bit 3-2 to disable analog on PE3 AND PE2
 			STR R0, [R1]
 			; Enable analog on PE3
 			LDR R1, =PORTE_AMSEL
 			LDR R0, [R1]
-			ORR R0, R0, #0x18 ; set bit 3-2 to enable analog on PE3 AND PE2
+			ORR R0, R0, #0xC ; set bit 3-2 to enable analog on PE3 AND PE2
 			STR R0, [R1]
 			; Disable sequencer while ADC setup
 			LDR R1, =ADC0_ACTSS
@@ -171,7 +171,7 @@ Init		PROC
 			
 			LDR R1, =ADC0_SSMUX3
 			LDR	R0, [R1]
-			ORR R0, R0, #0x9  ;AIN9 IS INPUT
+			ORR R0, R0, #0x1  ;AIN9 IS INPUT
 			STR R0, [R1]
 			; Config sample sequence
 			LDR R1, =ADC0_SSCTL3
@@ -186,7 +186,7 @@ Init		PROC
 			; Set sample rate
 			LDR R1, =ADC0_PP
 			LDR R0, [R1]
-			ORR R0, R0, #0x03 ; set bits 3:0 to 1 for 125k sps
+			ORR R0, R0, #0x01 ; set bits 3:0 to 1 for 125k sps
 			STR R0, [R1]
 			; Done with setup, enable sequencer
 			LDR R1, =ADC0_ACTSS
