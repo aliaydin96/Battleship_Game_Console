@@ -5,7 +5,7 @@ ADC0_PSSI 		EQU 0x40038028 ; Initiate sample
 ADC0_ISC		EQU	0x4003800C ; ISC
 ADC0_SSFSTAT2	EQU	0X4003808C
 PORTA_DATA 		EQU 0x400043FC
-
+POSITION		EQU 0X20000400
 			AREA 	main, CODE, READONLY
 			THUMB
 			IMPORT	LCD_INIT
@@ -30,15 +30,27 @@ __main
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]	
-			
-			
 			BL		CLEAR
 			BL		BOUNDARY
 ;			BL		TIMER_INIT
 ;			MOV	R7, #21		;this counter for timer 
-			MOV		R6,#0;
-			MOV		R7, #0
-			MOV		R11, #0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;	REGISTERS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;	R0  ==> GENERAL PURPOSES
+;;;;;	R1  ==> GENERAL PURPOSES
+;;;;;	R2  ==> CURSOR'S POSITION
+;;;;;	R3  ==> X POSITION
+;;;;;	R4  ==> CURSOR'S POSITION
+;;;;;	R5  ==> DISPLAY REGISTER
+;;;;;	R6  ==> FREE
+;;;;;	R7  ==> TIMER'S COUNTER
+;;;;;	R8  ==> ADC RESULT 
+;;;;;	R9  ==> ADC RESULT
+;;;;;	R10 ==> FREE
+;;;;;	R11 ==> FREE
+;;;;;	R12 ==> FREE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 getsample	LDR		R1,=ADC0_PSSI; request a sample
 			LDR		R0,[R1];
 			ORR		R0,R0,#0x0C; get a sample
@@ -61,47 +73,16 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			LDR		R1, =ADC0_SSFIFO3
 			LDR		R9,[R1]
 
-			SUB		R0,R9,R6; check sampled data - previous > 1pix
-			CMP		R0,#70;
-			MOVGT	R1, #1
-			SUB		R0,R8,R7; check sampled data - previous > 1pix
-			CMP		R0,#160;
-			MOVGT	R0, #1
-			ORR		R0, R1
-			BNE		CURSOR
-			BEQ 	getsample
-
 CURSOR	
 ;			BL		BOUNDARY
 ;			BL		BATTLESHIP
 ;			BL		CIVILIAN
-			MOV		R6,R9;
-			MOV		R0,#73; get the first digit
+			MOV		R0,#75; get the first digit
 			UDIV	R3,R9,R0;
 			ADD		R3, #0X84
-			
-			MOV		R7,R8;
-			MOV		R0,#171; get the first digit
+			MOV		R0,#174; get the first digit
 			UDIV	R8,R8,R0;
-			CMP		R8, #8
-			MOVCC	R4, #0X41
-			BCC		ROW1
-			CMP		R8, #16
-			MOVCC	R4, #0X42
-			SUBCC	R8, #8
-			BCC		ROW2
-			CMP		R8, #24
-			MOVCC	R4, #0X43
-			SUBCC	R8, #16
-;			BL		CLEARBOX2
-			B	CURSOR_2		
-ROW1
-;			BL CLEARBOX2
-			B	CURSOR_2
-ROW2
-;			BL CLEARBOX1
-;			BL CLEARBOX3			
-CURSOR_2	
+			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
@@ -109,7 +90,7 @@ CURSOR_2
 			
 			MOV	R5, R3
 			BL	TRANSMIT
-			MOV	R5, R4
+			MOV	R5, #0x41
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
@@ -117,57 +98,91 @@ CURSOR_2
 			ORR	R0,#0x40				
 			STR	R0,[R1]
 			
+			SUBS R8, #1
+			MOVEQ R2, #0X1
+			MOVNE R2, #0X2
+			MOVEQ	R4, #0X3
+			MOVNE R4, #0X7
+			LSL R2, R8
+			LSL R4, R8
+
+			
 			CMP	R3, #0X85
 			MOVEQ R5, #0XFF			
 			MOVNE R5, #0X0
 			BL	TRANSMIT		
-			CMP	R8, #0
-			BEQ ZERO
-			CMP	R8, #7
-			BEQ SEVEN
-			SUB	R8, #1
-			CMP	R3, #0X84
-			MOVEQ	R0, #0XFF
-			MOVNE	R0, #0X2
-			MOVEQ	R5, R0
-			MOVNE R5, R0, LSL R8
+			MOV R5, R2  ;NE
 			BL	TRANSMIT
-			MOV	R0, #0X7
-			MOV	R5, R0, LSL R8
-			BL	TRANSMIT
-			MOV	R0, #0X2			
-			MOV	R5, R0, LSL R8
+			MOV	R5, R4 
+			BL	TRANSMIT			
+			MOV	R5, R2
 			BL	TRANSMIT	
 			MOV	R5, #0X0
-			BL	TRANSMIT			
-			B		getsample;			
+			BL	TRANSMIT	
 			
-ZERO		
-			CMP	R3, #0X84
-			MOVEQ R5, #0XFF
-			MOVNE R5, #0X1  
-			BL	TRANSMIT
-			MOV	R5, #0X3
-			BL	TRANSMIT			
-			MOV	R5, #0X1
-			BL	TRANSMIT
-			MOV	R5, #0X0
-			BL	TRANSMIT			
-			B		getsample;
 
-SEVEN
-			CMP	R3, #0X84
-			MOVEQ R5, #0XFF
-			MOVNE R5, #0X80  
-			BL	TRANSMIT
-			MOV	R5, #0XC0
-			BL	TRANSMIT			
-			MOV	R5, #0X80
-			BL	TRANSMIT
-			MOV	R5, #0X0
-			BL	TRANSMIT			
-			B		getsample;
+			LDR R1,=PORTA_DATA
+			LDR	R0,[R1]
+			BIC	R0,#0x40				
+			STR	R0,[R1]
 			
+			MOV	R5, R3
+			BL	TRANSMIT
+			MOV	R5, #0x42
+			BL	TRANSMIT
+			
+			LDR R1,=PORTA_DATA
+			LDR	R0,[R1]
+			ORR	R0,#0x40				
+			STR	R0,[R1]
+			
+			REV16	R2, R2
+			REV16  R4, R4
+
+			CMP	R3, #0X85
+			MOVEQ R5, #0XFF			
+			MOVNE R5, #0X0
+			BL	TRANSMIT		
+			MOV R5, R2 ;NE
+			BL	TRANSMIT
+			MOV	R5, R4	
+			BL	TRANSMIT			
+			MOV	R5, R2
+			BL	TRANSMIT	
+			MOV	R5, #0X0
+			BL	TRANSMIT
+		
+			LDR R1,=PORTA_DATA
+			LDR	R0,[R1]
+			BIC	R0,#0x40				
+			STR	R0,[R1]
+			
+			MOV	R5, R3
+			BL	TRANSMIT
+			MOV	R5, #0x43
+			BL	TRANSMIT
+			
+			LDR R1,=PORTA_DATA
+			LDR	R0,[R1]
+			ORR	R0,#0x40				
+			STR	R0,[R1]
+			
+			REV	R2, R2
+			REV R4, R4
+
+			CMP	R3, #0X85
+			MOVEQ R5, #0XFF			
+			MOVNE R5, #0X0
+			BL	TRANSMIT		
+			MOV R5, R2 ;NE
+			BL	TRANSMIT
+			MOV	R5, R4	
+			BL	TRANSMIT			
+			MOV	R5, R2
+			BL	TRANSMIT	
+			MOV	R5, #0X0
+			BL	TRANSMIT
+			B		getsample;						
 
 FIN							
 			B		FIN	
