@@ -43,14 +43,17 @@ __main
 ;;;;;	R3  ==> X POSITION
 ;;;;;	R4  ==> CURSOR'S POSITION
 ;;;;;	R5  ==> DISPLAY REGISTER
-;;;;;	R6  ==> FREE
+;;;;;	R6  ==> Y POSITION
 ;;;;;	R7  ==> TIMER'S COUNTER
 ;;;;;	R8  ==> ADC RESULT 
 ;;;;;	R9  ==> ADC RESULT
-;;;;;	R10 ==> FREE
-;;;;;	R11 ==> FREE
+;;;;;	R10 ==> BATTLESHIP	COUNTER
+;;;;;	R11 ==> CIVILIAN COUNTER
 ;;;;;	R12 ==> FREE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+			MOV		R10, #0
+			MOV		R11, #0
+			MOV		R12, #0
 getsample	LDR		R1,=ADC0_PSSI; request a sample
 			LDR		R0,[R1];
 			ORR		R0,R0,#0x0C; get a sample
@@ -66,22 +69,67 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			ORR		R0,#0x0C;
 			STR		R0,[R1]; Interrupt flag is cleared
 			
+			CMP		R11, #0
+			BLS		BATTLE
+			LDR		R1, =POSITION
+			LDR		R2, [R1], #2
+			LDR		R4, [R1], #2
+			LDR		R12, [R1]
+			BL		CIVILIAN
+			CMP		R11, #1
+			BLS		BATTLE
+			LDR		R1, =(POSITION + 10)
+			LDR		R2, [R1], #2
+			LDR		R4, [R1], #2
+			LDR		R12, [R1]
+			BL		CIVILIAN
+			CMP		R11, #2
+			BLS		BATTLE
+			LDR		R1, =(POSITION + 16)
+			LDR		R2, [R1], #2
+			LDR		R4, [R1], #2
+			LDR		R12, [R1]
+			BL		CIVILIAN
+BATTLE			
+			CMP		R10, #0
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 24)
+			LDR		R2, [R1], #2
+			LDR		R4, [R1], #2
+			LDR		R12, [R1]
+			BL		BATTLESHIP
+			CMP		R10, #1
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 30)
+			LDR		R2, [R1], #2
+			LDR		R4, [R1], #2
+			LDR		R12, [R1]
+			BL		BATTLESHIP
+			CMP		R10, #2
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 36)
+			LDR		R2, [R1], #2
+			LDR		R4, [R1], #2
+			LDR		R12, [R1]
+			BL		BATTLESHIP			
+			CMP		R10, #3
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 42)
+			LDR		R2, [R1], #2
+			LDR		R4, [R1], #2
+			LDR		R12, [R1]
+			BL		BATTLESHIP			
+CURSOR
 			LDR		R1,=ADC0_SSFIFO2;
 			LDR		R8,[R1]; R8 is the data PE3
-			
-			
+			MOV		R0,#174; get the first digit
+			UDIV	R8,R8,R0;			
 			LDR		R1, =ADC0_SSFIFO3
 			LDR		R9,[R1]
-
-CURSOR	
-;			BL		BOUNDARY
-;			BL		BATTLESHIP
-;			BL		CIVILIAN
 			MOV		R0,#75; get the first digit
 			UDIV	R3,R9,R0;
 			ADD		R3, #0X84
-			MOV		R0,#174; get the first digit
-			UDIV	R8,R8,R0;
+	
 			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
@@ -90,7 +138,8 @@ CURSOR
 			
 			MOV	R5, R3
 			BL	TRANSMIT
-			MOV	R5, #0x41
+			MOV	R6, #0X41
+			MOV	R5, R6
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
@@ -128,7 +177,8 @@ CURSOR
 			
 			MOV	R5, R3
 			BL	TRANSMIT
-			MOV	R5, #0x42
+			MOV	R6, #0X42
+			MOV	R5, R6
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
@@ -159,7 +209,8 @@ CURSOR
 			
 			MOV	R5, R3
 			BL	TRANSMIT
-			MOV	R5, #0x43
+			MOV	R6, #0X43
+			MOV	R5, R6
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA

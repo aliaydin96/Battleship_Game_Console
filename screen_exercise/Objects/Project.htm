@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Jan 11 01:03:46 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Jan 11 03:02:17 2019
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -14,15 +14,15 @@ Functions with no stack information
 </H3><UL>
  <LI><a href="#[7c]">Reset_Handler</a>
  <LI><a href="#[7d]">__main</a>
- <LI><a href="#[84]">BATTLESHIP</a>
- <LI><a href="#[85]">CIVILIAN</a>
+ <LI><a href="#[83]">BATTLESHIP</a>
+ <LI><a href="#[82]">CIVILIAN</a>
  <LI><a href="#[81]">BOUNDARY</a>
 </UL>
 </UL>
 <P>
 <H3>
 Mutually Recursive functions
-</H3> <LI><a href="#[83]">DELAY</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[83]">DELAY</a><BR>
+</H3> <LI><a href="#[85]">DELAY</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[85]">DELAY</a><BR>
  <LI><a href="#[1]">NMI_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[1]">NMI_Handler</a><BR>
  <LI><a href="#[2]">HardFault_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2]">HardFault_Handler</a><BR>
  <LI><a href="#[3]">MemManage_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[3]">MemManage_Handler</a><BR>
@@ -581,10 +581,12 @@ Global Symbols
 <P><STRONG><a name="[88]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
 <P><STRONG><a name="[7d]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __main.o(main))
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_INIT
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Handler
@@ -594,61 +596,58 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[83]"></a>DELAY</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, delay.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<P><STRONG><a name="[85]"></a>DELAY</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, delay.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 </UL>
 
 <P><STRONG><a name="[7f]"></a>LCD_INIT</STRONG> (Thumb, 94 bytes, Stack size 0 bytes, lcd_init.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
 <P><STRONG><a name="[1d]"></a>Timer0A_Handler</STRONG> (Thumb, 780 bytes, Stack size 0 bytes, timer_init.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
 <P><STRONG><a name="[89]"></a>TIMER_INIT</STRONG> (Thumb, 88 bytes, Stack size 0 bytes, timer_init.o(routines), UNUSED)
 
-<P><STRONG><a name="[84]"></a>BATTLESHIP</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, battleship.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
-</UL>
-<BR>[Called By]<UL><LI><a href="#[28]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPortF_Handler
-</UL>
-
-<P><STRONG><a name="[85]"></a>CIVILIAN</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, civilian.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
-</UL>
-<BR>[Called By]<UL><LI><a href="#[28]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPortF_Handler
-</UL>
-
-<P><STRONG><a name="[82]"></a>TRANSMIT</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, transmit.o(routines))
-<BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
-<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
-<LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer0A_Handler
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
-</UL>
-
-<P><STRONG><a name="[81]"></a>BOUNDARY</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, boundary.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<P><STRONG><a name="[83]"></a>BATTLESHIP</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, battleship.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
-<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
+<P><STRONG><a name="[82]"></a>CIVILIAN</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, civilian.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
+<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+</UL>
+
+<P><STRONG><a name="[84]"></a>TRANSMIT</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, transmit.o(routines))
+<BR><BR>[Called By]<UL><LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer0A_Handler
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+</UL>
+
+<P><STRONG><a name="[81]"></a>BOUNDARY</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, boundary.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+</UL>
+
+<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 234 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[80]"></a>GPIO_INIT</STRONG> (Thumb, 120 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
+<P><STRONG><a name="[80]"></a>GPIO_INIT</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
 <BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 <P>

@@ -151,18 +151,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>112</LineNumber>
+          <LineNumber>50</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>3180</Address>
+          <Address>3954</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\CIVILIAN.s</Filename>
+          <Filename>.\GPIO_INTER_INIT.s</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Project\CIVILIAN.s\112</Expression>
+          <Expression>\\Project\GPIO_INTER_INIT.s\50</Expression>
         </Bp>
       </Breakpoint>
       <MemoryWindow1>
