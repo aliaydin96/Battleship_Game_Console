@@ -6,6 +6,8 @@ ADC0_ISC		EQU	0x4003800C ; ISC
 ADC0_SSFSTAT2	EQU	0X4003808C
 PORTA_DATA 		EQU 0x400043FC
 POSITION		EQU 0X20000400
+BATTLE_COUNTER	EQU	0X20000419
+CIV_COUNTER		EQU	0X2000041A
 			AREA 	main, CODE, READONLY
 			THUMB
 			IMPORT	LCD_INIT
@@ -47,13 +49,15 @@ __main
 ;;;;;	R7  ==> TIMER'S COUNTER
 ;;;;;	R8  ==> ADC RESULT 
 ;;;;;	R9  ==> ADC RESULT
-;;;;;	R10 ==> BATTLESHIP	COUNTER
-;;;;;	R11 ==> CIVILIAN COUNTER
+;;;;;	R10 ==> FREE
+;;;;;	R11 ==> FREE
 ;;;;;	R12 ==> FREE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			MOV		R10, #0
-			MOV		R11, #0
-			MOV		R12, #0
+			LDR		R0, =BATTLE_COUNTER
+			STR		R10, [R0]
+			LDR		R1, =CIV_COUNTER
+			STR		R10, [R1]
 getsample	LDR		R1,=ADC0_PSSI; request a sample
 			LDR		R0,[R1];
 			ORR		R0,R0,#0x0C; get a sample
@@ -68,56 +72,40 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			LDR		R0,[R1];
 			ORR		R0,#0x0C;
 			STR		R0,[R1]; Interrupt flag is cleared
+
 			
-			CMP		R11, #0
+			LDR		R1, =CIV_COUNTER
+			LDRB	R4, [R1]
+			CMP		R4, #0
 			BLS		BATTLE
 			LDR		R1, =POSITION
-			LDR		R2, [R1], #2
-			LDR		R4, [R1], #2
-			LDR		R12, [R1]
 			BL		CIVILIAN
-			CMP		R11, #1
+			CMP		R4, #1
 			BLS		BATTLE
-			LDR		R1, =(POSITION + 10)
-			LDR		R2, [R1], #2
-			LDR		R4, [R1], #2
-			LDR		R12, [R1]
+			LDR		R1, =(POSITION + 3)
 			BL		CIVILIAN
-			CMP		R11, #2
+			CMP		R4, #2
 			BLS		BATTLE
+			LDR		R1, =(POSITION + 6)
+			BL		CIVILIAN
+BATTLE		
+			LDR		R0, =BATTLE_COUNTER
+			LDRB	R2, [R0]
+			CMP		R2, #0
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 13)
+			BL		BATTLESHIP
+			CMP		R2, #1
+			BLS		CURSOR
 			LDR		R1, =(POSITION + 16)
-			LDR		R2, [R1], #2
-			LDR		R4, [R1], #2
-			LDR		R12, [R1]
-			BL		CIVILIAN
-BATTLE			
-			CMP		R10, #0
-			BLS		CURSOR
-			LDR		R1, =(POSITION + 24)
-			LDR		R2, [R1], #2
-			LDR		R4, [R1], #2
-			LDR		R12, [R1]
 			BL		BATTLESHIP
-			CMP		R10, #1
+			CMP		R2, #2
 			BLS		CURSOR
-			LDR		R1, =(POSITION + 30)
-			LDR		R2, [R1], #2
-			LDR		R4, [R1], #2
-			LDR		R12, [R1]
-			BL		BATTLESHIP
-			CMP		R10, #2
-			BLS		CURSOR
-			LDR		R1, =(POSITION + 36)
-			LDR		R2, [R1], #2
-			LDR		R4, [R1], #2
-			LDR		R12, [R1]
+			LDR		R1, =(POSITION + 19)
 			BL		BATTLESHIP			
-			CMP		R10, #3
+			CMP		R2, #3
 			BLS		CURSOR
-			LDR		R1, =(POSITION + 42)
-			LDR		R2, [R1], #2
-			LDR		R4, [R1], #2
-			LDR		R12, [R1]
+			LDR		R1, =(POSITION + 22)
 			BL		BATTLESHIP			
 CURSOR
 			LDR		R1,=ADC0_SSFIFO2;
@@ -129,8 +117,14 @@ CURSOR
 			MOV		R0,#75; get the first digit
 			UDIV	R3,R9,R0;
 			ADD		R3, #0X84
-	
+			MOV	R6, #0X41
+			SUBS R8, #1
+			MOVEQ R2, #0X1
+			MOVNE R2, #0X2
+			MOVEQ	R4, #0X3
+			MOVNE R4, #0X7
 			
+LOP			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
@@ -138,7 +132,6 @@ CURSOR
 			
 			MOV	R5, R3
 			BL	TRANSMIT
-			MOV	R6, #0X41
 			MOV	R5, R6
 			BL	TRANSMIT
 			
@@ -146,16 +139,17 @@ CURSOR
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]
-			
-			SUBS R8, #1
-			MOVEQ R2, #0X1
-			MOVNE R2, #0X2
-			MOVEQ	R4, #0X3
-			MOVNE R4, #0X7
-			LSL R2, R8
-			LSL R4, R8
-
-			
+			CMP	R6, #0X41
+			LSLEQ R2, R8
+			LSLEQ R4, R8
+			BEQ	WORK
+			CMP	R6, #0X42
+			REV16EQ	R2, R2
+			REV16EQ  R4, R4
+			CMP	R6, #0X43
+			REVEQ	R2, R2
+			REVEQ R4, R4
+WORK			
 			CMP	R3, #0X85
 			MOVEQ R5, #0XFF			
 			MOVNE R5, #0X0
@@ -168,75 +162,10 @@ CURSOR
 			BL	TRANSMIT	
 			MOV	R5, #0X0
 			BL	TRANSMIT	
-			
-
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, R3
-			BL	TRANSMIT
-			MOV	R6, #0X42
-			MOV	R5, R6
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]
-			
-			REV16	R2, R2
-			REV16  R4, R4
-
-			CMP	R3, #0X85
-			MOVEQ R5, #0XFF			
-			MOVNE R5, #0X0
-			BL	TRANSMIT		
-			MOV R5, R2 ;NE
-			BL	TRANSMIT
-			MOV	R5, R4	
-			BL	TRANSMIT			
-			MOV	R5, R2
-			BL	TRANSMIT	
-			MOV	R5, #0X0
-			BL	TRANSMIT
-		
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, R3
-			BL	TRANSMIT
-			MOV	R6, #0X43
-			MOV	R5, R6
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]
-			
-			REV	R2, R2
-			REV R4, R4
-
-			CMP	R3, #0X85
-			MOVEQ R5, #0XFF			
-			MOVNE R5, #0X0
-			BL	TRANSMIT		
-			MOV R5, R2 ;NE
-			BL	TRANSMIT
-			MOV	R5, R4	
-			BL	TRANSMIT			
-			MOV	R5, R2
-			BL	TRANSMIT	
-			MOV	R5, #0X0
-			BL	TRANSMIT
+			ADD	R6, #1
+			CMP	R6, #0X44
+			BNE LOP
 			B		getsample;						
-
-FIN							
-			B		FIN	
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

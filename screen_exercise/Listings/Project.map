@@ -65,26 +65,26 @@ Image Symbol Table
     delay.s                                  0x00000000   Number         0  delay.o ABSOLUTE
     $v0                                      0x0000026c   Number         0  startup.o(RESET)
     .text                                    0x00000284   Section        0  heapauxi.o(.text)
-    main                                     0x0000028c   Section      804  __main.o(main)
+    main                                     0x0000028c   Section      600  __main.o(main)
     $v0                                      0x0000028c   Number         0  __main.o(main)
-    routines                                 0x000005b0   Section      368  init.o(routines)
-    $v0                                      0x000005b0   Number         0  init.o(routines)
-    routines                                 0x00000720   Section        8  delay.o(routines)
-    $v0                                      0x00000720   Number         0  delay.o(routines)
-    routines                                 0x00000728   Section      100  lcd_init.o(routines)
-    $v0                                      0x00000728   Number         0  lcd_init.o(routines)
-    routines                                 0x0000078c   Section      912  timer_init.o(routines)
-    $v0                                      0x0000078c   Number         0  timer_init.o(routines)
-    routines                                 0x00000b1c   Section      396  battleship.o(routines)
-    $v0                                      0x00000b1c   Number         0  battleship.o(routines)
-    routines                                 0x00000ca8   Section      396  civilian.o(routines)
-    $v0                                      0x00000ca8   Number         0  civilian.o(routines)
-    routines                                 0x00000e34   Section       48  transmit.o(routines)
-    $v0                                      0x00000e34   Number         0  transmit.o(routines)
-    routines                                 0x00000e64   Section      236  boundary.o(routines)
-    $v0                                      0x00000e64   Number         0  boundary.o(routines)
-    routines                                 0x00000f50   Section      448  gpio_inter_init.o(routines)
-    $v0                                      0x00000f50   Number         0  gpio_inter_init.o(routines)
+    routines                                 0x000004e4   Section      368  init.o(routines)
+    $v0                                      0x000004e4   Number         0  init.o(routines)
+    routines                                 0x00000654   Section        8  delay.o(routines)
+    $v0                                      0x00000654   Number         0  delay.o(routines)
+    routines                                 0x0000065c   Section      100  lcd_init.o(routines)
+    $v0                                      0x0000065c   Number         0  lcd_init.o(routines)
+    routines                                 0x000006c0   Section      912  timer_init.o(routines)
+    $v0                                      0x000006c0   Number         0  timer_init.o(routines)
+    routines                                 0x00000a50   Section      212  battleship.o(routines)
+    $v0                                      0x00000a50   Number         0  battleship.o(routines)
+    routines                                 0x00000b24   Section      212  civilian.o(routines)
+    $v0                                      0x00000b24   Number         0  civilian.o(routines)
+    routines                                 0x00000bf8   Section       48  transmit.o(routines)
+    $v0                                      0x00000bf8   Number         0  transmit.o(routines)
+    routines                                 0x00000c28   Section      236  boundary.o(routines)
+    $v0                                      0x00000c28   Number         0  boundary.o(routines)
+    routines                                 0x00000d14   Section      484  gpio_inter_init.o(routines)
+    $v0                                      0x00000d14   Number         0  gpio_inter_init.o(routines)
     STACK                                    0x20000000   Section     1024  startup.o(STACK)
     StackMem                                 0x20000000   Data           0  startup.o(STACK)
 
@@ -220,17 +220,17 @@ Image Symbol Table
     __rt_heap_escrow$2region                 0x00000287   Thumb Code     2  heapauxi.o(.text)
     __rt_heap_expand$2region                 0x00000289   Thumb Code     2  heapauxi.o(.text)
     __main                                   0x0000028d   Thumb Code     0  __main.o(main)
-    Init                                     0x000005b1   Thumb Code   276  init.o(routines)
-    DELAY                                    0x00000721   Thumb Code     6  delay.o(routines)
-    LCD_INIT                                 0x00000729   Thumb Code    94  lcd_init.o(routines)
-    Timer0A_Handler                          0x0000078d   Thumb Code   780  timer_init.o(routines)
-    TIMER_INIT                               0x00000a99   Thumb Code    88  timer_init.o(routines)
-    BATTLESHIP                               0x00000b1d   Thumb Code     0  battleship.o(routines)
-    CIVILIAN                                 0x00000ca9   Thumb Code     0  civilian.o(routines)
-    TRANSMIT                                 0x00000e35   Thumb Code    38  transmit.o(routines)
-    BOUNDARY                                 0x00000e65   Thumb Code     0  boundary.o(routines)
-    GPIOPortF_Handler                        0x00000f51   Thumb Code   234  gpio_inter_init.o(routines)
-    GPIO_INIT                                0x0000103b   Thumb Code   122  gpio_inter_init.o(routines)
+    Init                                     0x000004e5   Thumb Code   276  init.o(routines)
+    DELAY                                    0x00000655   Thumb Code     6  delay.o(routines)
+    LCD_INIT                                 0x0000065d   Thumb Code    94  lcd_init.o(routines)
+    Timer0A_Handler                          0x000006c1   Thumb Code   780  timer_init.o(routines)
+    TIMER_INIT                               0x000009cd   Thumb Code    88  timer_init.o(routines)
+    BATTLESHIP                               0x00000a51   Thumb Code     0  battleship.o(routines)
+    CIVILIAN                                 0x00000b25   Thumb Code     0  civilian.o(routines)
+    TRANSMIT                                 0x00000bf9   Thumb Code    38  transmit.o(routines)
+    BOUNDARY                                 0x00000c29   Thumb Code     0  boundary.o(routines)
+    GPIOPortF_Handler                        0x00000d15   Thumb Code   264  gpio_inter_init.o(routines)
+    GPIO_INIT                                0x00000e1d   Thumb Code   120  gpio_inter_init.o(routines)
 
 
 
@@ -240,35 +240,35 @@ Memory Map of the image
 
   Image Entry point : 0x0000026d
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00001510, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x000012f8, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00001110, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000ef8, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x00000000   0x00000000   0x00000284   Code   RO            3  * RESET               startup.o
     0x00000284   0x00000284   0x00000006   Code   RO           53    .text               c_w.l(heapauxi.o)
     0x0000028a   0x0000028a   0x00000002   PAD
-    0x0000028c   0x0000028c   0x00000324   Code   RO           16    main                __main.o
-    0x000005b0   0x000005b0   0x00000170   Code   RO           12    routines            init.o
-    0x00000720   0x00000720   0x00000008   Code   RO           19    routines            delay.o
-    0x00000728   0x00000728   0x00000064   Code   RO           23    routines            lcd_init.o
-    0x0000078c   0x0000078c   0x00000390   Code   RO           27    routines            timer_init.o
-    0x00000b1c   0x00000b1c   0x0000018c   Code   RO           34    routines            battleship.o
-    0x00000ca8   0x00000ca8   0x0000018c   Code   RO           37    routines            civilian.o
-    0x00000e34   0x00000e34   0x00000030   Code   RO           40    routines            transmit.o
-    0x00000e64   0x00000e64   0x000000ec   Code   RO           44    routines            boundary.o
-    0x00000f50   0x00000f50   0x000001c0   Code   RO           47    routines            gpio_inter_init.o
+    0x0000028c   0x0000028c   0x00000258   Code   RO           16    main                __main.o
+    0x000004e4   0x000004e4   0x00000170   Code   RO           12    routines            init.o
+    0x00000654   0x00000654   0x00000008   Code   RO           19    routines            delay.o
+    0x0000065c   0x0000065c   0x00000064   Code   RO           23    routines            lcd_init.o
+    0x000006c0   0x000006c0   0x00000390   Code   RO           27    routines            timer_init.o
+    0x00000a50   0x00000a50   0x000000d4   Code   RO           34    routines            battleship.o
+    0x00000b24   0x00000b24   0x000000d4   Code   RO           37    routines            civilian.o
+    0x00000bf8   0x00000bf8   0x00000030   Code   RO           40    routines            transmit.o
+    0x00000c28   0x00000c28   0x000000ec   Code   RO           44    routines            boundary.o
+    0x00000d14   0x00000d14   0x000001e4   Code   RO           47    routines            gpio_inter_init.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00001110, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00000ef8, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x00001110   0x00000400   Data   RW            1    STACK               startup.o
+    0x20000000   0x00000ef8   0x00000400   Data   RW            1    STACK               startup.o
 
 
-    Execution Region ER_ZI (Exec base: 0x20000400, Load base: 0x00001510, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_ZI (Exec base: 0x20000400, Load base: 0x000012f8, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
@@ -280,12 +280,12 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       804         52          0          0          0        460   __main.o
-       396          6          0          0          0        348   battleship.o
+       600         62          0          0          0        404   __main.o
+       212          6          0          0          0        284   battleship.o
        236          4          0          0          0        292   boundary.o
-       396          6          0          0          0        348   civilian.o
+       212          6          0          0          0        284   civilian.o
          8          2          0          0          0        344   delay.o
-       448         94          0          0          0        532   gpio_inter_init.o
+       484        100          0          0          0        556   gpio_inter_init.o
        368         92          0          0          0        448   init.o
        100          6          0          0          0        376   lcd_init.o
        644        620          0       1024          0        780   startup.o
@@ -293,7 +293,7 @@ Image component sizes
         48         10          0          0          0        368   transmit.o
 
     ----------------------------------------------------------------------
-      4360        936          0       1024          0       4976   Object Totals
+      3824        952          0       1024          0       4816   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          0          0          0          0          0          0   (incl. Padding)
 
@@ -323,15 +323,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      4368        936          0       1024          0       4528   Grand Totals
-      4368        936          0       1024          0       4528   ELF Image Totals
-      4368        936          0       1024          0          0   ROM Totals
+      3832        952          0       1024          0       4368   Grand Totals
+      3832        952          0       1024          0       4368   ELF Image Totals
+      3832        952          0       1024          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 4368 (   4.27kB)
+    Total RO  Size (Code + RO Data)                 3832 (   3.74kB)
     Total RW  Size (RW Data + ZI Data)              1024 (   1.00kB)
-    Total ROM Size (Code + RO Data + RW Data)       5392 (   5.27kB)
+    Total ROM Size (Code + RO Data + RW Data)       4856 (   4.74kB)
 
 ==============================================================================
 

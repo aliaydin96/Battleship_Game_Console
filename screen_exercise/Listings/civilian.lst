@@ -19,166 +19,87 @@ ARM Macro Assembler    Page 1
    11 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    12 00000000         CIVILIAN
    13 00000000 E92D 5FFF       PUSH{R0-R12,     LR}
-   14 00000004         
-   15 00000004 4960            LDR              R1,=PORTA_DATA
-   16 00000006 6808            LDR              R0,[R1]
-   17 00000008 F020 0040       BIC              R0,#0x40
-   18 0000000C 6008            STR              R0,[R1]
-   19 0000000E F102 0203       ADD              R2, #3
-   20 00000012 4615            MOV              R5, R2
-   21 00000014 F7FF FFFE       BL               TRANSMIT
-   22 00000018 F04F 0541       MOV              R5, #0x41
-   23 0000001C F7FF FFFE       BL               TRANSMIT
-   24 00000020         
-   25 00000020 4959            LDR              R1,=PORTA_DATA
-   26 00000022 6808            LDR              R0,[R1]
-   27 00000024 F040 0040       ORR              R0,#0x40
-   28 00000028 6008            STR              R0,[R1]
-   29 0000002A         
-   30 0000002A F10C 0C02       ADD              R12, #2
-   31 0000002E F04F 0920       MOV              R9, #0X20
-   32 00000032 F04F 0A64       MOV              R10, #0X64
-   33 00000036 F04F 04E6       MOV              R4, #0XE6
-   34 0000003A F04F 07FF       MOV              R7, #0XFF
-   35 0000003E FA09 F90C       LSL              R9, R12
-   36 00000042 FA0A FA0C       LSL              R10, R12
-   37 00000046 FA04 F40C       LSL              R4, R12
-   38 0000004A FA07 F70C       LSL              R7, R12
-   39 0000004E         
-   40 0000004E         
-   41 0000004E 464D            MOV              R5, R9
-   42 00000050 F7FF FFFE       BL               TRANSMIT
-   43 00000054 4655            MOV              R5, R10
-   44 00000056 F7FF FFFE       BL               TRANSMIT
-   45 0000005A 4625            MOV              R5, R4
-   46 0000005C F7FF FFFE       BL               TRANSMIT
-   47 00000060 463D            MOV              R5, R7
-   48 00000062 F7FF FFFE       BL               TRANSMIT
-   49 00000066 4625            MOV              R5, R4
-   50 00000068 F7FF FFFE       BL               TRANSMIT
-   51 0000006C 4655            MOV              R5, R10
-   52 0000006E F7FF FFFE       BL               TRANSMIT
-   53 00000072 464D            MOV              R5, R9
-   54 00000074 F7FF FFFE       BL               TRANSMIT
-   55 00000078         
-   56 00000078         
-   57 00000078 4943            LDR              R1,=PORTA_DATA
+   14 00000004 F851 2B01       LDR              R2, [R1], #1
+   15 00000008 F851 4B01       LDR              R4, [R1], #1
+   16 0000000C F8D1 C000       LDR              R12, [R1]
+   17 00000010 F04F 0641       MOV              R6, #0X41
+   18 00000014 F10C 0C02       ADD              R12, #2
+   19 00000018 F04F 0920       MOV              R9, #0X20
+   20 0000001C F04F 0A64       MOV              R10, #0X64
+   21 00000020 F04F 04E6       MOV              R4, #0XE6
+   22 00000024 F04F 07FF       MOV              R7, #0XFF
+   23 00000028 F102 0203       ADD              R2, #3
+   24 0000002C         LOOP
+   25 0000002C 4928            LDR              R1,=PORTA_DATA
+   26 0000002E 6808            LDR              R0,[R1]
+   27 00000030 F020 0040       BIC              R0,#0x40
+   28 00000034 6008            STR              R0,[R1]
+   29 00000036         
+   30 00000036 4615            MOV              R5, R2
+   31 00000038 F7FF FFFE       BL               TRANSMIT
+   32 0000003C 4635            MOV              R5, R6
+   33 0000003E F7FF FFFE       BL               TRANSMIT
+   34 00000042         
+   35 00000042 4923            LDR              R1,=PORTA_DATA
+   36 00000044 6808            LDR              R0,[R1]
+   37 00000046 F040 0040       ORR              R0,#0x40
+   38 0000004A 6008            STR              R0,[R1]
+   39 0000004C         
+   40 0000004C 2E41            CMP              R6, #0X41
+   41 0000004E BF01 FA09 
+              F90C             LSLEQ            R9, R12
+   42 00000054 FA0A FA0C       LSLEQ            R10, R12
+   43 00000058 FA04 F40C       LSLEQ            R4, R12
+   44 0000005C FA07 F70C       LSLEQ            R7, R12
+   45 00000060 D019            BEQ              WORK
+   46 00000062 2E42            CMP              R6, #0X42
+   47 00000064 BF01 FA99 
+              F999             REV16EQ          R9, R9
+   48 0000006A FA9A FA9A       REV16EQ          R10, R10
+   49 0000006E BA64            REV16EQ          R4, R4
+   50 00000070 BA7F            REV16EQ          R7, R7
+   51 00000072 D010            BEQ              WORK
+   52 00000074 2E43            CMP              R6, #0X43
+   53 00000076 BF01 FA99 
+              F989             REVEQ            R9, R9
+   54 0000007C FA9A FA8A       REVEQ            R10, R10
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   58 0000007A 6808            LDR              R0,[R1]
-   59 0000007C F020 0040       BIC              R0,#0x40
-   60 00000080 6008            STR              R0,[R1]
-   61 00000082         
-   62 00000082 4615            MOV              R5, R2
-   63 00000084 F7FF FFFE       BL               TRANSMIT
-   64 00000088 F04F 0542       MOV              R5, #0x42
-   65 0000008C F7FF FFFE       BL               TRANSMIT
-   66 00000090         
-   67 00000090 493D            LDR              R1,=PORTA_DATA
-   68 00000092 6808            LDR              R0,[R1]
-   69 00000094 F040 0040       ORR              R0,#0x40
-   70 00000098 6008            STR              R0,[R1]
-   71 0000009A         
-   72 0000009A FA99 F999       REV16            R9, R9
-   73 0000009E FA9A FA9A       REV16            R10, R10
-   74 000000A2 BA64            REV16            R4, R4
-   75 000000A4 BA7F            REV16            R7, R7
-   76 000000A6         
-   77 000000A6 464D            MOV              R5, R9
-   78 000000A8 F7FF FFFE       BL               TRANSMIT
-   79 000000AC 4655            MOV              R5, R10
-   80 000000AE F7FF FFFE       BL               TRANSMIT
-   81 000000B2 4625            MOV              R5, R4
-   82 000000B4 F7FF FFFE       BL               TRANSMIT
-   83 000000B8 463D            MOV              R5, R7
-   84 000000BA F7FF FFFE       BL               TRANSMIT
-   85 000000BE 4625            MOV              R5, R4
-   86 000000C0 F7FF FFFE       BL               TRANSMIT
-   87 000000C4 4655            MOV              R5, R10
-   88 000000C6 F7FF FFFE       BL               TRANSMIT
-   89 000000CA 464D            MOV              R5, R9
-   90 000000CC F7FF FFFE       BL               TRANSMIT
-   91 000000D0         
-   92 000000D0 492D            LDR              R1,=PORTA_DATA
-   93 000000D2 6808            LDR              R0,[R1]
-   94 000000D4 F020 0040       BIC              R0,#0x40
-   95 000000D8 6008            STR              R0,[R1]
-   96 000000DA         
-   97 000000DA 4615            MOV              R5, R2
-   98 000000DC F7FF FFFE       BL               TRANSMIT
-   99 000000E0 F04F 0543       MOV              R5, #0x43
-  100 000000E4 F7FF FFFE       BL               TRANSMIT
-  101 000000E8         
-  102 000000E8 4927            LDR              R1,=PORTA_DATA
-  103 000000EA 6808            LDR              R0,[R1]
-  104 000000EC F040 0040       ORR              R0,#0x40
-  105 000000F0 6008            STR              R0,[R1]
-  106 000000F2         
-  107 000000F2 FA99 F989       REV              R9, R9
-  108 000000F6 FA9A FA8A       REV              R10, R10
-  109 000000FA BA24            REV              R4, R4
-  110 000000FC BA3F            REV              R7, R7
-  111 000000FE 464D            MOV              R5, R9
-  112 00000100 F7FF FFFE       BL               TRANSMIT
-  113 00000104 4655            MOV              R5, R10
-  114 00000106 F7FF FFFE       BL               TRANSMIT
-  115 0000010A 4625            MOV              R5, R4
-  116 0000010C F7FF FFFE       BL               TRANSMIT
-
-
-
-ARM Macro Assembler    Page 3 
-
-
-  117 00000110 463D            MOV              R5, R7
-  118 00000112 F7FF FFFE       BL               TRANSMIT
-  119 00000116 4625            MOV              R5, R4
-  120 00000118 F7FF FFFE       BL               TRANSMIT
-  121 0000011C 4655            MOV              R5, R10
-  122 0000011E F7FF FFFE       BL               TRANSMIT
-  123 00000122 464D            MOV              R5, R9
-  124 00000124 F7FF FFFE       BL               TRANSMIT
-  125 00000128 4917            LDR              R1,=PORTA_DATA
-  126 0000012A 6808            LDR              R0,[R1]
-  127 0000012C F020 0040       BIC              R0,#0x40
-  128 00000130 6008            STR              R0,[R1]
-  129 00000132         
-  130 00000132 4615            MOV              R5, R2
-  131 00000134 F7FF FFFE       BL               TRANSMIT
-  132 00000138 F04F 0544       MOV              R5, #0x44
-  133 0000013C F7FF FFFE       BL               TRANSMIT
-  134 00000140         
-  135 00000140 4911            LDR              R1,=PORTA_DATA
-  136 00000142 6808            LDR              R0,[R1]
-  137 00000144 F040 0040       ORR              R0,#0x40
-  138 00000148 6008            STR              R0,[R1]
-  139 0000014A         
-  140 0000014A FA99 F999       REV16            R9, R9
-  141 0000014E FA9A FA9A       REV16            R10, R10
-  142 00000152 BA64            REV16            R4, R4
-  143 00000154 BA7F            REV16            R7, R7
-  144 00000156 464D            MOV              R5, R9
-  145 00000158 F7FF FFFE       BL               TRANSMIT
-  146 0000015C 4655            MOV              R5, R10
-  147 0000015E F7FF FFFE       BL               TRANSMIT
-  148 00000162 4625            MOV              R5, R4
-  149 00000164 F7FF FFFE       BL               TRANSMIT
-  150 00000168 463D            MOV              R5, R7
-  151 0000016A F7FF FFFE       BL               TRANSMIT
-  152 0000016E 4625            MOV              R5, R4
-  153 00000170 F7FF FFFE       BL               TRANSMIT
-  154 00000174 4655            MOV              R5, R10
-  155 00000176 F7FF FFFE       BL               TRANSMIT
-  156 0000017A 464D            MOV              R5, R9
-  157 0000017C F7FF FFFE       BL               TRANSMIT
-  158 00000180 E8BD 5FFF       POP{R0-R12,      LR}
-  159 00000184 4770            BX               LR
-  160 00000186 00 00           ALIGN
-  161 00000188                 END
+   55 00000080 BA24            REVEQ            R4, R4
+   56 00000082 BA3F            REVEQ            R7, R7
+   57 00000084 D007            BEQ              WORK
+   58 00000086 2E44            CMP              R6, #0X44
+   59 00000088 BF01 FA99 
+              F999             REV16EQ          R9, R9
+   60 0000008E FA9A FA9A       REV16EQ          R10, R10
+   61 00000092 BA64            REV16EQ          R4, R4
+   62 00000094 BA7F            REV16EQ          R7, R7
+   63 00000096         WORK
+   64 00000096 464D            MOV              R5, R9
+   65 00000098 F7FF FFFE       BL               TRANSMIT
+   66 0000009C 4655            MOV              R5, R10
+   67 0000009E F7FF FFFE       BL               TRANSMIT
+   68 000000A2 4625            MOV              R5, R4
+   69 000000A4 F7FF FFFE       BL               TRANSMIT
+   70 000000A8 463D            MOV              R5, R7
+   71 000000AA F7FF FFFE       BL               TRANSMIT
+   72 000000AE 4625            MOV              R5, R4
+   73 000000B0 F7FF FFFE       BL               TRANSMIT
+   74 000000B4 4655            MOV              R5, R10
+   75 000000B6 F7FF FFFE       BL               TRANSMIT
+   76 000000BA 464D            MOV              R5, R9
+   77 000000BC F7FF FFFE       BL               TRANSMIT
+   78 000000C0 F106 0601       ADD              R6, #1
+   79 000000C4 2E45            CMP              R6, #0X45
+   80 000000C6 D1B1            BNE              LOOP
+   81 000000C8 E8BD 5FFF       POP{R0-R12,      LR}
+   82 000000CC 4770            BX               LR
+   83 000000CE 00 00           ALIGN
+   84 000000D0                 END
               400043FC 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\objects\civilian.d -o.\objects\civilian.o -I.\RTE\_Target_1 -
@@ -200,6 +121,24 @@ Symbol: CIVILIAN
    Uses
       At line 7 in file CIVILIAN.s
 Comment: CIVILIAN used once
+LOOP 0000002C
+
+Symbol: LOOP
+   Definitions
+      At line 24 in file CIVILIAN.s
+   Uses
+      At line 80 in file CIVILIAN.s
+Comment: LOOP used once
+WORK 00000096
+
+Symbol: WORK
+   Definitions
+      At line 63 in file CIVILIAN.s
+   Uses
+      At line 45 in file CIVILIAN.s
+      At line 51 in file CIVILIAN.s
+      At line 57 in file CIVILIAN.s
+
 routines 00000000
 
 Symbol: routines
@@ -208,7 +147,7 @@ Symbol: routines
    Uses
       None
 Comment: routines unused
-2 symbols
+4 symbols
 
 
 
@@ -221,14 +160,8 @@ Symbol: PORTA_DATA
    Definitions
       At line 1 in file CIVILIAN.s
    Uses
-      At line 15 in file CIVILIAN.s
       At line 25 in file CIVILIAN.s
-      At line 57 in file CIVILIAN.s
-      At line 67 in file CIVILIAN.s
-      At line 92 in file CIVILIAN.s
-      At line 102 in file CIVILIAN.s
-      At line 125 in file CIVILIAN.s
-      At line 135 in file CIVILIAN.s
+      At line 35 in file CIVILIAN.s
 
 1 symbol
 
@@ -243,42 +176,15 @@ Symbol: TRANSMIT
    Definitions
       At line 6 in file CIVILIAN.s
    Uses
-      At line 21 in file CIVILIAN.s
-      At line 23 in file CIVILIAN.s
-      At line 42 in file CIVILIAN.s
-      At line 44 in file CIVILIAN.s
-      At line 46 in file CIVILIAN.s
-      At line 48 in file CIVILIAN.s
-      At line 50 in file CIVILIAN.s
-      At line 52 in file CIVILIAN.s
-      At line 54 in file CIVILIAN.s
-      At line 63 in file CIVILIAN.s
+      At line 31 in file CIVILIAN.s
+      At line 33 in file CIVILIAN.s
       At line 65 in file CIVILIAN.s
-      At line 78 in file CIVILIAN.s
-      At line 80 in file CIVILIAN.s
-      At line 82 in file CIVILIAN.s
-      At line 84 in file CIVILIAN.s
-      At line 86 in file CIVILIAN.s
-      At line 88 in file CIVILIAN.s
-      At line 90 in file CIVILIAN.s
-      At line 98 in file CIVILIAN.s
-      At line 100 in file CIVILIAN.s
-      At line 112 in file CIVILIAN.s
-      At line 114 in file CIVILIAN.s
-      At line 116 in file CIVILIAN.s
-      At line 118 in file CIVILIAN.s
-      At line 120 in file CIVILIAN.s
-      At line 122 in file CIVILIAN.s
-      At line 124 in file CIVILIAN.s
-      At line 131 in file CIVILIAN.s
-      At line 133 in file CIVILIAN.s
-      At line 145 in file CIVILIAN.s
-      At line 147 in file CIVILIAN.s
-      At line 149 in file CIVILIAN.s
-      At line 151 in file CIVILIAN.s
-      At line 153 in file CIVILIAN.s
-      At line 155 in file CIVILIAN.s
-      At line 157 in file CIVILIAN.s
+      At line 67 in file CIVILIAN.s
+      At line 69 in file CIVILIAN.s
+      At line 71 in file CIVILIAN.s
+      At line 73 in file CIVILIAN.s
+      At line 75 in file CIVILIAN.s
+      At line 77 in file CIVILIAN.s
 
 1 symbol
-340 symbols in table
+342 symbols in table
