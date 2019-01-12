@@ -48,6 +48,9 @@ LOOP		SUBS	R1, #1
 			LDR	R1, =GPIO_PORTF_ICR
 			MOV	R2, #0X11
 			STR	R2, [R1]
+			
+			
+			
 			MOV		R5, #0
 			LDR		R1, =BATTLE_COUNTER
 			LDRB	R2, [R1]

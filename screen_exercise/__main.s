@@ -8,6 +8,7 @@ PORTA_DATA 		EQU 0x400043FC
 POSITION		EQU 0X20000400
 BATTLE_COUNTER	EQU	0X20000419
 CIV_COUNTER		EQU	0X2000041A
+SCREEN_COUNTER  EQU 0X2000041B
 			AREA 	main, CODE, READONLY
 			THUMB
 			IMPORT	LCD_INIT
@@ -55,9 +56,12 @@ __main
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			MOV		R10, #0
 			LDR		R0, =BATTLE_COUNTER
-			STR		R10, [R0]
+			STRB	R10, [R0]
 			LDR		R1, =CIV_COUNTER
-			STR		R10, [R1]
+			STRB	R10, [R1]
+			LDR		R1, =SCREEN_COUNTER
+			STRB	R10, [R1]
+			
 getsample	LDR		R1,=ADC0_PSSI; request a sample
 			LDR		R0,[R1];
 			ORR		R0,R0,#0x0C; get a sample
@@ -72,41 +76,23 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			LDR		R0,[R1];
 			ORR		R0,#0x0C;
 			STR		R0,[R1]; Interrupt flag is cleared
-
 			
-			LDR		R1, =CIV_COUNTER
-			LDRB	R4, [R1]
-			CMP		R4, #0
-			BLS		BATTLE
-			LDR		R1, =POSITION
-			BL		CIVILIAN
-			CMP		R4, #1
-			BLS		BATTLE
-			LDR		R1, =(POSITION + 3)
-			BL		CIVILIAN
-			CMP		R4, #2
-			BLS		BATTLE
-			LDR		R1, =(POSITION + 6)
-			BL		CIVILIAN
-BATTLE		
 			LDR		R0, =BATTLE_COUNTER
 			LDRB	R2, [R0]
-			CMP		R2, #0
-			BLS		CURSOR
-			LDR		R1, =(POSITION + 13)
-			BL		BATTLESHIP
-			CMP		R2, #1
-			BLS		CURSOR
-			LDR		R1, =(POSITION + 16)
-			BL		BATTLESHIP
-			CMP		R2, #2
-			BLS		CURSOR
-			LDR		R1, =(POSITION + 19)
-			BL		BATTLESHIP			
-			CMP		R2, #3
-			BLS		CURSOR
-			LDR		R1, =(POSITION + 22)
-			BL		BATTLESHIP			
+			LDR		R1, =CIV_COUNTER
+			LDRB	R4, [R1]
+			MOV		R0, #0
+			ADD		R0, R2, R4
+			CMP		R0, #4
+			LDR		R1, =SCREEN_COUNTER
+			LDRB	R4, [R1]
+			ADDEQ	R4, #1
+			STRB	R4, [R1]
+			CMP		R4, #0
+			BEQ		DISPLAY_SHIP
+			CMP		R4, #1
+			BLEQ	CLEARBOX
+			
 CURSOR
 			LDR		R1,=ADC0_SSFIFO2;
 			LDR		R8,[R1]; R8 is the data PE3
@@ -167,7 +153,43 @@ WORK
 			BNE LOP
 			B		getsample;						
 
+DISPLAY_SHIP
 
+			LDR		R1, =CIV_COUNTER
+			LDRB	R4, [R1]
+			CMP		R4, #0
+			BLS		BATTLE
+			LDR		R1, =POSITION
+			BL		CIVILIAN
+			CMP		R4, #1
+			BLS		BATTLE
+			LDR		R1, =(POSITION + 3)
+			BL		CIVILIAN
+			CMP		R4, #2
+			BLS		BATTLE
+			LDR		R1, =(POSITION + 6)
+			BL		CIVILIAN
+			
+BATTLE		
+			LDR		R0, =BATTLE_COUNTER
+			LDRB	R2, [R0]
+			CMP		R2, #0
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 13)
+			BL		BATTLESHIP
+			CMP		R2, #1
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 16)
+			BL		BATTLESHIP
+			CMP		R2, #2
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 19)
+			BL		BATTLESHIP			
+			CMP		R2, #3
+			BLS		CURSOR
+			LDR		R1, =(POSITION + 22)
+			BL		BATTLESHIP	
+			B		CURSOR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;	CLEAR WHOLE SCREEN
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -184,9 +206,11 @@ LOOP		MOV		R5, #0X0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;	CLEAR Y = 1 ROW
+;;;;;;	CLEAR Y = 1-2-3-4 ROWS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CLEARBOX1	PUSH{R0, R1, R2, LR}
+CLEARBOX	PUSH{R0, R1, R2, LR}
+			MOV	R6, #0X41
+LOOP_CL			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			BIC	R0,#0x40				
@@ -194,81 +218,31 @@ CLEARBOX1	PUSH{R0, R1, R2, LR}
 			
 			MOV	R5, #0X86
 			BL	TRANSMIT
-			MOV	R5, #0X41
+			MOV	R5, R6
 			BL	TRANSMIT
 			
 			LDR R1,=PORTA_DATA
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
 			STR	R0,[R1]
+	
 			MOV	R2, #0X86
-			
 LOOP_C		MOV		R5, #0X0
 			BL		TRANSMIT
 			ADD	R2, #1
 			CMP	R2, #0XC5
 			BNE	LOOP_C
+			ADD	R6, #1
+			CMP	R6, #0X45
+			BNE	LOOP_CL
 			
-			POP{R0, R1, R2, LR}
-			BX	LR
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;	CLEAR Y = 2 ROW
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CLEARBOX2	PUSH{R0, R1, R2, LR}
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, #0X86
-			BL	TRANSMIT
-			MOV	R5, #0X42
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]
-			MOV	R2, #0X86
-			
-LOOP_C_2	MOV		R5, #0X0
-			BL		TRANSMIT
-			ADD	R2, #1
-			CMP	R2, #0XC5
-			BNE	LOOP_C_2
-			
-			POP{R0, R1, R2, LR}
-			BX	LR			
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;	CLEAR Y = 3 ROW
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CLEARBOX3	PUSH{R0, R1, R2, LR}
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			BIC	R0,#0x40				
-			STR	R0,[R1]
-			
-			MOV	R5, #0X86
-			BL	TRANSMIT
-			MOV	R5, #0X43
-			BL	TRANSMIT
-			
-			LDR R1,=PORTA_DATA
-			LDR	R0,[R1]
-			ORR	R0,#0x40				
-			STR	R0,[R1]
-			MOV	R2, #0X86
-			
-LOOP_C_3	MOV		R5, #0X0
-			BL		TRANSMIT
-			ADD	R2, #1
-			CMP	R2, #0XC5
-			BNE	LOOP_C_3
-			
+			LDR		R1, =SCREEN_COUNTER
+			LDRB	R4, [R1]
+			ADD		R4, #1
+			STRB 	R4, [R1]
 			POP{R0, R1, R2, LR}
 			BX	LR			
 			
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;	NUMBERS	0-9	BEGINNING
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
