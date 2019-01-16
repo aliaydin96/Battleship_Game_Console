@@ -90,7 +90,9 @@ ARM Macro Assembler    Page 2
    28 00000000 2000041A 
                        CIV_COUNTER
                                EQU              0X2000041A
-   29 00000000         
+   29 00000000 2000041B 
+                       SCREEN_COUNTER
+                               EQU              0X2000041B
    30 00000000                 AREA             routines, CODE, READONLY
    31 00000000                 THUMB
    32 00000000                 EXTERN           BATTLESHIP
@@ -109,31 +111,31 @@ ARM Macro Assembler    Page 2
    43 0000000E 3A01            SUBS             R2, #1
    44 00000010 D1F9            BNE              LOOP2
    45 00000012         
-   46 00000012 495B            LDR              R1, =GPIO_PORTF_RIS
+   46 00000012 4960            LDR              R1, =GPIO_PORTF_RIS
    47 00000014 6808            LDR              R0, [R1]
-   48 00000016 495B            LDR              R1, =GPIO_PORTF_ICR
+   48 00000016 4960            LDR              R1, =GPIO_PORTF_ICR
    49 00000018 F04F 0211       MOV              R2, #0X11
    50 0000001C 600A            STR              R2, [R1]
    51 0000001E         
    52 0000001E         
    53 0000001E         
    54 0000001E F04F 0500       MOV              R5, #0
-   55 00000022 4959            LDR              R1, =BATTLE_COUNTER
+   55 00000022 495E            LDR              R1, =BATTLE_COUNTER
    56 00000024 780A            LDRB             R2, [R1]
-   57 00000026 4959            LDR              R1, =CIV_COUNTER
+   57 00000026 495E            LDR              R1, =CIV_COUNTER
    58 00000028 780C            LDRB             R4, [R1]
    59 0000002A EB02 0504       ADD              R5, R2, R4
    60 0000002E 2D04            CMP              R5, #4
    61 00000030 D067            BEQ              FINISH
    62 00000032 F010 0001       ANDS             R0, #0X1
-   63 00000036 D139            BNE              CIV
-   64 00000038 4853            LDR              R0, =BATTLE_COUNTER
 
 
 
 ARM Macro Assembler    Page 3 
 
 
+   63 00000036 D139            BNE              CIV
+   64 00000038 4858            LDR              R0, =BATTLE_COUNTER
    65 0000003A 7802            LDRB             R2, [R0]
    66 0000003C 2A04            CMP              R2, #4
    67 0000003E DA60            BGE              FINISH
@@ -143,44 +145,44 @@ ARM Macro Assembler    Page 3
    71 00000046 DC19            BGT              THIRD_B
    72 00000048 2A00            CMP              R2, #0
    73 0000004A DC0B            BGT              SECOND_B
-   74 0000004C 4850            LDR              R0, =(POSITION + 13)
+   74 0000004C 4855            LDR              R0, =(POSITION + 13)
    75 0000004E F840 3B01       STR              R3, [R0], #1 ;X POSITION
    76 00000052 F840 6B01       STR              R6, [R0], #1 ;Y POSITION
    77 00000056 F8C0 8000       STR              R8, [R0]    ;SHIFTING
    78 0000005A F102 0201       ADD              R2, #1
-   79 0000005E 484A            LDR              R0, =BATTLE_COUNTER
+   79 0000005E 484F            LDR              R0, =BATTLE_COUNTER
    80 00000060 7002            STRB             R2, [R0]
    81 00000062 E04E            B                FINISH
    82 00000064         SECOND_B
-   83 00000064 484B            LDR              R0, =(POSITION + 16)
+   83 00000064 4850            LDR              R0, =(POSITION + 16)
    84 00000066 F840 3B01       STR              R3, [R0], #1 ;X POSITION
    85 0000006A F840 6B01       STR              R6, [R0], #1 ;Y POSITION
    86 0000006E F8C0 8000       STR              R8, [R0]    ;SHIFTING
    87 00000072 F102 0201       ADD              R2, #1
-   88 00000076 4844            LDR              R0, =BATTLE_COUNTER
+   88 00000076 4849            LDR              R0, =BATTLE_COUNTER
    89 00000078 7002            STRB             R2, [R0]
    90 0000007A E042            B                FINISH
    91 0000007C         THIRD_B
-   92 0000007C 4846            LDR              R0, =(POSITION + 19)
+   92 0000007C 484B            LDR              R0, =(POSITION + 19)
    93 0000007E F840 3B01       STR              R3, [R0], #1 ;X POSITION
    94 00000082 F840 6B01       STR              R6, [R0], #1 ;Y POSITION
    95 00000086 F8C0 8000       STR              R8, [R0]    ;SHIFTING
    96 0000008A F102 0201       ADD              R2, #1
-   97 0000008E 483E            LDR              R0, =BATTLE_COUNTER
+   97 0000008E 4843            LDR              R0, =BATTLE_COUNTER
    98 00000090 7002            STRB             R2, [R0]
    99 00000092 E036            B                FINISH
   100 00000094         FOUR_B
-  101 00000094 4841            LDR              R0, =(POSITION + 22)
+  101 00000094 4846            LDR              R0, =(POSITION + 22)
   102 00000096 F840 3B01       STR              R3, [R0], #1 ;X POSITION
   103 0000009A F840 6B01       STR              R6, [R0], #1 ;Y POSITION
   104 0000009E F8C0 8000       STR              R8, [R0]    ;SHIFTING
   105 000000A2 F102 0201       ADD              R2, #1
-  106 000000A6 4838            LDR              R0, =BATTLE_COUNTER
+  106 000000A6 483D            LDR              R0, =BATTLE_COUNTER
   107 000000A8 7002            STRB             R2, [R0]
   108 000000AA E02A            B                FINISH
   109 000000AC         
   110 000000AC         CIV
-  111 000000AC 4937            LDR              R1, =CIV_COUNTER
+  111 000000AC 493C            LDR              R1, =CIV_COUNTER
   112 000000AE 780C            LDRB             R4, [R1]
   113 000000B0 2C03            CMP              R4, #3
   114 000000B2 DA26            BGE              FINISH
@@ -188,119 +190,125 @@ ARM Macro Assembler    Page 3
   116 000000B6 DC19            BGT              THIRD
   117 000000B8 2C00            CMP              R4, #0
   118 000000BA DC0B            BGT              SECOND
-  119 000000BC 4838            LDR              R0, =POSITION
+  119 000000BC 483D            LDR              R0, =POSITION
   120 000000BE F840 3B01       STR              R3, [R0], #1 ;X POSITION
   121 000000C2 F840 6B01       STR              R6, [R0], #1 ;Y POSITION
-  122 000000C6 F8C0 8000       STR              R8, [R0]    ;SHIFTING
-  123 000000CA F104 0401       ADD              R4, #1
 
 
 
 ARM Macro Assembler    Page 4 
 
 
-  124 000000CE 492F            LDR              R1, =CIV_COUNTER
+  122 000000C6 F8C0 8000       STR              R8, [R0]    ;SHIFTING
+  123 000000CA F104 0401       ADD              R4, #1
+  124 000000CE 4934            LDR              R1, =CIV_COUNTER
   125 000000D0 700C            STRB             R4, [R1]
   126 000000D2 E016            B                FINISH
   127 000000D4         SECOND
-  128 000000D4 4833            LDR              R0, =(POSITION + 3)
+  128 000000D4 4838            LDR              R0, =(POSITION + 3)
   129 000000D6 F840 3B01       STR              R3, [R0], #1 ;X POSITION
   130 000000DA F840 6B01       STR              R6, [R0], #1 ;Y POSITION
   131 000000DE F8C0 8000       STR              R8, [R0]    ;SHIFTING
   132 000000E2 F104 0401       ADD              R4, #1
-  133 000000E6 4929            LDR              R1, =CIV_COUNTER
+  133 000000E6 492E            LDR              R1, =CIV_COUNTER
   134 000000E8 700C            STRB             R4, [R1]
   135 000000EA E00A            B                FINISH
   136 000000EC         THIRD
-  137 000000EC 482E            LDR              R0, =(POSITION + 6)
+  137 000000EC 4833            LDR              R0, =(POSITION + 6)
   138 000000EE F840 3B01       STR              R3, [R0], #1 ;X POSITION
   139 000000F2 F840 6B01       STR              R6, [R0], #1 ;Y POSITION
   140 000000F6 F8C0 8000       STR              R8, [R0]    ;SHIFTING
   141 000000FA F104 0401       ADD              R4, #1
-  142 000000FE 4923            LDR              R1, =CIV_COUNTER
+  142 000000FE 4928            LDR              R1, =CIV_COUNTER
   143 00000100 700C            STRB             R4, [R1]
   144 00000102         FINISH
-  145 00000102         
-  146 00000102 E8BD 4037       POP              {R0, R1, R2, R4, R5, LR}
-  147 00000106 4770            BX               LR
-  148 00000108                 ENDP
-  149 00000108         
-  150 00000108         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  151 00000108         ;;;;; GPIO INIT
-  152 00000108         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  153 00000108         
-  154 00000108         GPIO_INIT
+  145 00000102 F04F 0000       MOV              R0, #0
+  146 00000106 EB02 0004       ADD              R0, R2, R4
+  147 0000010A 2804            CMP              R0, #4
+  148 0000010C 492C            LDR              R1, =SCREEN_COUNTER
+  149 0000010E 780C            LDRB             R4, [R1]
+  150 00000110 BF08 3401       ADDEQ            R4, #1
+  151 00000114 700C            STRB             R4, [R1]
+  152 00000116 E8BD 4037       POP              {R0, R1, R2, R4, R5, LR}
+  153 0000011A 4770            BX               LR
+  154 0000011C                 ENDP
+  155 0000011C         
+  156 0000011C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  157 0000011C         ;;;;; GPIO INIT
+  158 0000011C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  159 0000011C         
+  160 0000011C         GPIO_INIT
                                PROC
-  155 00000108 4928            LDR              R1 , =RCGCGPIO
-  156 0000010A 6808            LDR              R0 , [ R1 ]
-  157 0000010C F040 0020       ORR              R0 , R0 , #0x20 ;Port F clock e
+  161 0000011C 4929            LDR              R1 , =RCGCGPIO
+  162 0000011E 6808            LDR              R0 , [ R1 ]
+  163 00000120 F040 0020       ORR              R0 , R0 , #0x20 ;Port F clock e
                                                             nabled
-  158 00000110 6008            STR              R0 , [ R1 ]
-  159 00000112 BF00            NOP                          ;Wait for clock to 
+  164 00000124 6008            STR              R0 , [ R1 ]
+  165 00000126 BF00            NOP                          ;Wait for clock to 
                                                             stabilize
-  160 00000114 BF00            NOP
-  161 00000116 BF00            NOP
-  162 00000118 4925            LDR              R1, =PORTF_LOCK
-  163 0000011A 4826            LDR              R0, =GPIO_LOCK_KEY
-  164 0000011C 6008            STR              R0, [R1]
-  165 0000011E 4926            LDR              R1, =GPIO_PORTF_CR_R
-  166 00000120 F04F 00FF       MOV              R0, #0xFF
-  167 00000124 6008            STR              R0, [R1]
-  168 00000126 4925            LDR              R1 , =PORTF_DIR ; Config of Por
+  166 00000128 BF00            NOP
+  167 0000012A BF00            NOP
+  168 0000012C 4926            LDR              R1, =PORTF_LOCK
+  169 0000012E 4827            LDR              R0, =GPIO_LOCK_KEY
+  170 00000130 6008            STR              R0, [R1]
+  171 00000132 4927            LDR              R1, =GPIO_PORTF_CR_R
+  172 00000134 F04F 00FF       MOV              R0, #0xFF
+  173 00000138 6008            STR              R0, [R1]
+  174 0000013A 4926            LDR              R1 , =PORTF_DIR ; Config of Por
                                                             t F starts
-  169 00000128 F04F 0002       MOV              R0 , #0x2
-  170 0000012C 6008            STR              R0 , [ R1 ]
-  171 0000012E 4924            LDR              R1 , =PORTF_AFSEL
-  172 00000130 6808            LDR              R0 , [ R1 ]
-  173 00000132 F020 00FF       BIC              R0 , #0xFF
-  174 00000136 6008            STR              R0 , [ R1 ]
-  175 00000138 4922            LDR              R1 , =PORTF_DEN
-  176 0000013A 6808            LDR              R0 , [ R1 ]
-  177 0000013C F040 00FF       ORR              R0 , #0xFF
-  178 00000140 6008            STR              R0 , [ R1 ]
+  175 0000013C F04F 0002       MOV              R0 , #0x2
+  176 00000140 6008            STR              R0 , [ R1 ]
 
 
 
 ARM Macro Assembler    Page 5 
 
 
-  179 00000142 4921            LDR              R1 , =PORTF_PUR
-  180 00000144 6808            LDR              R0 , [ R1 ]
-  181 00000146 F040 0011       ORR              R0 , #0x11
-  182 0000014A 6008            STR              R0 , [ R1 ]
-  183 0000014C         
-  184 0000014C 491F            LDR              R1, =GPIO_PORTF_IS
-  185 0000014E 4A20            LDR              R2, =GPIO_PORTF_IBE
-  186 00000150 4B20            LDR              R3, =GPIO_PORTF_IEV
-  187 00000152 4C21            LDR              R4, =GPIO_PORTF_IM
-  188 00000154 4D0B            LDR              R5, =GPIO_PORTF_ICR
-  189 00000156 F04F 0000       MOV              R0, #0x00
-  190 0000015A 6008            STR              R0, [R1]
-  191 0000015C 6010            STR              R0, [R2]
-  192 0000015E 6018            STR              R0, [R3]
-  193 00000160 F04F 0011       MOV              R0, #0x11
-  194 00000164 6020            STR              R0, [R4]
-  195 00000166 6028            STR              R0, [R5]
-  196 00000168         
-  197 00000168 491C            LDR              R1, =NVIC_PRI7
-  198 0000016A 680A            LDR              R2, [R1]
-  199 0000016C F422 027F       AND              R2, R2, #0xFF00FFFF ;
-  200 00000170 F442 0280       ORR              R2, R2, #0x00400000 ;
-  201 00000174 600A            STR              R2, [R1]
-  202 00000176 491A            LDR              R1, =NVIC_EN0
-  203 00000178 F04F 4280       MOV              R2, #0x40000000 ; set bit 19 to
+  177 00000142 4925            LDR              R1 , =PORTF_AFSEL
+  178 00000144 6808            LDR              R0 , [ R1 ]
+  179 00000146 F020 00FF       BIC              R0 , #0xFF
+  180 0000014A 6008            STR              R0 , [ R1 ]
+  181 0000014C 4923            LDR              R1 , =PORTF_DEN
+  182 0000014E 6808            LDR              R0 , [ R1 ]
+  183 00000150 F040 00FF       ORR              R0 , #0xFF
+  184 00000154 6008            STR              R0 , [ R1 ]
+  185 00000156 4922            LDR              R1 , =PORTF_PUR
+  186 00000158 6808            LDR              R0 , [ R1 ]
+  187 0000015A F040 0011       ORR              R0 , #0x11
+  188 0000015E 6008            STR              R0 , [ R1 ]
+  189 00000160         
+  190 00000160 4920            LDR              R1, =GPIO_PORTF_IS
+  191 00000162 4A21            LDR              R2, =GPIO_PORTF_IBE
+  192 00000164 4B21            LDR              R3, =GPIO_PORTF_IEV
+  193 00000166 4C22            LDR              R4, =GPIO_PORTF_IM
+  194 00000168 4D0B            LDR              R5, =GPIO_PORTF_ICR
+  195 0000016A F04F 0000       MOV              R0, #0x00
+  196 0000016E 6008            STR              R0, [R1]
+  197 00000170 6010            STR              R0, [R2]
+  198 00000172 6018            STR              R0, [R3]
+  199 00000174 F04F 0011       MOV              R0, #0x11
+  200 00000178 6020            STR              R0, [R4]
+  201 0000017A 6028            STR              R0, [R5]
+  202 0000017C         
+  203 0000017C 491D            LDR              R1, =NVIC_PRI7
+  204 0000017E 680A            LDR              R2, [R1]
+  205 00000180 F422 027F       AND              R2, R2, #0xFF00FFFF ;
+  206 00000184 F442 0280       ORR              R2, R2, #0x00400000 ;
+  207 00000188 600A            STR              R2, [R1]
+  208 0000018A 491B            LDR              R1, =NVIC_EN0
+  209 0000018C F04F 4280       MOV              R2, #0x40000000 ; set bit 19 to
                                                              enable interrupt 1
                                                             9
-  204 0000017C 600A            STR              R2, [R1]
-  205 0000017E         ; Enable timer
-  206 0000017E         ;   LDR R1 , =PORTF_DATA
-  207 0000017E         ;   MOV R0, #0x0
-  208 0000017E         ;   STR R0, [R1]   
-  209 0000017E 4770            BX               LR          ; end
-  210 00000180         
-  211 00000180                 ALIGN
-  212 00000180                 ENDP
-  213 00000180                 END
+  210 00000190 600A            STR              R2, [R1]
+  211 00000192         ; Enable timer
+  212 00000192         ;   LDR R1 , =PORTF_DATA
+  213 00000192         ;   MOV R0, #0x0
+  214 00000192         ;   STR R0, [R1]   
+  215 00000192 4770            BX               LR          ; end
+  216 00000194         
+  217 00000194                 ALIGN
+  218 00000194                 ENDP
+  219 00000194                 END
               40025414 
               4002541C 
               20000419 
@@ -312,8 +320,15 @@ ARM Macro Assembler    Page 5
               20000400 
               20000403 
               20000406 
+              2000041B 
               400FE608 
               40025520 
+
+
+
+ARM Macro Assembler    Page 6 
+
+
               4C4F434B 
               40025524 
               40025400 
@@ -323,12 +338,6 @@ ARM Macro Assembler    Page 5
               40025404 
               40025408 
               4002540C 
-
-
-
-ARM Macro Assembler    Page 6 
-
-
               40025410 
               E000E41C 
               E000E100 
@@ -384,11 +393,11 @@ Symbol: GPIOPortF_Handler
    Uses
       At line 34 in file GPIO_INTER_INIT.s
 Comment: GPIOPortF_Handler used once
-GPIO_INIT 00000108
+GPIO_INIT 0000011C
 
 Symbol: GPIO_INIT
    Definitions
-      At line 154 in file GPIO_INTER_INIT.s
+      At line 160 in file GPIO_INTER_INIT.s
    Uses
       At line 35 in file GPIO_INTER_INIT.s
 Comment: GPIO_INIT used once
@@ -492,7 +501,7 @@ Symbol: GPIO_LOCK_KEY
    Definitions
       At line 16 in file GPIO_INTER_INIT.s
    Uses
-      At line 163 in file GPIO_INTER_INIT.s
+      At line 169 in file GPIO_INTER_INIT.s
 Comment: GPIO_LOCK_KEY used once
 GPIO_PORTF_CR_R 40025524
 
@@ -500,7 +509,7 @@ Symbol: GPIO_PORTF_CR_R
    Definitions
       At line 17 in file GPIO_INTER_INIT.s
    Uses
-      At line 165 in file GPIO_INTER_INIT.s
+      At line 171 in file GPIO_INTER_INIT.s
 Comment: GPIO_PORTF_CR_R used once
 GPIO_PORTF_IBE 40025408
 
@@ -508,7 +517,7 @@ Symbol: GPIO_PORTF_IBE
    Definitions
       At line 20 in file GPIO_INTER_INIT.s
    Uses
-      At line 185 in file GPIO_INTER_INIT.s
+      At line 191 in file GPIO_INTER_INIT.s
 Comment: GPIO_PORTF_IBE used once
 GPIO_PORTF_ICR 4002541C
 
@@ -517,7 +526,7 @@ Symbol: GPIO_PORTF_ICR
       At line 24 in file GPIO_INTER_INIT.s
    Uses
       At line 48 in file GPIO_INTER_INIT.s
-      At line 188 in file GPIO_INTER_INIT.s
+      At line 194 in file GPIO_INTER_INIT.s
 
 GPIO_PORTF_IEV 4002540C
 
@@ -531,7 +540,7 @@ Symbol: GPIO_PORTF_IEV
    Definitions
       At line 21 in file GPIO_INTER_INIT.s
    Uses
-      At line 186 in file GPIO_INTER_INIT.s
+      At line 192 in file GPIO_INTER_INIT.s
 Comment: GPIO_PORTF_IEV used once
 GPIO_PORTF_IM 40025410
 
@@ -539,7 +548,7 @@ Symbol: GPIO_PORTF_IM
    Definitions
       At line 22 in file GPIO_INTER_INIT.s
    Uses
-      At line 187 in file GPIO_INTER_INIT.s
+      At line 193 in file GPIO_INTER_INIT.s
 Comment: GPIO_PORTF_IM used once
 GPIO_PORTF_IS 40025404
 
@@ -547,7 +556,7 @@ Symbol: GPIO_PORTF_IS
    Definitions
       At line 19 in file GPIO_INTER_INIT.s
    Uses
-      At line 184 in file GPIO_INTER_INIT.s
+      At line 190 in file GPIO_INTER_INIT.s
 Comment: GPIO_PORTF_IS used once
 GPIO_PORTF_RIS 40025414
 
@@ -563,7 +572,7 @@ Symbol: NVIC_EN0
    Definitions
       At line 4 in file GPIO_INTER_INIT.s
    Uses
-      At line 202 in file GPIO_INTER_INIT.s
+      At line 208 in file GPIO_INTER_INIT.s
 Comment: NVIC_EN0 used once
 NVIC_EN0_INT30 40000000
 
@@ -579,7 +588,7 @@ Symbol: NVIC_PRI7
    Definitions
       At line 5 in file GPIO_INTER_INIT.s
    Uses
-      At line 197 in file GPIO_INTER_INIT.s
+      At line 203 in file GPIO_INTER_INIT.s
 Comment: NVIC_PRI7 used once
 PORTF_AFSEL 40025420
 
@@ -593,7 +602,7 @@ Absolute symbols
 
       At line 11 in file GPIO_INTER_INIT.s
    Uses
-      At line 171 in file GPIO_INTER_INIT.s
+      At line 177 in file GPIO_INTER_INIT.s
 Comment: PORTF_AFSEL used once
 PORTF_AMSEL 40025528
 
@@ -617,7 +626,7 @@ Symbol: PORTF_DEN
    Definitions
       At line 9 in file GPIO_INTER_INIT.s
    Uses
-      At line 175 in file GPIO_INTER_INIT.s
+      At line 181 in file GPIO_INTER_INIT.s
 Comment: PORTF_DEN used once
 PORTF_DIR 40025400
 
@@ -625,7 +634,7 @@ Symbol: PORTF_DIR
    Definitions
       At line 13 in file GPIO_INTER_INIT.s
    Uses
-      At line 168 in file GPIO_INTER_INIT.s
+      At line 174 in file GPIO_INTER_INIT.s
 Comment: PORTF_DIR used once
 PORTF_LOCK 40025520
 
@@ -633,7 +642,7 @@ Symbol: PORTF_LOCK
    Definitions
       At line 15 in file GPIO_INTER_INIT.s
    Uses
-      At line 162 in file GPIO_INTER_INIT.s
+      At line 168 in file GPIO_INTER_INIT.s
 Comment: PORTF_LOCK used once
 PORTF_PCTL 4002552C
 
@@ -649,7 +658,7 @@ Symbol: PORTF_PUR
    Definitions
       At line 18 in file GPIO_INTER_INIT.s
    Uses
-      At line 179 in file GPIO_INTER_INIT.s
+      At line 185 in file GPIO_INTER_INIT.s
 
 
 
@@ -677,9 +686,17 @@ Symbol: RCGCGPIO
    Definitions
       At line 7 in file GPIO_INTER_INIT.s
    Uses
-      At line 155 in file GPIO_INTER_INIT.s
+      At line 161 in file GPIO_INTER_INIT.s
 Comment: RCGCGPIO used once
-23 symbols
+SCREEN_COUNTER 2000041B
+
+Symbol: SCREEN_COUNTER
+   Definitions
+      At line 29 in file GPIO_INTER_INIT.s
+   Uses
+      At line 148 in file GPIO_INTER_INIT.s
+Comment: SCREEN_COUNTER used once
+24 symbols
 
 
 
@@ -703,4 +720,4 @@ Symbol: CIVILIAN
       None
 Comment: CIVILIAN unused
 2 symbols
-373 symbols in table
+374 symbols in table

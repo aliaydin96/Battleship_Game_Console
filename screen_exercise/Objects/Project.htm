@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Jan 12 22:28:39 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Jan 16 17:40:34 2019
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -584,6 +584,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_INIT
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
@@ -601,6 +602,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
 <P><STRONG><a name="[7f]"></a>LCD_INIT</STRONG> (Thumb, 94 bytes, Stack size 0 bytes, lcd_init.o(routines))
@@ -644,7 +646,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 264 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
+<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 284 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
 <P><STRONG><a name="[80]"></a>GPIO_INIT</STRONG> (Thumb, 120 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))

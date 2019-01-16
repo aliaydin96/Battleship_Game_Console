@@ -77,21 +77,14 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			ORR		R0,#0x0C;
 			STR		R0,[R1]; Interrupt flag is cleared
 			
-			LDR		R0, =BATTLE_COUNTER
-			LDRB	R2, [R0]
-			LDR		R1, =CIV_COUNTER
-			LDRB	R4, [R1]
-			MOV		R0, #0
-			ADD		R0, R2, R4
-			CMP		R0, #4
 			LDR		R1, =SCREEN_COUNTER
 			LDRB	R4, [R1]
-			ADDEQ	R4, #1
-			STRB	R4, [R1]
 			CMP		R4, #0
-			BEQ		DISPLAY_SHIP
+			BLEQ	DISPLAY_SHIP
 			CMP		R4, #1
 			BLEQ	CLEARBOX
+			CMP		R4, #3
+			BLEQ	DELAY_5MS
 			
 CURSOR
 			LDR		R1,=ADC0_SSFIFO2;
@@ -154,7 +147,7 @@ WORK
 			B		getsample;						
 
 DISPLAY_SHIP
-
+			PUSH	{R4, LR}
 			LDR		R1, =CIV_COUNTER
 			LDRB	R4, [R1]
 			CMP		R4, #0
@@ -174,22 +167,25 @@ BATTLE
 			LDR		R0, =BATTLE_COUNTER
 			LDRB	R2, [R0]
 			CMP		R2, #0
-			BLS		CURSOR
+			BLS		FINISH
 			LDR		R1, =(POSITION + 13)
 			BL		BATTLESHIP
 			CMP		R2, #1
-			BLS		CURSOR
+			BLS		FINISH
 			LDR		R1, =(POSITION + 16)
 			BL		BATTLESHIP
 			CMP		R2, #2
-			BLS		CURSOR
+			BLS		FINISH
 			LDR		R1, =(POSITION + 19)
 			BL		BATTLESHIP			
 			CMP		R2, #3
-			BLS		CURSOR
+			BLS		FINISH
 			LDR		R1, =(POSITION + 22)
 			BL		BATTLESHIP	
-			B		CURSOR
+			B		FINISH
+FINISH		
+			POP	{R4, LR}
+			BX	LR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;	CLEAR WHOLE SCREEN
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -204,7 +200,18 @@ LOOP		MOV		R5, #0X0
 			POP		{R0,R1,LR}
 			BX		LR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+DELAY_5MS	
+			PUSH 	{LR}	
+			BL		DISPLAY_SHIP	
+			MOV32	R0, #4000000
+			BL		DELAY
+			BL		CLEARBOX
+			LDR		R1, =SCREEN_COUNTER
+			LDRB	R4, [R1]
+			ADDEQ	R4, #1
+			STRB	R4, [R1]
+			POP		{LR}
+			BX		LR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;	CLEAR Y = 1-2-3-4 ROWS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
