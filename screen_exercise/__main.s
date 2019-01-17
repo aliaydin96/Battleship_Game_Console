@@ -6,9 +6,9 @@ ADC0_ISC		EQU	0x4003800C ; ISC
 ADC0_SSFSTAT2	EQU	0X4003808C
 PORTA_DATA 		EQU 0x400043FC
 POSITION		EQU 0X20000400
-BATTLE_COUNTER	EQU	0X20000419
-CIV_COUNTER		EQU	0X2000041A
-SCREEN_COUNTER  EQU 0X2000041B
+BATTLE_COUNTER	EQU	0X2000040F
+CIV_COUNTER		EQU	0X20000410
+SCREEN_COUNTER  EQU 0X20000411
 			AREA 	main, CODE, READONLY
 			THUMB
 			IMPORT	LCD_INIT
@@ -35,8 +35,6 @@ __main
 			STR	R0,[R1]	
 			BL		CLEAR
 			BL		BOUNDARY
-;			BL		TIMER_INIT
-;			MOV	R7, #21		;this counter for timer 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;	REGISTERS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -85,11 +83,16 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			BLEQ	CLEARBOX
 			CMP		R4, #3
 			BLEQ	DELAY_5MS
+			LDR		R1, =SCREEN_COUNTER
+			LDRB	R4, [R1]
+			CMP		R4, #5
+			BLEQ	TIMER_INIT
+			MOVEQ	R7, #21		;this counter for timer	
 			
 CURSOR
 			LDR		R1,=ADC0_SSFIFO2;
 			LDR		R8,[R1]; R8 is the data PE3
-			MOV		R0,#174; get the first digit
+			MOV		R0,#171; get the first digit
 			UDIV	R8,R8,R0;			
 			LDR		R1, =ADC0_SSFIFO3
 			LDR		R9,[R1]
@@ -156,11 +159,11 @@ DISPLAY_SHIP
 			BL		CIVILIAN
 			CMP		R4, #1
 			BLS		BATTLE
-			LDR		R1, =(POSITION + 3)
+			LDR		R1, =(POSITION + 2)
 			BL		CIVILIAN
 			CMP		R4, #2
 			BLS		BATTLE
-			LDR		R1, =(POSITION + 6)
+			LDR		R1, =(POSITION + 4)
 			BL		CIVILIAN
 			
 BATTLE		
@@ -168,19 +171,19 @@ BATTLE
 			LDRB	R2, [R0]
 			CMP		R2, #0
 			BLS		FINISH
-			LDR		R1, =(POSITION + 13)
+			LDR		R1, =(POSITION + 6)
 			BL		BATTLESHIP
 			CMP		R2, #1
 			BLS		FINISH
-			LDR		R1, =(POSITION + 16)
+			LDR		R1, =(POSITION + 8)
 			BL		BATTLESHIP
 			CMP		R2, #2
 			BLS		FINISH
-			LDR		R1, =(POSITION + 19)
+			LDR		R1, =(POSITION + 10)
 			BL		BATTLESHIP			
 			CMP		R2, #3
 			BLS		FINISH
-			LDR		R1, =(POSITION + 22)
+			LDR		R1, =(POSITION + 12)
 			BL		BATTLESHIP	
 			B		FINISH
 FINISH		
@@ -199,6 +202,10 @@ LOOP		MOV		R5, #0X0
 			BNE		LOOP
 			POP		{R0,R1,LR}
 			BX		LR
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;	5 msec delay
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DELAY_5MS	
 			PUSH 	{LR}	

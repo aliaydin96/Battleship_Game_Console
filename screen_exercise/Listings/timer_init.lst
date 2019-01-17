@@ -70,402 +70,395 @@ ARM Macro Assembler    Page 2
 
 
    25 00000000 B500            PUSH             {LR}
-   26 00000002 49D8            LDR              R1,=TIMER0_ICR ; Clear the Flag
+   26 00000002         
+   27 00000002 49DD            LDR              R1,=TIMER0_ICR ; Clear the Flag
                                                             
-   27 00000004 F04F 0001       MOV              R0,#0x01    ;
-   28 00000008 6008            STR              R0,[R1]     ; Time Out Interrup
+   28 00000004 F04F 0001       MOV              R0,#0x01    ;
+   29 00000008 6008            STR              R0,[R1]     ; Time Out Interrup
                                                             t clearead
-   29 0000000A         
-   30 0000000A F000 F85F       BL               CLEAR
-   31 0000000E F1A7 0701       SUB              R7, #1
-   32 00000012 2F14            CMP              R7, #20
-   33 00000014 D030            BEQ              TWENTY
-   34 00000016         
-   35 00000016 F000 F8A1       BL               N1
-   36 0000001A F04F 0500       MOV              R5, #0X0
-   37 0000001E F7FF FFFE       BL               TRANSMIT
-   38 00000022         
-   39 00000022 2F13            CMP              R7, #19
-   40 00000024 D031            BEQ              NINE
-   41 00000026 2F12            CMP              R7, #18
-   42 00000028 D032            BEQ              EIGHT
-   43 0000002A 2F11            CMP              R7, #17
-   44 0000002C D033            BEQ              SEVEN
-   45 0000002E 2F10            CMP              R7, #16
-   46 00000030 D034            BEQ              SIX
-   47 00000032 2F0F            CMP              R7, #15
-   48 00000034 D035            BEQ              FIVE
-   49 00000036 2F0E            CMP              R7, #14
-   50 00000038 D036            BEQ              FOUR
-   51 0000003A 2F0D            CMP              R7, #13
-   52 0000003C D037            BEQ              THREE
-   53 0000003E 2F0C            CMP              R7, #12
-   54 00000040 D038            BEQ              TWO
-   55 00000042 2F0B            CMP              R7, #11
-   56 00000044 D039            BEQ              ONE
-   57 00000046 2F0A            CMP              R7, #10
-   58 00000048 D03A            BEQ              ZERO
-   59 0000004A F000 F83F       BL               CLEAR
-   60 0000004E 2F09            CMP              R7, #9
-   61 00000050 D01B            BEQ              NINE
-   62 00000052 2F08            CMP              R7, #8
-   63 00000054 D01C            BEQ              EIGHT
-   64 00000056 2F07            CMP              R7, #7
-   65 00000058 D01D            BEQ              SEVEN
-   66 0000005A 2F06            CMP              R7, #6
-   67 0000005C D01E            BEQ              SIX
-   68 0000005E 2F05            CMP              R7, #5
-   69 00000060 D01F            BEQ              FIVE
-   70 00000062 2F04            CMP              R7, #4
-   71 00000064 D020            BEQ              FOUR
-   72 00000066 2F03            CMP              R7, #3
-   73 00000068 D021            BEQ              THREE
-   74 0000006A 2F02            CMP              R7, #2
-   75 0000006C D022            BEQ              TWO
-   76 0000006E 2F01            CMP              R7, #1
-   77 00000070 D023            BEQ              ONE
-   78 00000072 2F00            CMP              R7, #0
-   79 00000074 D024            BEQ              ZERO
-   80 00000076 E026            B                FINISH
-   81 00000078         
+   30 0000000A         
+   31 0000000A F000 F868       BL               CLEAR
+   32 0000000E F1A7 0701       SUB              R7, #1
+   33 00000012 2F14            CMP              R7, #20
+   34 00000014 D058            BEQ              TWENTY
+   35 00000016         
+   36 00000016 2F09            CMP              R7, #9
+   37 00000018 BF88 F000 
+              F8A8             BLHI             N1
+   38 0000001E F04F 0500       MOV              R5, #0X0
+   39 00000022 F7FF FFFE       BL               TRANSMIT
+   40 00000026         
+   41 00000026 2F13            CMP              R7, #19
+   42 00000028 BF08 F000 
+              F960             BLEQ             N9
+   43 0000002E 2F12            CMP              R7, #18
+   44 00000030 BF08 F000 
+              F944             BLEQ             N8
+   45 00000036 2F11            CMP              R7, #17
+   46 00000038 BF08 F000 
+              F928             BLEQ             N7
+   47 0000003E 2F10            CMP              R7, #16
+   48 00000040 BF08 F000 
+              F90C             BLEQ             N6
+   49 00000046 2F0F            CMP              R7, #15
+   50 00000048 BF08 F000 
+              F8F0             BLEQ             N5
+   51 0000004E 2F0E            CMP              R7, #14
+   52 00000050 BF08 F000 
+              F8D4             BLEQ             N4
+   53 00000056 2F0D            CMP              R7, #13
+   54 00000058 BF08 F000 
+              F8B8             BLEQ             N3
+   55 0000005E 2F0C            CMP              R7, #12
+   56 00000060 BF08 F000 
+              F89C             BLEQ             N2
+   57 00000066 2F0B            CMP              R7, #11
+   58 00000068 BF08 F000 
+              F880             BLEQ             N1
+   59 0000006E 2F0A            CMP              R7, #10
+   60 00000070 BF08 F000 
+              F864             BLEQ             N0
+   61 00000076 2F09            CMP              R7, #9
+   62 00000078 BF08 F000 
+              F938             BLEQ             N9
+   63 0000007E 2F08            CMP              R7, #8
+   64 00000080 BF08 F000 
+              F91C             BLEQ             N8
+   65 00000086 2F07            CMP              R7, #7
+   66 00000088 BF08 F000 
+              F900             BLEQ             N7
+   67 0000008E 2F06            CMP              R7, #6
 
 
 
 ARM Macro Assembler    Page 3 
 
 
-   82 00000078         TWENTY
-   83 00000078 F000 F888       BL               N2
-   84 0000007C F04F 0500       MOV              R5, #0X0
-   85 00000080 F7FF FFFE       BL               TRANSMIT
-   86 00000084 F000 F852       BL               N0
-   87 00000088 E01D            B                FINISH
-   88 0000008A F000 F927 
-                       NINE    BL               N9
-   89 0000008E E01A            B                FINISH
-   90 00000090 F000 F90C 
-                       EIGHT   BL               N8
-   91 00000094 E017            B                FINISH
-   92 00000096 F000 F8F1 
-                       SEVEN   BL               N7
-   93 0000009A E014            B                FINISH
-   94 0000009C F000 F8D6 
-                       SIX     BL               N6
-   95 000000A0 E011            B                FINISH
-   96 000000A2 F000 F8BB 
-                       FIVE    BL               N5
-   97 000000A6 E00E            B                FINISH
-   98 000000A8 F000 F8A0 
-                       FOUR    BL               N4
-   99 000000AC E00B            B                FINISH
-  100 000000AE F000 F885 
-                       THREE   BL               N3
-  101 000000B2 E008            B                FINISH
-  102 000000B4 F000 F86A 
-                       TWO     BL               N2
-  103 000000B8 E005            B                FINISH
-  104 000000BA F000 F84F 
-                       ONE     BL               N1
-  105 000000BE E002            B                FINISH
-  106 000000C0 F000 F834 
-                       ZERO    BL               N0
-  107 000000C4 E7FF            B                FINISH
-  108 000000C6 F85D EB04 
+   68 00000090 BF08 F000 
+              F8E4             BLEQ             N6
+   69 00000096 2F05            CMP              R7, #5
+   70 00000098 BF08 F000 
+              F8C8             BLEQ             N5
+   71 0000009E 2F04            CMP              R7, #4
+   72 000000A0 BF08 F000 
+              F8AC             BLEQ             N4
+   73 000000A6 2F03            CMP              R7, #3
+   74 000000A8 BF08 F000 
+              F890             BLEQ             N3
+   75 000000AE 2F02            CMP              R7, #2
+   76 000000B0 BF08 F000 
+              F874             BLEQ             N2
+   77 000000B6 2F01            CMP              R7, #1
+   78 000000B8 BF08 F000 
+              F858             BLEQ             N1
+   79 000000BE 2F00            CMP              R7, #0
+   80 000000C0 BF08 F000 
+              F83C             BLEQ             N0
+   81 000000C6         
+   82 000000C6 E007            B                FINISH
+   83 000000C8         
+   84 000000C8         TWENTY
+   85 000000C8 F000 F869       BL               N2
+   86 000000CC F04F 0500       MOV              R5, #0X0
+   87 000000D0 F7FF FFFE       BL               TRANSMIT
+   88 000000D4 F000 F833       BL               N0
+   89 000000D8         
+   90 000000D8 F85D EB04 
                        FINISH  POP              {LR}
-  109 000000CA 4770            BX               LR
-  110 000000CC         
-  111 000000CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  112 000000CC         ;;;;; CLEAR 14X8 BOX BEGINNING
-  113 000000CC         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  114 000000CC B500    CLEAR   PUSH             {LR}
-  115 000000CE 49A6            LDR              R1,=PORTA_DATA
-  116 000000D0 6808            LDR              R0,[R1]
-  117 000000D2 F020 0040       BIC              R0,#0x40
-  118 000000D6 6008            STR              R0,[R1]
-  119 000000D8         
-  120 000000D8 F04F 05C7       MOV              R5, #0xC7
-  121 000000DC F7FF FFFE       BL               TRANSMIT
-  122 000000E0 F04F 0540       MOV              R5, #0X40
-  123 000000E4 F7FF FFFE       BL               TRANSMIT
-  124 000000E8         
-  125 000000E8 499F            LDR              R1,=PORTA_DATA
-  126 000000EA 6808            LDR              R0,[R1]
-  127 000000EC F040 0040       ORR              R0,#0x40
-  128 000000F0 6008            STR              R0,[R1]
-  129 000000F2         
+   91 000000DC 4770            BX               LR
+   92 000000DE         
+   93 000000DE         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   94 000000DE         ;;;;; CLEAR 14X8 BOX BEGINNING
+   95 000000DE         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   96 000000DE B500    CLEAR   PUSH             {LR}
+   97 000000E0 49A6            LDR              R1,=PORTA_DATA
+   98 000000E2 6808            LDR              R0,[R1]
+   99 000000E4 F020 0040       BIC              R0,#0x40
+  100 000000E8 6008            STR              R0,[R1]
+  101 000000EA         
+  102 000000EA F04F 05C7       MOV              R5, #0xC7
+  103 000000EE F7FF FFFE       BL               TRANSMIT
+  104 000000F2 F04F 0540       MOV              R5, #0X40
+  105 000000F6 F7FF FFFE       BL               TRANSMIT
+  106 000000FA         
+  107 000000FA 49A0            LDR              R1,=PORTA_DATA
+  108 000000FC 6808            LDR              R0,[R1]
+  109 000000FE F040 0040       ORR              R0,#0x40
+  110 00000102 6008            STR              R0,[R1]
+  111 00000104         
+  112 00000104         
+  113 00000104 F04F 040D       MOV              R4, #13
+  114 00000108 F04F 0500 
+                       LOOP    MOV              R5, #0X0    ;CLEAR NUMBER PLACE
+                                                            
+  115 0000010C F7FF FFFE       BL               TRANSMIT
+  116 00000110 3C01            SUBS             R4, #1
 
 
 
 ARM Macro Assembler    Page 4 
 
 
-  130 000000F2         
-  131 000000F2 F04F 040B       MOV              R4, #11
-  132 000000F6 F04F 0500 
-                       LOOP    MOV              R5, #0X0    ;CLEAR NUMBER PLACE
-                                                            
-  133 000000FA F7FF FFFE       BL               TRANSMIT
-  134 000000FE 3C01            SUBS             R4, #1
-  135 00000100 D1F9            BNE              LOOP
-  136 00000102         
-  137 00000102 4999            LDR              R1,=PORTA_DATA
-  138 00000104 6808            LDR              R0,[R1]
-  139 00000106 F020 0040       BIC              R0,#0x40
-  140 0000010A 6008            STR              R0,[R1]
-  141 0000010C         
-  142 0000010C F04F 05C7       MOV              R5, #0xC7
-  143 00000110 F7FF FFFE       BL               TRANSMIT
-  144 00000114 F04F 0540       MOV              R5, #0X40
-  145 00000118 F7FF FFFE       BL               TRANSMIT
-  146 0000011C         
-  147 0000011C 4992            LDR              R1,=PORTA_DATA
-  148 0000011E 6808            LDR              R0,[R1]
-  149 00000120 F040 0040       ORR              R0,#0x40
-  150 00000124 6008            STR              R0,[R1]
-  151 00000126 F85D EB04       POP              {LR}
-  152 0000012A 4770            BX               LR
-  153 0000012C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  154 0000012C         ;;;;; CLEAR 14X8 BOX FINISH
-  155 0000012C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  156 0000012C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  157 0000012C         ;;;;; NUMBERS 0-9 BEGINNING
-  158 0000012C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  159 0000012C B500    N0      PUSH             {LR}
-  160 0000012E F04F 053E       MOV              R5, #0X3E
-  161 00000132 F7FF FFFE       BL               TRANSMIT
-  162 00000136 F04F 0551       MOV              R5, #0X51
-  163 0000013A F7FF FFFE       BL               TRANSMIT
-  164 0000013E F04F 0549       MOV              R5, #0X49
-  165 00000142 F7FF FFFE       BL               TRANSMIT
-  166 00000146 F04F 0545       MOV              R5, #0X45
-  167 0000014A F7FF FFFE       BL               TRANSMIT
-  168 0000014E F04F 053E       MOV              R5, #0X3E
-  169 00000152 F7FF FFFE       BL               TRANSMIT
-  170 00000156 F85D EB04       POP              {LR}
-  171 0000015A 4770            BX               LR
-  172 0000015C         
-  173 0000015C B500    N1      PUSH             {LR}
-  174 0000015E F04F 0500       MOV              R5, #0X0
-  175 00000162 F7FF FFFE       BL               TRANSMIT
-  176 00000166 F04F 0542       MOV              R5, #0X42
-  177 0000016A F7FF FFFE       BL               TRANSMIT
-  178 0000016E F04F 057F       MOV              R5, #0X7F
-  179 00000172 F7FF FFFE       BL               TRANSMIT
-  180 00000176 F04F 0540       MOV              R5, #0X40
-  181 0000017A F7FF FFFE       BL               TRANSMIT
-  182 0000017E F04F 0500       MOV              R5, #0X0
-  183 00000182 F7FF FFFE       BL               TRANSMIT
-  184 00000186 F85D EB04       POP              {LR}
-  185 0000018A 4770            BX               LR
-  186 0000018C         
+  117 00000112 D1F9            BNE              LOOP
+  118 00000114         
+  119 00000114 4999            LDR              R1,=PORTA_DATA
+  120 00000116 6808            LDR              R0,[R1]
+  121 00000118 F020 0040       BIC              R0,#0x40
+  122 0000011C 6008            STR              R0,[R1]
+  123 0000011E         
+  124 0000011E F04F 05C7       MOV              R5, #0xC7
+  125 00000122 F7FF FFFE       BL               TRANSMIT
+  126 00000126 F04F 0540       MOV              R5, #0X40
+  127 0000012A F7FF FFFE       BL               TRANSMIT
+  128 0000012E         
+  129 0000012E 4993            LDR              R1,=PORTA_DATA
+  130 00000130 6808            LDR              R0,[R1]
+  131 00000132 F040 0040       ORR              R0,#0x40
+  132 00000136 6008            STR              R0,[R1]
+  133 00000138 F85D EB04       POP              {LR}
+  134 0000013C 4770            BX               LR
+  135 0000013E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  136 0000013E         ;;;;; CLEAR 14X8 BOX FINISH
+  137 0000013E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  138 0000013E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  139 0000013E         ;;;;; NUMBERS 0-9 BEGINNING
+  140 0000013E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  141 0000013E B500    N0      PUSH             {LR}
+  142 00000140 F04F 053E       MOV              R5, #0X3E
+  143 00000144 F7FF FFFE       BL               TRANSMIT
+  144 00000148 F04F 0551       MOV              R5, #0X51
+  145 0000014C F7FF FFFE       BL               TRANSMIT
+  146 00000150 F04F 0549       MOV              R5, #0X49
+  147 00000154 F7FF FFFE       BL               TRANSMIT
+  148 00000158 F04F 0545       MOV              R5, #0X45
+  149 0000015C F7FF FFFE       BL               TRANSMIT
+  150 00000160 F04F 053E       MOV              R5, #0X3E
+  151 00000164 F7FF FFFE       BL               TRANSMIT
+  152 00000168 F85D EB04       POP              {LR}
+  153 0000016C 4770            BX               LR
+  154 0000016E         
+  155 0000016E B500    N1      PUSH             {LR}
+  156 00000170 F04F 0500       MOV              R5, #0X0
+  157 00000174 F7FF FFFE       BL               TRANSMIT
+  158 00000178 F04F 0542       MOV              R5, #0X42
+  159 0000017C F7FF FFFE       BL               TRANSMIT
+  160 00000180 F04F 057F       MOV              R5, #0X7F
+  161 00000184 F7FF FFFE       BL               TRANSMIT
+  162 00000188 F04F 0540       MOV              R5, #0X40
+  163 0000018C F7FF FFFE       BL               TRANSMIT
+  164 00000190 F04F 0500       MOV              R5, #0X0
+  165 00000194 F7FF FFFE       BL               TRANSMIT
+  166 00000198 F85D EB04       POP              {LR}
+  167 0000019C 4770            BX               LR
+  168 0000019E         
+  169 0000019E B500    N2      PUSH             {LR}
+  170 000001A0 F04F 0542       MOV              R5, #0X42
+  171 000001A4 F7FF FFFE       BL               TRANSMIT
+  172 000001A8 F04F 0561       MOV              R5, #0X61
+  173 000001AC F7FF FFFE       BL               TRANSMIT
+  174 000001B0 F04F 0551       MOV              R5, #0X51
+  175 000001B4 F7FF FFFE       BL               TRANSMIT
 
 
 
 ARM Macro Assembler    Page 5 
 
 
-  187 0000018C B500    N2      PUSH             {LR}
-  188 0000018E F04F 0542       MOV              R5, #0X42
-  189 00000192 F7FF FFFE       BL               TRANSMIT
-  190 00000196 F04F 0561       MOV              R5, #0X61
-  191 0000019A F7FF FFFE       BL               TRANSMIT
-  192 0000019E F04F 0551       MOV              R5, #0X51
-  193 000001A2 F7FF FFFE       BL               TRANSMIT
-  194 000001A6 F04F 0549       MOV              R5, #0X49
-  195 000001AA F7FF FFFE       BL               TRANSMIT
-  196 000001AE F04F 0546       MOV              R5, #0X46
-  197 000001B2 F7FF FFFE       BL               TRANSMIT
-  198 000001B6 F85D EB04       POP              {LR}
-  199 000001BA 4770            BX               LR
-  200 000001BC         
-  201 000001BC B500    N3      PUSH             {LR}
-  202 000001BE F04F 0521       MOV              R5, #0X21
-  203 000001C2 F7FF FFFE       BL               TRANSMIT
-  204 000001C6 F04F 0541       MOV              R5, #0X41
-  205 000001CA F7FF FFFE       BL               TRANSMIT
-  206 000001CE F04F 0545       MOV              R5, #0X45
-  207 000001D2 F7FF FFFE       BL               TRANSMIT
-  208 000001D6 F04F 054B       MOV              R5, #0X4B
-  209 000001DA F7FF FFFE       BL               TRANSMIT
-  210 000001DE F04F 0531       MOV              R5, #0X31
-  211 000001E2 F7FF FFFE       BL               TRANSMIT
-  212 000001E6 F85D EB04       POP              {LR}
-  213 000001EA 4770            BX               LR
-  214 000001EC         
-  215 000001EC B500    N4      PUSH             {LR}
-  216 000001EE F04F 0518       MOV              R5, #0X18
-  217 000001F2 F7FF FFFE       BL               TRANSMIT
-  218 000001F6 F04F 0514       MOV              R5, #0X14
-  219 000001FA F7FF FFFE       BL               TRANSMIT
-  220 000001FE F04F 0512       MOV              R5, #0X12
-  221 00000202 F7FF FFFE       BL               TRANSMIT
-  222 00000206 F04F 057F       MOV              R5, #0X7F
-  223 0000020A F7FF FFFE       BL               TRANSMIT
-  224 0000020E F04F 0510       MOV              R5, #0X10
-  225 00000212 F7FF FFFE       BL               TRANSMIT
-  226 00000216 F85D EB04       POP              {LR}
-  227 0000021A 4770            BX               LR
-  228 0000021C         
-  229 0000021C B500    N5      PUSH             {LR}
-  230 0000021E F04F 0527       MOV              R5, #0X27
-  231 00000222 F7FF FFFE       BL               TRANSMIT
-  232 00000226 F04F 0545       MOV              R5, #0X45
-  233 0000022A F7FF FFFE       BL               TRANSMIT
-  234 0000022E F04F 0545       MOV              R5, #0X45
-  235 00000232 F7FF FFFE       BL               TRANSMIT
-  236 00000236 F04F 0545       MOV              R5, #0X45
-  237 0000023A F7FF FFFE       BL               TRANSMIT
-  238 0000023E F04F 0539       MOV              R5, #0X39
-  239 00000242 F7FF FFFE       BL               TRANSMIT
-  240 00000246 F85D EB04       POP              {LR}
-  241 0000024A 4770            BX               LR
-  242 0000024C         
-  243 0000024C B500    N6      PUSH             {LR}
-  244 0000024E F04F 053C       MOV              R5, #0X3C
-  245 00000252 F7FF FFFE       BL               TRANSMIT
+  176 000001B8 F04F 0549       MOV              R5, #0X49
+  177 000001BC F7FF FFFE       BL               TRANSMIT
+  178 000001C0 F04F 0546       MOV              R5, #0X46
+  179 000001C4 F7FF FFFE       BL               TRANSMIT
+  180 000001C8 F85D EB04       POP              {LR}
+  181 000001CC 4770            BX               LR
+  182 000001CE         
+  183 000001CE B500    N3      PUSH             {LR}
+  184 000001D0 F04F 0521       MOV              R5, #0X21
+  185 000001D4 F7FF FFFE       BL               TRANSMIT
+  186 000001D8 F04F 0541       MOV              R5, #0X41
+  187 000001DC F7FF FFFE       BL               TRANSMIT
+  188 000001E0 F04F 0545       MOV              R5, #0X45
+  189 000001E4 F7FF FFFE       BL               TRANSMIT
+  190 000001E8 F04F 054B       MOV              R5, #0X4B
+  191 000001EC F7FF FFFE       BL               TRANSMIT
+  192 000001F0 F04F 0531       MOV              R5, #0X31
+  193 000001F4 F7FF FFFE       BL               TRANSMIT
+  194 000001F8 F85D EB04       POP              {LR}
+  195 000001FC 4770            BX               LR
+  196 000001FE         
+  197 000001FE B500    N4      PUSH             {LR}
+  198 00000200 F04F 0518       MOV              R5, #0X18
+  199 00000204 F7FF FFFE       BL               TRANSMIT
+  200 00000208 F04F 0514       MOV              R5, #0X14
+  201 0000020C F7FF FFFE       BL               TRANSMIT
+  202 00000210 F04F 0512       MOV              R5, #0X12
+  203 00000214 F7FF FFFE       BL               TRANSMIT
+  204 00000218 F04F 057F       MOV              R5, #0X7F
+  205 0000021C F7FF FFFE       BL               TRANSMIT
+  206 00000220 F04F 0510       MOV              R5, #0X10
+  207 00000224 F7FF FFFE       BL               TRANSMIT
+  208 00000228 F85D EB04       POP              {LR}
+  209 0000022C 4770            BX               LR
+  210 0000022E         
+  211 0000022E B500    N5      PUSH             {LR}
+  212 00000230 F04F 0527       MOV              R5, #0X27
+  213 00000234 F7FF FFFE       BL               TRANSMIT
+  214 00000238 F04F 0545       MOV              R5, #0X45
+  215 0000023C F7FF FFFE       BL               TRANSMIT
+  216 00000240 F04F 0545       MOV              R5, #0X45
+  217 00000244 F7FF FFFE       BL               TRANSMIT
+  218 00000248 F04F 0545       MOV              R5, #0X45
+  219 0000024C F7FF FFFE       BL               TRANSMIT
+  220 00000250 F04F 0539       MOV              R5, #0X39
+  221 00000254 F7FF FFFE       BL               TRANSMIT
+  222 00000258 F85D EB04       POP              {LR}
+  223 0000025C 4770            BX               LR
+  224 0000025E         
+  225 0000025E B500    N6      PUSH             {LR}
+  226 00000260 F04F 053C       MOV              R5, #0X3C
+  227 00000264 F7FF FFFE       BL               TRANSMIT
+  228 00000268 F04F 054A       MOV              R5, #0X4A
+  229 0000026C F7FF FFFE       BL               TRANSMIT
+  230 00000270 F04F 0549       MOV              R5, #0X49
+  231 00000274 F7FF FFFE       BL               TRANSMIT
+  232 00000278 F04F 0549       MOV              R5, #0X49
+  233 0000027C F7FF FFFE       BL               TRANSMIT
+  234 00000280 F04F 0530       MOV              R5, #0X30
 
 
 
 ARM Macro Assembler    Page 6 
 
 
-  246 00000256 F04F 054A       MOV              R5, #0X4A
-  247 0000025A F7FF FFFE       BL               TRANSMIT
-  248 0000025E F04F 0549       MOV              R5, #0X49
-  249 00000262 F7FF FFFE       BL               TRANSMIT
-  250 00000266 F04F 0549       MOV              R5, #0X49
-  251 0000026A F7FF FFFE       BL               TRANSMIT
-  252 0000026E F04F 0530       MOV              R5, #0X30
-  253 00000272 F7FF FFFE       BL               TRANSMIT
-  254 00000276 F85D EB04       POP              {LR}
-  255 0000027A 4770            BX               LR
-  256 0000027C         
-  257 0000027C B500    N7      PUSH             {LR}
-  258 0000027E F04F 0501       MOV              R5, #0X1
-  259 00000282 F7FF FFFE       BL               TRANSMIT
-  260 00000286 F04F 0571       MOV              R5, #0X71
-  261 0000028A F7FF FFFE       BL               TRANSMIT
-  262 0000028E F04F 0509       MOV              R5, #0X9
-  263 00000292 F7FF FFFE       BL               TRANSMIT
-  264 00000296 F04F 0505       MOV              R5, #0X5
-  265 0000029A F7FF FFFE       BL               TRANSMIT
-  266 0000029E F04F 0503       MOV              R5, #0X3
-  267 000002A2 F7FF FFFE       BL               TRANSMIT
-  268 000002A6 F85D EB04       POP              {LR}
-  269 000002AA 4770            BX               LR
-  270 000002AC         
-  271 000002AC B500    N8      PUSH             {LR}
-  272 000002AE F04F 0536       MOV              R5, #0X36
-  273 000002B2 F7FF FFFE       BL               TRANSMIT
-  274 000002B6 F04F 0549       MOV              R5, #0X49
-  275 000002BA F7FF FFFE       BL               TRANSMIT
-  276 000002BE F04F 0549       MOV              R5, #0X49
-  277 000002C2 F7FF FFFE       BL               TRANSMIT
-  278 000002C6 F04F 0549       MOV              R5, #0X49
-  279 000002CA F7FF FFFE       BL               TRANSMIT
-  280 000002CE F04F 0536       MOV              R5, #0X36
-  281 000002D2 F7FF FFFE       BL               TRANSMIT
-  282 000002D6 F85D EB04       POP              {LR}
-  283 000002DA 4770            BX               LR
-  284 000002DC         
-  285 000002DC B500    N9      PUSH             {LR}
-  286 000002DE F04F 0506       MOV              R5, #0X6
-  287 000002E2 F7FF FFFE       BL               TRANSMIT
-  288 000002E6 F04F 0549       MOV              R5, #0X49
-  289 000002EA F7FF FFFE       BL               TRANSMIT
-  290 000002EE F04F 0549       MOV              R5, #0X49
-  291 000002F2 F7FF FFFE       BL               TRANSMIT
-  292 000002F6 F04F 0529       MOV              R5, #0X29
-  293 000002FA F7FF FFFE       BL               TRANSMIT
-  294 000002FE F04F 051E       MOV              R5, #0X1E
-  295 00000302 F7FF FFFE       BL               TRANSMIT
-  296 00000306 F85D EB04       POP              {LR}
-  297 0000030A 4770            BX               LR
-  298 0000030C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  299 0000030C         ;;;;; NUMBERS 0-9 FINISH
-  300 0000030C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   
-  301 0000030C                 ENDP
-  302 0000030C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  303 0000030C         ;;;;; TIMER INITIALIZE
-  304 0000030C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  235 00000284 F7FF FFFE       BL               TRANSMIT
+  236 00000288 F85D EB04       POP              {LR}
+  237 0000028C 4770            BX               LR
+  238 0000028E         
+  239 0000028E B500    N7      PUSH             {LR}
+  240 00000290 F04F 0501       MOV              R5, #0X1
+  241 00000294 F7FF FFFE       BL               TRANSMIT
+  242 00000298 F04F 0571       MOV              R5, #0X71
+  243 0000029C F7FF FFFE       BL               TRANSMIT
+  244 000002A0 F04F 0509       MOV              R5, #0X9
+  245 000002A4 F7FF FFFE       BL               TRANSMIT
+  246 000002A8 F04F 0505       MOV              R5, #0X5
+  247 000002AC F7FF FFFE       BL               TRANSMIT
+  248 000002B0 F04F 0503       MOV              R5, #0X3
+  249 000002B4 F7FF FFFE       BL               TRANSMIT
+  250 000002B8 F85D EB04       POP              {LR}
+  251 000002BC 4770            BX               LR
+  252 000002BE         
+  253 000002BE B500    N8      PUSH             {LR}
+  254 000002C0 F04F 0536       MOV              R5, #0X36
+  255 000002C4 F7FF FFFE       BL               TRANSMIT
+  256 000002C8 F04F 0549       MOV              R5, #0X49
+  257 000002CC F7FF FFFE       BL               TRANSMIT
+  258 000002D0 F04F 0549       MOV              R5, #0X49
+  259 000002D4 F7FF FFFE       BL               TRANSMIT
+  260 000002D8 F04F 0549       MOV              R5, #0X49
+  261 000002DC F7FF FFFE       BL               TRANSMIT
+  262 000002E0 F04F 0536       MOV              R5, #0X36
+  263 000002E4 F7FF FFFE       BL               TRANSMIT
+  264 000002E8 F85D EB04       POP              {LR}
+  265 000002EC 4770            BX               LR
+  266 000002EE         
+  267 000002EE B500    N9      PUSH             {LR}
+  268 000002F0 F04F 0506       MOV              R5, #0X6
+  269 000002F4 F7FF FFFE       BL               TRANSMIT
+  270 000002F8 F04F 0549       MOV              R5, #0X49
+  271 000002FC F7FF FFFE       BL               TRANSMIT
+  272 00000300 F04F 0549       MOV              R5, #0X49
+  273 00000304 F7FF FFFE       BL               TRANSMIT
+  274 00000308 F04F 0529       MOV              R5, #0X29
+  275 0000030C F7FF FFFE       BL               TRANSMIT
+  276 00000310 F04F 051E       MOV              R5, #0X1E
+  277 00000314 F7FF FFFE       BL               TRANSMIT
+  278 00000318 F85D EB04       POP              {LR}
+  279 0000031C 4770            BX               LR
+  280 0000031E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  281 0000031E         ;;;;; NUMBERS 0-9 FINISH
+  282 0000031E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   
+  283 0000031E                 ENDP
+  284 0000031E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  285 0000031E         ;;;;; TIMER INITIALIZE
+  286 0000031E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  287 0000031E         TIMER_INIT
+                               PROC
+  288 0000031E 4918            LDR              R1, =SYSCTL_RCGCTIMER 
+                                                            ; Start Timer0
+  289 00000320 680A            LDR              R2, [R1]
+  290 00000322 F042 0201       ORR              R2, R2, 0X01
+  291 00000326 600A            STR              R2, [R1]
 
 
 
 ARM Macro Assembler    Page 7 
 
 
-  305 0000030C         TIMER_INIT
-                               PROC
-  306 0000030C 4917            LDR              R1, =SYSCTL_RCGCTIMER 
-                                                            ; Start Timer0
-  307 0000030E 680A            LDR              R2, [R1]
-  308 00000310 F042 0201       ORR              R2, R2, #0x01
-  309 00000314 600A            STR              R2, [R1]
-  310 00000316 BF00            NOP                          ; allow clock to se
+  292 00000328 BF00            NOP                          ; allow clock to se
                                                             ttle
-  311 00000318 BF00            NOP
-  312 0000031A BF00            NOP
-  313 0000031C 4914            LDR              R1, =TIMER0_CTL ; disable timer
+  293 0000032A BF00            NOP
+  294 0000032C BF00            NOP
+  295 0000032E 4915            LDR              R1, =TIMER0_CTL ; disable timer
                                                              during setup LDR R
                                                             2, [R1]
-  314 0000031E F022 0201       BIC              R2, R2, #0x01
-  315 00000322 600A            STR              R2, [R1]
-  316 00000324 4913            LDR              R1, =TIMER0_CFG 
+  296 00000330 F022 0201       BIC              R2, R2, #0x01
+  297 00000334 600A            STR              R2, [R1]
+  298 00000336 4914            LDR              R1, =TIMER0_CFG 
                                                             ; set 32 bit mode
-  317 00000326 F04F 0200       MOV              R2, #0x00
-  318 0000032A 600A            STR              R2, [R1]
-  319 0000032C 4912            LDR              R1, =TIMER0_TAMR
-  320 0000032E F04F 0202       MOV              R2, #0x02   ; set to periodic, 
+  299 00000338 F04F 0200       MOV              R2, #0x00
+  300 0000033C 600A            STR              R2, [R1]
+  301 0000033E 4913            LDR              R1, =TIMER0_TAMR
+  302 00000340 F04F 0202       MOV              R2, #0x02   ; set to periodic, 
                                                             count down
-  321 00000332 600A            STR              R2, [R1]
-  322 00000334 4911            LDR              R1, =TIMER0_TAILR ; initialize 
+  303 00000344 600A            STR              R2, [R1]
+  304 00000346 4912            LDR              R1, =TIMER0_TAILR ; initialize 
                                                             match clocks
-  323 00000336 4A12            LDR              R2, =15999999 ;1 SEC 
-  324 00000338 600A            STR              R2, [R1]
-  325 0000033A 4912            LDR              R1, =TIMER0_IMR ; enable timeou
+  305 00000348 4A12            LDR              R2, =15999999 ;1 SEC 
+  306 0000034A 600A            STR              R2, [R1]
+  307 0000034C 4912            LDR              R1, =TIMER0_IMR ; enable timeou
                                                             t interrupt
-  326 0000033C F04F 0201       MOV              R2, #0x01
-  327 00000340 600A            STR              R2, [R1]
-  328 00000342         ; Configure interrupt priorities
-  329 00000342         ; Timer0A is interrupt #19.
-  330 00000342         ; Interrupts 16-19 are handled by NVIC register PRI4.
-  331 00000342         ; Interrupt 19 is controlled by bits 31:29 of PRI4.
-  332 00000342         ; set NVIC interrupt 19 to priority 2
-  333 00000342 4911            LDR              R1, =NVIC_PRI4
-  334 00000344 680A            LDR              R2, [R1]
-  335 00000346 F022 427F       AND              R2, R2, #0x00FFFFFF ; clear int
+  308 0000034E F04F 0201       MOV              R2, #0x01
+  309 00000352 600A            STR              R2, [R1]
+  310 00000354         ; Configure interrupt priorities
+  311 00000354         ; Timer0A is interrupt #19.
+  312 00000354         ; Interrupts 16-19 are handled by NVIC register PRI4.
+  313 00000354         ; Interrupt 19 is controlled by bits 31:29 of PRI4.
+  314 00000354         ; set NVIC interrupt 19 to priority 2
+  315 00000354 4911            LDR              R1, =NVIC_PRI4
+  316 00000356 680A            LDR              R2, [R1]
+  317 00000358 F022 427F       AND              R2, R2, #0x00FFFFFF ; clear int
                                                             errupt 19 priority
-  336 0000034A F042 4280       ORR              R2, R2, #0x40000000 ; set inter
+  318 0000035C F042 4280       ORR              R2, R2, #0x40000000 ; set inter
                                                             rupt 19 priority to
                                                              2
-  337 0000034E 600A            STR              R2, [R1]
-  338 00000350         ; NVIC has to be enabled
-  339 00000350         ; Interrupts 0-31 are handled by NVIC register EN0
-  340 00000350         ; Interrupt 19 is controlled by bit 19
-  341 00000350         ; enable interrupt 19 in NVIC
-  342 00000350 490E            LDR              R1, =NVIC_EN0
-  343 00000352 F2C0 0208       MOVT             R2, #0x08   ; set bit 19 to ena
-                                                            ble interrupt 19
-  344 00000356 600A            STR              R2, [R1]
-  345 00000358         ; Enable timer
-  346 00000358 4905            LDR              R1, =TIMER0_CTL
-  347 0000035A 680A            LDR              R2, [R1]
-  348 0000035C F042 0203       ORR              R2, R2, #0x03 ; set bit0 to ena
+  319 00000360 600A            STR              R2, [R1]
+  320 00000362         ; NVIC has to be enabled
+  321 00000362         ; Interrupts 0-31 are handled by NVIC register EN0
+  322 00000362         ; Interrupt 19 is controlled by bit 19
+  323 00000362         ; enable interrupt 19 in NVIC
+  324 00000362 490F            LDR              R1, =NVIC_EN0
+  325 00000364 F44F 2200       MOV              R2, #0x080000 ; set bit 19 to e
+                                                            nable interrupt 19
+  326 00000368 600A            STR              R2, [R1]
+  327 0000036A         ; Enable timer
+  328 0000036A 4906            LDR              R1, =TIMER0_CTL
+  329 0000036C 680A            LDR              R2, [R1]
+  330 0000036E F042 0203       ORR              R2, R2, #0x03 ; set bit0 to ena
                                                             ble
-  349 00000360 600A            STR              R2, [R1]    ; and bit 1 to stal
+  331 00000372 600A            STR              R2, [R1]    ; and bit 1 to stal
+                                                            l on debug   
+  332 00000374         
+  333 00000374 4770            BX               LR
+  334 00000376                 ENDP
+  335 00000376 00 00           ALIGN
+  336 00000378                 END
+              40030024 
 
 
 
 ARM Macro Assembler    Page 8 
 
 
-                                                            l on debug   
-  350 00000362         
-  351 00000362 4770            BX               LR
-  352 00000364                 ENDP
-  353 00000364                 ALIGN
-  354 00000364                 END
-              40030024 
               400043FC 
               400FE604 
               4003000C 
@@ -488,240 +481,151 @@ MER_INIT.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-CLEAR 000000CC
+CLEAR 000000DE
 
 Symbol: CLEAR
    Definitions
-      At line 114 in file TIMER_INIT.s
+      At line 96 in file TIMER_INIT.s
    Uses
-      At line 30 in file TIMER_INIT.s
-      At line 59 in file TIMER_INIT.s
-
-EIGHT 00000090
-
-Symbol: EIGHT
-   Definitions
-      At line 90 in file TIMER_INIT.s
-   Uses
-      At line 42 in file TIMER_INIT.s
-      At line 63 in file TIMER_INIT.s
-
-FINISH 000000C6
+      At line 31 in file TIMER_INIT.s
+Comment: CLEAR used once
+FINISH 000000D8
 
 Symbol: FINISH
    Definitions
-      At line 108 in file TIMER_INIT.s
+      At line 90 in file TIMER_INIT.s
    Uses
-      At line 80 in file TIMER_INIT.s
-      At line 87 in file TIMER_INIT.s
-      At line 89 in file TIMER_INIT.s
-      At line 91 in file TIMER_INIT.s
-      At line 93 in file TIMER_INIT.s
-      At line 95 in file TIMER_INIT.s
-      At line 97 in file TIMER_INIT.s
-      At line 99 in file TIMER_INIT.s
-      At line 101 in file TIMER_INIT.s
-      At line 103 in file TIMER_INIT.s
-      At line 105 in file TIMER_INIT.s
-      At line 107 in file TIMER_INIT.s
-
-FIVE 000000A2
-
-Symbol: FIVE
-   Definitions
-      At line 96 in file TIMER_INIT.s
-   Uses
-      At line 48 in file TIMER_INIT.s
-      At line 69 in file TIMER_INIT.s
-
-FOUR 000000A8
-
-Symbol: FOUR
-   Definitions
-      At line 98 in file TIMER_INIT.s
-   Uses
-      At line 50 in file TIMER_INIT.s
-      At line 71 in file TIMER_INIT.s
-
-LOOP 000000F6
+      At line 82 in file TIMER_INIT.s
+Comment: FINISH used once
+LOOP 00000108
 
 Symbol: LOOP
    Definitions
+      At line 114 in file TIMER_INIT.s
+   Uses
+      At line 117 in file TIMER_INIT.s
+Comment: LOOP used once
+N0 0000013E
+
+Symbol: N0
+   Definitions
+      At line 141 in file TIMER_INIT.s
+   Uses
+      At line 60 in file TIMER_INIT.s
+      At line 80 in file TIMER_INIT.s
+      At line 88 in file TIMER_INIT.s
+
+N1 0000016E
+
+Symbol: N1
+   Definitions
+      At line 155 in file TIMER_INIT.s
+   Uses
+      At line 37 in file TIMER_INIT.s
+      At line 58 in file TIMER_INIT.s
+      At line 78 in file TIMER_INIT.s
+
+N2 0000019E
+
+Symbol: N2
+   Definitions
+      At line 169 in file TIMER_INIT.s
+   Uses
+      At line 56 in file TIMER_INIT.s
+      At line 76 in file TIMER_INIT.s
+      At line 85 in file TIMER_INIT.s
+
+N3 000001CE
+
+Symbol: N3
+   Definitions
+      At line 183 in file TIMER_INIT.s
 
 
 
 ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 Relocatable symbols
 
-      At line 132 in file TIMER_INIT.s
    Uses
-      At line 135 in file TIMER_INIT.s
-Comment: LOOP used once
-N0 0000012C
+      At line 54 in file TIMER_INIT.s
+      At line 74 in file TIMER_INIT.s
 
-Symbol: N0
-   Definitions
-      At line 159 in file TIMER_INIT.s
-   Uses
-      At line 86 in file TIMER_INIT.s
-      At line 106 in file TIMER_INIT.s
-
-N1 0000015C
-
-Symbol: N1
-   Definitions
-      At line 173 in file TIMER_INIT.s
-   Uses
-      At line 35 in file TIMER_INIT.s
-      At line 104 in file TIMER_INIT.s
-
-N2 0000018C
-
-Symbol: N2
-   Definitions
-      At line 187 in file TIMER_INIT.s
-   Uses
-      At line 83 in file TIMER_INIT.s
-      At line 102 in file TIMER_INIT.s
-
-N3 000001BC
-
-Symbol: N3
-   Definitions
-      At line 201 in file TIMER_INIT.s
-   Uses
-      At line 100 in file TIMER_INIT.s
-Comment: N3 used once
-N4 000001EC
+N4 000001FE
 
 Symbol: N4
    Definitions
-      At line 215 in file TIMER_INIT.s
+      At line 197 in file TIMER_INIT.s
    Uses
-      At line 98 in file TIMER_INIT.s
-Comment: N4 used once
-N5 0000021C
+      At line 52 in file TIMER_INIT.s
+      At line 72 in file TIMER_INIT.s
+
+N5 0000022E
 
 Symbol: N5
    Definitions
-      At line 229 in file TIMER_INIT.s
+      At line 211 in file TIMER_INIT.s
    Uses
-      At line 96 in file TIMER_INIT.s
-Comment: N5 used once
-N6 0000024C
+      At line 50 in file TIMER_INIT.s
+      At line 70 in file TIMER_INIT.s
+
+N6 0000025E
 
 Symbol: N6
    Definitions
+      At line 225 in file TIMER_INIT.s
+   Uses
+      At line 48 in file TIMER_INIT.s
+      At line 68 in file TIMER_INIT.s
+
+N7 0000028E
+
+Symbol: N7
+   Definitions
+      At line 239 in file TIMER_INIT.s
+   Uses
+      At line 46 in file TIMER_INIT.s
+      At line 66 in file TIMER_INIT.s
+
+N8 000002BE
+
+Symbol: N8
+   Definitions
+      At line 253 in file TIMER_INIT.s
+   Uses
+      At line 44 in file TIMER_INIT.s
+      At line 64 in file TIMER_INIT.s
+
+N9 000002EE
+
+Symbol: N9
+   Definitions
+      At line 267 in file TIMER_INIT.s
+   Uses
+      At line 42 in file TIMER_INIT.s
+      At line 62 in file TIMER_INIT.s
+
+TIMER_INIT 0000031E
 
 
 
 ARM Macro Assembler    Page 3 Alphabetic symbol ordering
 Relocatable symbols
 
-      At line 243 in file TIMER_INIT.s
-   Uses
-      At line 94 in file TIMER_INIT.s
-Comment: N6 used once
-N7 0000027C
-
-Symbol: N7
-   Definitions
-      At line 257 in file TIMER_INIT.s
-   Uses
-      At line 92 in file TIMER_INIT.s
-Comment: N7 used once
-N8 000002AC
-
-Symbol: N8
-   Definitions
-      At line 271 in file TIMER_INIT.s
-   Uses
-      At line 90 in file TIMER_INIT.s
-Comment: N8 used once
-N9 000002DC
-
-Symbol: N9
-   Definitions
-      At line 285 in file TIMER_INIT.s
-   Uses
-      At line 88 in file TIMER_INIT.s
-Comment: N9 used once
-NINE 0000008A
-
-Symbol: NINE
-   Definitions
-      At line 88 in file TIMER_INIT.s
-   Uses
-      At line 40 in file TIMER_INIT.s
-      At line 61 in file TIMER_INIT.s
-
-ONE 000000BA
-
-Symbol: ONE
-   Definitions
-      At line 104 in file TIMER_INIT.s
-   Uses
-      At line 56 in file TIMER_INIT.s
-      At line 77 in file TIMER_INIT.s
-
-SEVEN 00000096
-
-Symbol: SEVEN
-   Definitions
-      At line 92 in file TIMER_INIT.s
-   Uses
-      At line 44 in file TIMER_INIT.s
-      At line 65 in file TIMER_INIT.s
-
-SIX 0000009C
-
-Symbol: SIX
-   Definitions
-
-
-
-ARM Macro Assembler    Page 4 Alphabetic symbol ordering
-Relocatable symbols
-
-      At line 94 in file TIMER_INIT.s
-   Uses
-      At line 46 in file TIMER_INIT.s
-      At line 67 in file TIMER_INIT.s
-
-THREE 000000AE
-
-Symbol: THREE
-   Definitions
-      At line 100 in file TIMER_INIT.s
-   Uses
-      At line 52 in file TIMER_INIT.s
-      At line 73 in file TIMER_INIT.s
-
-TIMER_INIT 0000030C
 
 Symbol: TIMER_INIT
    Definitions
-      At line 305 in file TIMER_INIT.s
+      At line 287 in file TIMER_INIT.s
    Uses
       At line 21 in file TIMER_INIT.s
 Comment: TIMER_INIT used once
-TWENTY 00000078
+TWENTY 000000C8
 
 Symbol: TWENTY
    Definitions
-      At line 82 in file TIMER_INIT.s
+      At line 84 in file TIMER_INIT.s
    Uses
-      At line 33 in file TIMER_INIT.s
+      At line 34 in file TIMER_INIT.s
 Comment: TWENTY used once
-TWO 000000B4
-
-Symbol: TWO
-   Definitions
-      At line 102 in file TIMER_INIT.s
-   Uses
-      At line 54 in file TIMER_INIT.s
-      At line 75 in file TIMER_INIT.s
-
 Timer0A_Handler 00000000
 
 Symbol: Timer0A_Handler
@@ -730,30 +634,15 @@ Symbol: Timer0A_Handler
    Uses
       At line 20 in file TIMER_INIT.s
 Comment: Timer0A_Handler used once
-ZERO 000000C0
-
-Symbol: ZERO
-   Definitions
-      At line 106 in file TIMER_INIT.s
-   Uses
-      At line 58 in file TIMER_INIT.s
-      At line 79 in file TIMER_INIT.s
-
 routines 00000000
 
 Symbol: routines
-
-
-
-ARM Macro Assembler    Page 5 Alphabetic symbol ordering
-Relocatable symbols
-
    Definitions
       At line 17 in file TIMER_INIT.s
    Uses
       None
 Comment: routines unused
-27 symbols
+17 symbols
 
 
 
@@ -766,7 +655,7 @@ Symbol: NVIC_EN0
    Definitions
       At line 4 in file TIMER_INIT.s
    Uses
-      At line 342 in file TIMER_INIT.s
+      At line 324 in file TIMER_INIT.s
 Comment: NVIC_EN0 used once
 NVIC_EN0_INT19 00080000
 
@@ -782,7 +671,7 @@ Symbol: NVIC_PRI4
    Definitions
       At line 5 in file TIMER_INIT.s
    Uses
-      At line 333 in file TIMER_INIT.s
+      At line 315 in file TIMER_INIT.s
 Comment: NVIC_PRI4 used once
 PORTA_DATA 400043FC
 
@@ -790,10 +679,10 @@ Symbol: PORTA_DATA
    Definitions
       At line 16 in file TIMER_INIT.s
    Uses
-      At line 115 in file TIMER_INIT.s
-      At line 125 in file TIMER_INIT.s
-      At line 137 in file TIMER_INIT.s
-      At line 147 in file TIMER_INIT.s
+      At line 97 in file TIMER_INIT.s
+      At line 107 in file TIMER_INIT.s
+      At line 119 in file TIMER_INIT.s
+      At line 129 in file TIMER_INIT.s
 
 SYSCTL_RCGCTIMER 400FE604
 
@@ -801,7 +690,7 @@ Symbol: SYSCTL_RCGCTIMER
    Definitions
       At line 1 in file TIMER_INIT.s
    Uses
-      At line 306 in file TIMER_INIT.s
+      At line 288 in file TIMER_INIT.s
 Comment: SYSCTL_RCGCTIMER used once
 TIMER0_CFG 40030000
 
@@ -809,7 +698,7 @@ Symbol: TIMER0_CFG
    Definitions
       At line 7 in file TIMER_INIT.s
    Uses
-      At line 316 in file TIMER_INIT.s
+      At line 298 in file TIMER_INIT.s
 Comment: TIMER0_CFG used once
 TIMER0_CTL 4003000C
 
@@ -817,8 +706,8 @@ Symbol: TIMER0_CTL
    Definitions
       At line 9 in file TIMER_INIT.s
    Uses
-      At line 313 in file TIMER_INIT.s
-      At line 346 in file TIMER_INIT.s
+      At line 295 in file TIMER_INIT.s
+      At line 328 in file TIMER_INIT.s
 
 
 
@@ -832,7 +721,7 @@ Symbol: TIMER0_ICR
    Definitions
       At line 12 in file TIMER_INIT.s
    Uses
-      At line 26 in file TIMER_INIT.s
+      At line 27 in file TIMER_INIT.s
 Comment: TIMER0_ICR used once
 TIMER0_IMR 40030018
 
@@ -840,7 +729,7 @@ Symbol: TIMER0_IMR
    Definitions
       At line 10 in file TIMER_INIT.s
    Uses
-      At line 325 in file TIMER_INIT.s
+      At line 307 in file TIMER_INIT.s
 Comment: TIMER0_IMR used once
 TIMER0_RIS 4003001C
 
@@ -856,7 +745,7 @@ Symbol: TIMER0_TAILR
    Definitions
       At line 13 in file TIMER_INIT.s
    Uses
-      At line 322 in file TIMER_INIT.s
+      At line 304 in file TIMER_INIT.s
 Comment: TIMER0_TAILR used once
 TIMER0_TAMR 40030004
 
@@ -864,7 +753,7 @@ Symbol: TIMER0_TAMR
    Definitions
       At line 8 in file TIMER_INIT.s
    Uses
-      At line 319 in file TIMER_INIT.s
+      At line 301 in file TIMER_INIT.s
 Comment: TIMER0_TAMR used once
 TIMER0_TAPR 40030038
 
@@ -895,69 +784,69 @@ Symbol: TRANSMIT
    Definitions
       At line 19 in file TIMER_INIT.s
    Uses
-      At line 37 in file TIMER_INIT.s
-      At line 85 in file TIMER_INIT.s
-      At line 121 in file TIMER_INIT.s
-      At line 123 in file TIMER_INIT.s
-      At line 133 in file TIMER_INIT.s
+      At line 39 in file TIMER_INIT.s
+      At line 87 in file TIMER_INIT.s
+      At line 103 in file TIMER_INIT.s
+      At line 105 in file TIMER_INIT.s
+      At line 115 in file TIMER_INIT.s
+      At line 125 in file TIMER_INIT.s
+      At line 127 in file TIMER_INIT.s
       At line 143 in file TIMER_INIT.s
       At line 145 in file TIMER_INIT.s
+      At line 147 in file TIMER_INIT.s
+      At line 149 in file TIMER_INIT.s
+      At line 151 in file TIMER_INIT.s
+      At line 157 in file TIMER_INIT.s
+      At line 159 in file TIMER_INIT.s
       At line 161 in file TIMER_INIT.s
       At line 163 in file TIMER_INIT.s
       At line 165 in file TIMER_INIT.s
-      At line 167 in file TIMER_INIT.s
-      At line 169 in file TIMER_INIT.s
+      At line 171 in file TIMER_INIT.s
+      At line 173 in file TIMER_INIT.s
       At line 175 in file TIMER_INIT.s
       At line 177 in file TIMER_INIT.s
       At line 179 in file TIMER_INIT.s
-      At line 181 in file TIMER_INIT.s
-      At line 183 in file TIMER_INIT.s
+      At line 185 in file TIMER_INIT.s
+      At line 187 in file TIMER_INIT.s
       At line 189 in file TIMER_INIT.s
       At line 191 in file TIMER_INIT.s
       At line 193 in file TIMER_INIT.s
-      At line 195 in file TIMER_INIT.s
-      At line 197 in file TIMER_INIT.s
+      At line 199 in file TIMER_INIT.s
+      At line 201 in file TIMER_INIT.s
       At line 203 in file TIMER_INIT.s
       At line 205 in file TIMER_INIT.s
       At line 207 in file TIMER_INIT.s
-      At line 209 in file TIMER_INIT.s
-      At line 211 in file TIMER_INIT.s
+      At line 213 in file TIMER_INIT.s
+      At line 215 in file TIMER_INIT.s
       At line 217 in file TIMER_INIT.s
       At line 219 in file TIMER_INIT.s
       At line 221 in file TIMER_INIT.s
-      At line 223 in file TIMER_INIT.s
-      At line 225 in file TIMER_INIT.s
+      At line 227 in file TIMER_INIT.s
+      At line 229 in file TIMER_INIT.s
       At line 231 in file TIMER_INIT.s
       At line 233 in file TIMER_INIT.s
       At line 235 in file TIMER_INIT.s
-      At line 237 in file TIMER_INIT.s
-      At line 239 in file TIMER_INIT.s
+      At line 241 in file TIMER_INIT.s
+      At line 243 in file TIMER_INIT.s
       At line 245 in file TIMER_INIT.s
       At line 247 in file TIMER_INIT.s
       At line 249 in file TIMER_INIT.s
-      At line 251 in file TIMER_INIT.s
-      At line 253 in file TIMER_INIT.s
+      At line 255 in file TIMER_INIT.s
+      At line 257 in file TIMER_INIT.s
       At line 259 in file TIMER_INIT.s
       At line 261 in file TIMER_INIT.s
       At line 263 in file TIMER_INIT.s
-      At line 265 in file TIMER_INIT.s
-      At line 267 in file TIMER_INIT.s
-      At line 273 in file TIMER_INIT.s
-      At line 275 in file TIMER_INIT.s
-      At line 277 in file TIMER_INIT.s
-      At line 279 in file TIMER_INIT.s
-      At line 281 in file TIMER_INIT.s
-      At line 287 in file TIMER_INIT.s
+      At line 269 in file TIMER_INIT.s
 
 
 
 ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 External symbols
 
-      At line 289 in file TIMER_INIT.s
-      At line 291 in file TIMER_INIT.s
-      At line 293 in file TIMER_INIT.s
-      At line 295 in file TIMER_INIT.s
+      At line 271 in file TIMER_INIT.s
+      At line 273 in file TIMER_INIT.s
+      At line 275 in file TIMER_INIT.s
+      At line 277 in file TIMER_INIT.s
 
 1 symbol
-378 symbols in table
+368 symbols in table

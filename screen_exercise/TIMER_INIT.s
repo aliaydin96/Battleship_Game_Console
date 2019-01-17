@@ -23,6 +23,7 @@ PORTA_DATA 			EQU 0x400043FC
 
 Timer0A_Handler	PROC
 			PUSH {LR}
+			
 			LDR	R1,=TIMER0_ICR; Clear the Flag
 			MOV	R0,#0x01;
 			STR	R0,[R1]; Time Out Interrupt clearead
@@ -31,52 +32,53 @@ Timer0A_Handler	PROC
 			SUB R7, #1
 			CMP	R7, #20
 			BEQ TWENTY
-				
-			BL	N1
+			
+			CMP	R7, #9
+			BLHI	N1
 			MOV	R5, #0X0
 			BL	TRANSMIT
 			
 			CMP R7, #19
-			BEQ	NINE			
+			BLEQ	N9			
 			CMP R7, #18
-			BEQ EIGHT
+			BLEQ N8
 			CMP R7, #17
-			BEQ SEVEN 
+			BLEQ N7 
 			CMP R7, #16
-			BEQ SIX 
+			BLEQ N6 
 			CMP R7, #15
-			BEQ FIVE
+			BLEQ N5
 			CMP R7, #14
-			BEQ FOUR 
+			BLEQ N4 
 			CMP R7, #13
-			BEQ THREE 
+			BLEQ N3 
 			CMP R7, #12
-			BEQ	TWO 
+			BLEQ	N2 
 			CMP R7, #11
-			BEQ	ONE
+			BLEQ	N1
 			CMP R7, #10
-			BEQ	ZERO 
-			BL	CLEAR			
+			BLEQ	N0 		
 			CMP R7, #9
-			BEQ	NINE			
+			BLEQ	N9			
 			CMP R7, #8
-			BEQ EIGHT
+			BLEQ N8
 			CMP R7, #7
-			BEQ SEVEN 
+			BLEQ N7 
 			CMP R7, #6
-			BEQ SIX 
+			BLEQ N6 
 			CMP R7, #5
-			BEQ FIVE
+			BLEQ N5
 			CMP R7, #4
-			BEQ FOUR 
+			BLEQ N4 
 			CMP R7, #3
-			BEQ THREE 
+			BLEQ N3 
 			CMP R7, #2
-			BEQ	TWO 
+			BLEQ	N2 
 			CMP R7, #1
-			BEQ	ONE
+			BLEQ	N1
 			CMP R7, #0
-			BEQ	ZERO 
+			BLEQ	N0 
+			
 			B	FINISH
 			
 TWENTY			
@@ -84,27 +86,7 @@ TWENTY
 			MOV	R5, #0X0
 			BL	TRANSMIT
 			BL	N0
-			B	FINISH
-NINE		BL	N9
-			B FINISH
-EIGHT		BL	N8
-			B FINISH
-SEVEN		BL	N7
-			B FINISH
-SIX			BL	N6
-			B FINISH
-FIVE		BL	N5
-			B FINISH
-FOUR		BL	N4
-			B FINISH
-THREE		BL	N3
-			B FINISH
-TWO			BL	N2
-			B FINISH
-ONE			BL	N1
-			B FINISH
-ZERO		BL	N0
-			B FINISH
+
 FINISH		POP	{LR}
 			BX	LR
 
@@ -128,7 +110,7 @@ CLEAR		PUSH {LR}
 			STR	R0,[R1]	
 			
 
-			MOV	R4, #11			
+			MOV	R4, #13			
 LOOP		MOV	R5, #0X0	;CLEAR NUMBER PLACE
 			BL	TRANSMIT
 			SUBS R4, #1
@@ -305,7 +287,7 @@ N9			PUSH 	{LR}
 TIMER_INIT	PROC
 			LDR R1, =SYSCTL_RCGCTIMER ; Start Timer0
 			LDR R2, [R1]
-			ORR R2, R2, #0x01
+			ORR R2, R2, 0X01
 			STR R2, [R1]
 			NOP ; allow clock to settle
 			NOP
@@ -340,7 +322,7 @@ TIMER_INIT	PROC
 ; Interrupt 19 is controlled by bit 19
 ; enable interrupt 19 in NVIC
 			LDR R1, =NVIC_EN0
-			MOVT R2, #0x08 ; set bit 19 to enable interrupt 19
+			MOV R2, #0x080000 ; set bit 19 to enable interrupt 19
 			STR R2, [R1]
 ; Enable timer
 			LDR R1, =TIMER0_CTL
