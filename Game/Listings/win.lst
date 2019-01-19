@@ -1,0 +1,438 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400043FC 
+                       PORTA_DATA
+                               EQU              0x400043FC
+    2 00000000 4003000C 
+                       TIMER0_CTL
+                               EQU              0x4003000C
+    3 00000000         
+    4 00000000         
+    5 00000000                 AREA             routines, CODE, READONLY
+    6 00000000                 THUMB
+    7 00000000                 EXTERN           TRANSMIT
+    8 00000000                 EXPORT           WIN
+    9 00000000         
+   10 00000000         
+   11 00000000         
+   12 00000000         WIN     PROC
+   13 00000000         
+   14 00000000 B500            PUSH             {LR}
+   15 00000002         
+   16 00000002         CLEARLOOP
+   17 00000002 F04F 0000       MOV              R0,#0
+   18 00000006 F240 11F7       MOV              R1, #503
+   19 0000000A F04F 0500 
+                       LOOP    MOV              R5, #0X0
+   20 0000000E F7FF FFFE       BL               TRANSMIT
+   21 00000012 F100 0001       ADD              R0, #1
+   22 00000016 4288            CMP              R0,R1
+   23 00000018 D1F7            BNE              LOOP
+   24 0000001A         
+   25 0000001A 49AD            LDR              R1,=PORTA_DATA
+   26 0000001C 6808            LDR              R0,[R1]
+   27 0000001E F020 0040       BIC              R0,#0x40
+   28 00000022 6008            STR              R0,[R1]
+   29 00000024         
+   30 00000024 F04F 05A3       MOV              R5, #0xA3
+   31 00000028 F7FF FFFE       BL               TRANSMIT
+   32 0000002C F04F 0541       MOV              R5, #0X41
+   33 00000030 F7FF FFFE       BL               TRANSMIT
+   34 00000034         
+   35 00000034 49A6            LDR              R1,=PORTA_DATA
+   36 00000036 6808            LDR              R0,[R1]
+   37 00000038 F040 0040       ORR              R0,#0x40
+   38 0000003C 6008            STR              R0,[R1]
+   39 0000003E         
+   40 0000003E F04F 0500       MOV              R5, #0X00
+   41 00000042 F7FF FFFE       BL               TRANSMIT
+   42 00000046 F04F 05C0       MOV              R5, #0XC0
+   43 0000004A F7FF FFFE       BL               TRANSMIT
+   44 0000004E F04F 0520       MOV              R5, #0X20
+   45 00000052 F7FF FFFE       BL               TRANSMIT
+   46 00000056 F04F 0510       MOV              R5, #0X10
+   47 0000005A F7FF FFFE       BL               TRANSMIT
+   48 0000005E F04F 0510       MOV              R5, #0X10
+   49 00000062 F7FF FFFE       BL               TRANSMIT
+   50 00000066 F04F 0560       MOV              R5, #0X60
+   51 0000006A F7FF FFFE       BL               TRANSMIT
+   52 0000006E F04F 0580       MOV              R5, #0X80
+   53 00000072 F7FF FFFE       BL               TRANSMIT
+   54 00000076 F04F 0500       MOV              R5, #0X00
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   55 0000007A F7FF FFFE       BL               TRANSMIT
+   56 0000007E F04F 0500       MOV              R5, #0X00
+   57 00000082 F7FF FFFE       BL               TRANSMIT
+   58 00000086 F04F 0500       MOV              R5, #0X00
+   59 0000008A F7FF FFFE       BL               TRANSMIT
+   60 0000008E F04F 05C0       MOV              R5, #0XC0
+   61 00000092 F7FF FFFE       BL               TRANSMIT
+   62 00000096 F04F 0520       MOV              R5, #0X20
+   63 0000009A F7FF FFFE       BL               TRANSMIT
+   64 0000009E F04F 0510       MOV              R5, #0X10
+   65 000000A2 F7FF FFFE       BL               TRANSMIT
+   66 000000A6 F04F 0510       MOV              R5, #0X10
+   67 000000AA F7FF FFFE       BL               TRANSMIT
+   68 000000AE F04F 05E0       MOV              R5, #0XE0
+   69 000000B2 F7FF FFFE       BL               TRANSMIT
+   70 000000B6 F04F 0500       MOV              R5, #0X00
+   71 000000BA F7FF FFFE       BL               TRANSMIT
+   72 000000BE F04F 0500       MOV              R5, #0X00
+   73 000000C2 F7FF FFFE       BL               TRANSMIT
+   74 000000C6         
+   75 000000C6 4982            LDR              R1,=PORTA_DATA
+   76 000000C8 6808            LDR              R0,[R1]
+   77 000000CA F020 0040       BIC              R0,#0x40
+   78 000000CE 6008            STR              R0,[R1]
+   79 000000D0         
+   80 000000D0 F04F 05A3       MOV              R5, #0xA3
+   81 000000D4 F7FF FFFE       BL               TRANSMIT
+   82 000000D8 F04F 0542       MOV              R5, #0X42
+   83 000000DC F7FF FFFE       BL               TRANSMIT
+   84 000000E0         
+   85 000000E0 497B            LDR              R1,=PORTA_DATA
+   86 000000E2 6808            LDR              R0,[R1]
+   87 000000E4 F040 0040       ORR              R0,#0x40
+   88 000000E8 6008            STR              R0,[R1]
+   89 000000EA         
+   90 000000EA F04F 0500       MOV              R5, #0X00
+   91 000000EE F7FF FFFE       BL               TRANSMIT
+   92 000000F2 F04F 0501       MOV              R5, #0X01
+   93 000000F6 F7FF FFFE       BL               TRANSMIT
+   94 000000FA F04F 051E       MOV              R5, #0X1E
+   95 000000FE F7FF FFFE       BL               TRANSMIT
+   96 00000102 F04F 05E0       MOV              R5, #0XE0
+   97 00000106 F7FF FFFE       BL               TRANSMIT
+   98 0000010A F04F 0500       MOV              R5, #0X00
+   99 0000010E F7FF FFFE       BL               TRANSMIT
+  100 00000112 F04F 0500       MOV              R5, #0X00
+  101 00000116 F7FF FFFE       BL               TRANSMIT
+  102 0000011A F04F 057F       MOV              R5, #0X7F
+  103 0000011E F7FF FFFE       BL               TRANSMIT
+  104 00000122 F04F 0580       MOV              R5, #0X80
+  105 00000126 F7FF FFFE       BL               TRANSMIT
+  106 0000012A F04F 0578       MOV              R5, #0X78
+  107 0000012E F7FF FFFE       BL               TRANSMIT
+  108 00000132 F04F 0507       MOV              R5, #0X07
+  109 00000136 F7FF FFFE       BL               TRANSMIT
+  110 0000013A F04F 0580       MOV              R5, #0X80
+  111 0000013E F7FF FFFE       BL               TRANSMIT
+  112 00000142 F04F 0540       MOV              R5, #0X40
+  113 00000146 F7FF FFFE       BL               TRANSMIT
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  114 0000014A F04F 0570       MOV              R5, #0X70
+  115 0000014E F7FF FFFE       BL               TRANSMIT
+  116 00000152 F04F 058C       MOV              R5, #0X8C
+  117 00000156 F7FF FFFE       BL               TRANSMIT
+  118 0000015A F04F 0503       MOV              R5, #0X03
+  119 0000015E F7FF FFFE       BL               TRANSMIT
+  120 00000162 F04F 0500       MOV              R5, #0X00
+  121 00000166 F7FF FFFE       BL               TRANSMIT
+  122 0000016A F04F 0500       MOV              R5, #0X00
+  123 0000016E F7FF FFFE       BL               TRANSMIT
+  124 00000172         
+  125 00000172 4957            LDR              R1,=PORTA_DATA
+  126 00000174 6808            LDR              R0,[R1]
+  127 00000176 F020 0040       BIC              R0,#0x40
+  128 0000017A 6008            STR              R0,[R1]
+  129 0000017C         
+  130 0000017C F04F 05A3       MOV              R5, #0xA3
+  131 00000180 F7FF FFFE       BL               TRANSMIT
+  132 00000184 F04F 0543       MOV              R5, #0X43
+  133 00000188 F7FF FFFE       BL               TRANSMIT
+  134 0000018C         
+  135 0000018C 4950            LDR              R1,=PORTA_DATA
+  136 0000018E 6808            LDR              R0,[R1]
+  137 00000190 F040 0040       ORR              R0,#0x40
+  138 00000194 6008            STR              R0,[R1]
+  139 00000196         
+  140 00000196 F04F 05F0       MOV              R5, #0XF0
+  141 0000019A F7FF FFFE       BL               TRANSMIT
+  142 0000019E F04F 0508       MOV              R5, #0X08
+  143 000001A2 F7FF FFFE       BL               TRANSMIT
+  144 000001A6 F04F 0504       MOV              R5, #0X04
+  145 000001AA F7FF FFFE       BL               TRANSMIT
+  146 000001AE F04F 0583       MOV              R5, #0X83
+  147 000001B2 F7FF FFFE       BL               TRANSMIT
+  148 000001B6 F04F 05C2       MOV              R5, #0XC2
+  149 000001BA F7FF FFFE       BL               TRANSMIT
+  150 000001BE F04F 0582       MOV              R5, #0X82
+  151 000001C2 F7FF FFFE       BL               TRANSMIT
+  152 000001C6 F04F 0584       MOV              R5, #0X84
+  153 000001CA F7FF FFFE       BL               TRANSMIT
+  154 000001CE F04F 0588       MOV              R5, #0X88
+  155 000001D2 F7FF FFFE       BL               TRANSMIT
+  156 000001D6 F04F 058C       MOV              R5, #0X8C
+  157 000001DA F7FF FFFE       BL               TRANSMIT
+  158 000001DE F04F 058B       MOV              R5, #0X8B
+  159 000001E2 F7FF FFFE       BL               TRANSMIT
+  160 000001E6 F04F 0548       MOV              R5, #0X48
+  161 000001EA F7FF FFFE       BL               TRANSMIT
+  162 000001EE F04F 05B0       MOV              R5, #0XB0
+  163 000001F2 F7FF FFFE       BL               TRANSMIT
+  164 000001F6 F04F 0590       MOV              R5, #0X90
+  165 000001FA F7FF FFFE       BL               TRANSMIT
+  166 000001FE F04F 058F       MOV              R5, #0X8F
+  167 00000202 F7FF FFFE       BL               TRANSMIT
+  168 00000206 F04F 0542       MOV              R5, #0X42
+  169 0000020A F7FF FFFE       BL               TRANSMIT
+  170 0000020E F04F 0532       MOV              R5, #0X32
+  171 00000212 F7FF FFFE       BL               TRANSMIT
+  172 00000216 F04F 050C       MOV              R5, #0X0C
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  173 0000021A F7FF FFFE       BL               TRANSMIT
+  174 0000021E         
+  175 0000021E 492C            LDR              R1,=PORTA_DATA
+  176 00000220 6808            LDR              R0,[R1]
+  177 00000222 F020 0040       BIC              R0,#0x40
+  178 00000226 6008            STR              R0,[R1]
+  179 00000228         
+  180 00000228 F04F 05A3       MOV              R5, #0xA3
+  181 0000022C F7FF FFFE       BL               TRANSMIT
+  182 00000230 F04F 0544       MOV              R5, #0X44
+  183 00000234 F7FF FFFE       BL               TRANSMIT
+  184 00000238         
+  185 00000238 4925            LDR              R1,=PORTA_DATA
+  186 0000023A 6808            LDR              R0,[R1]
+  187 0000023C F040 0040       ORR              R0,#0x40
+  188 00000240 6008            STR              R0,[R1]
+  189 00000242         
+  190 00000242 F04F 0500       MOV              R5, #0X00
+  191 00000246 F7FF FFFE       BL               TRANSMIT
+  192 0000024A F04F 0503       MOV              R5, #0X03
+  193 0000024E F7FF FFFE       BL               TRANSMIT
+  194 00000252 F04F 0504       MOV              R5, #0X04
+  195 00000256 F7FF FFFE       BL               TRANSMIT
+  196 0000025A F04F 0508       MOV              R5, #0X08
+  197 0000025E F7FF FFFE       BL               TRANSMIT
+  198 00000262 F04F 0508       MOV              R5, #0X08
+  199 00000266 F7FF FFFE       BL               TRANSMIT
+  200 0000026A F04F 0510       MOV              R5, #0X10
+  201 0000026E F7FF FFFE       BL               TRANSMIT
+  202 00000272 F04F 0514       MOV              R5, #0X14
+  203 00000276 F7FF FFFE       BL               TRANSMIT
+  204 0000027A F04F 0513       MOV              R5, #0X13
+  205 0000027E F7FF FFFE       BL               TRANSMIT
+  206 00000282 F04F 0510       MOV              R5, #0X10
+  207 00000286 F7FF FFFE       BL               TRANSMIT
+  208 0000028A F04F 0510       MOV              R5, #0X10
+  209 0000028E F7FF FFFE       BL               TRANSMIT
+  210 00000292 F04F 0510       MOV              R5, #0X10
+  211 00000296 F7FF FFFE       BL               TRANSMIT
+  212 0000029A F04F 0508       MOV              R5, #0X08
+  213 0000029E F7FF FFFE       BL               TRANSMIT
+  214 000002A2 F04F 0504       MOV              R5, #0X04
+  215 000002A6 F7FF FFFE       BL               TRANSMIT
+  216 000002AA F04F 0503       MOV              R5, #0X03
+  217 000002AE F7FF FFFE       BL               TRANSMIT
+  218 000002B2 F04F 0500       MOV              R5, #0X00
+  219 000002B6 F7FF FFFE       BL               TRANSMIT
+  220 000002BA F04F 0500       MOV              R5, #0X00
+  221 000002BE F7FF FFFE       BL               TRANSMIT
+  222 000002C2 F04F 0500       MOV              R5, #0X00
+  223 000002C6 F7FF FFFE       BL               TRANSMIT
+  224 000002CA         
+  225 000002CA         
+  226 000002CA F85D EB04       POP              {LR}
+  227 000002CE 4770            BX               LR
+  228 000002D0         
+  229 000002D0                 ENDP
+  230 000002D0                 END
+              400043FC 
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\win.d -o.\objects\win.o -I.\RTE\_Target_1 -IC:\Keil_v
+5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CMSIS\In
+clude --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" --pr
+edefine="TM4C123GH6PM SETA 1" --list=.\listings\win.lst WIN.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CLEARLOOP 00000002
+
+Symbol: CLEARLOOP
+   Definitions
+      At line 16 in file WIN.s
+   Uses
+      None
+Comment: CLEARLOOP unused
+LOOP 0000000A
+
+Symbol: LOOP
+   Definitions
+      At line 19 in file WIN.s
+   Uses
+      At line 23 in file WIN.s
+Comment: LOOP used once
+WIN 00000000
+
+Symbol: WIN
+   Definitions
+      At line 12 in file WIN.s
+   Uses
+      At line 8 in file WIN.s
+Comment: WIN used once
+routines 00000000
+
+Symbol: routines
+   Definitions
+      At line 5 in file WIN.s
+   Uses
+      None
+Comment: routines unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+PORTA_DATA 400043FC
+
+Symbol: PORTA_DATA
+   Definitions
+      At line 1 in file WIN.s
+   Uses
+      At line 25 in file WIN.s
+      At line 35 in file WIN.s
+      At line 75 in file WIN.s
+      At line 85 in file WIN.s
+      At line 125 in file WIN.s
+      At line 135 in file WIN.s
+      At line 175 in file WIN.s
+      At line 185 in file WIN.s
+
+TIMER0_CTL 4003000C
+
+Symbol: TIMER0_CTL
+   Definitions
+      At line 2 in file WIN.s
+   Uses
+      None
+Comment: TIMER0_CTL unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+TRANSMIT 00000000
+
+Symbol: TRANSMIT
+   Definitions
+      At line 7 in file WIN.s
+   Uses
+      At line 20 in file WIN.s
+      At line 31 in file WIN.s
+      At line 33 in file WIN.s
+      At line 41 in file WIN.s
+      At line 43 in file WIN.s
+      At line 45 in file WIN.s
+      At line 47 in file WIN.s
+      At line 49 in file WIN.s
+      At line 51 in file WIN.s
+      At line 53 in file WIN.s
+      At line 55 in file WIN.s
+      At line 57 in file WIN.s
+      At line 59 in file WIN.s
+      At line 61 in file WIN.s
+      At line 63 in file WIN.s
+      At line 65 in file WIN.s
+      At line 67 in file WIN.s
+      At line 69 in file WIN.s
+      At line 71 in file WIN.s
+      At line 73 in file WIN.s
+      At line 81 in file WIN.s
+      At line 83 in file WIN.s
+      At line 91 in file WIN.s
+      At line 93 in file WIN.s
+      At line 95 in file WIN.s
+      At line 97 in file WIN.s
+      At line 99 in file WIN.s
+      At line 101 in file WIN.s
+      At line 103 in file WIN.s
+      At line 105 in file WIN.s
+      At line 107 in file WIN.s
+      At line 109 in file WIN.s
+      At line 111 in file WIN.s
+      At line 113 in file WIN.s
+      At line 115 in file WIN.s
+      At line 117 in file WIN.s
+      At line 119 in file WIN.s
+      At line 121 in file WIN.s
+      At line 123 in file WIN.s
+      At line 131 in file WIN.s
+      At line 133 in file WIN.s
+      At line 141 in file WIN.s
+      At line 143 in file WIN.s
+      At line 145 in file WIN.s
+      At line 147 in file WIN.s
+      At line 149 in file WIN.s
+      At line 151 in file WIN.s
+      At line 153 in file WIN.s
+      At line 155 in file WIN.s
+      At line 157 in file WIN.s
+      At line 159 in file WIN.s
+      At line 161 in file WIN.s
+      At line 163 in file WIN.s
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+External symbols
+
+      At line 165 in file WIN.s
+      At line 167 in file WIN.s
+      At line 169 in file WIN.s
+      At line 171 in file WIN.s
+      At line 173 in file WIN.s
+      At line 181 in file WIN.s
+      At line 183 in file WIN.s
+      At line 191 in file WIN.s
+      At line 193 in file WIN.s
+      At line 195 in file WIN.s
+      At line 197 in file WIN.s
+      At line 199 in file WIN.s
+      At line 201 in file WIN.s
+      At line 203 in file WIN.s
+      At line 205 in file WIN.s
+      At line 207 in file WIN.s
+      At line 209 in file WIN.s
+      At line 211 in file WIN.s
+      At line 213 in file WIN.s
+      At line 215 in file WIN.s
+      At line 217 in file WIN.s
+      At line 219 in file WIN.s
+      At line 221 in file WIN.s
+      At line 223 in file WIN.s
+
+1 symbol
+343 symbols in table

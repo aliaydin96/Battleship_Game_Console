@@ -1,0 +1,369 @@
+Component: ARM Compiler 5.06 update 6 (build 750) Tool: armlink [4d35ed]
+
+==============================================================================
+
+Section Cross References
+
+    startup.o(STACK) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(HEAP) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(RESET) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(RESET) refers to startup.o(STACK) for StackMem
+    startup.o(RESET) refers to timer_init.o(routines) for Timer0A_Handler
+    startup.o(RESET) refers to gpio_inter_init.o(routines) for GPIOPortF_Handler
+    startup.o(RESET) refers to __main.o(main) for __main
+    startup.o(.text) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(.text) refers to startup.o(HEAP) for HeapMem
+    startup.o(.text) refers to startup.o(STACK) for StackMem
+    __main.o(main) refers to init.o(routines) for Init
+    __main.o(main) refers to lcd_init.o(routines) for LCD_INIT
+    __main.o(main) refers to gpio_inter_init.o(routines) for GPIO_INIT
+    __main.o(main) refers to boundary.o(routines) for BOUNDARY
+    __main.o(main) refers to timer_init.o(routines) for TIMER_INIT
+    __main.o(main) refers to final.o(routines) for FINAL
+    __main.o(main) refers to transmit.o(routines) for TRANSMIT
+    __main.o(main) refers to civilian.o(routines) for CIVILIAN
+    __main.o(main) refers to battleship.o(routines) for BATTLESHIP
+    __main.o(main) refers to delay.o(routines) for DELAY
+    lcd_init.o(routines) refers to delay.o(routines) for DELAY
+    lcd_init.o(routines) refers to transmit.o(routines) for TRANSMIT
+    timer_init.o(routines) refers to transmit.o(routines) for TRANSMIT
+    battleship.o(routines) refers to transmit.o(routines) for TRANSMIT
+    civilian.o(routines) refers to transmit.o(routines) for TRANSMIT
+    boundary.o(routines) refers to transmit.o(routines) for TRANSMIT
+    final.o(routines) refers to lose_c.o(routines) for LOSE_C
+    final.o(routines) refers to lose_b.o(routines) for LOSE_B
+    final.o(routines) refers to win.o(routines) for WIN
+    win.o(routines) refers to transmit.o(routines) for TRANSMIT
+    lose_b.o(routines) refers to transmit.o(routines) for TRANSMIT
+    lose_c.o(routines) refers to transmit.o(routines) for TRANSMIT
+
+
+==============================================================================
+
+Removing Unused input sections from the image.
+
+    Removing startup.o(HEAP), (0 bytes).
+    Removing startup.o(.text), (48 bytes).
+    Removing outchar.o(.text), (220 bytes).
+
+3 unused section(s) (total 268 bytes) removed from the image.
+
+==============================================================================
+
+Image Symbol Table
+
+    Local Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    RESET                                    0x00000000   Section      644  startup.o(RESET)
+    ../clib/heapaux.c                        0x00000000   Number         0  heapauxi.o ABSOLUTE
+    BATTLESHIP.s                             0x00000000   Number         0  battleship.o ABSOLUTE
+    BOUNDARY.s                               0x00000000   Number         0  boundary.o ABSOLUTE
+    CIVILIAN.s                               0x00000000   Number         0  civilian.o ABSOLUTE
+    FINAL.s                                  0x00000000   Number         0  final.o ABSOLUTE
+    GPIO_INTER_INIT.s                        0x00000000   Number         0  gpio_inter_init.o ABSOLUTE
+    Init.s                                   0x00000000   Number         0  init.o ABSOLUTE
+    LCD_INIT.s                               0x00000000   Number         0  lcd_init.o ABSOLUTE
+    LOSE_B.s                                 0x00000000   Number         0  lose_b.o ABSOLUTE
+    LOSE_C.s                                 0x00000000   Number         0  lose_c.o ABSOLUTE
+    OutChar.s                                0x00000000   Number         0  outchar.o ABSOLUTE
+    Startup.s                                0x00000000   Number         0  startup.o ABSOLUTE
+    TIMER_INIT.s                             0x00000000   Number         0  timer_init.o ABSOLUTE
+    TRANSMIT.s                               0x00000000   Number         0  transmit.o ABSOLUTE
+    WIN.s                                    0x00000000   Number         0  win.o ABSOLUTE
+    __main.s                                 0x00000000   Number         0  __main.o ABSOLUTE
+    dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
+    delay.s                                  0x00000000   Number         0  delay.o ABSOLUTE
+    $v0                                      0x0000026c   Number         0  startup.o(RESET)
+    .text                                    0x00000284   Section        0  heapauxi.o(.text)
+    main                                     0x0000028c   Section      684  __main.o(main)
+    $v0                                      0x0000028c   Number         0  __main.o(main)
+    routines                                 0x00000538   Section      368  init.o(routines)
+    $v0                                      0x00000538   Number         0  init.o(routines)
+    routines                                 0x000006a8   Section        8  delay.o(routines)
+    $v0                                      0x000006a8   Number         0  delay.o(routines)
+    routines                                 0x000006b0   Section      100  lcd_init.o(routines)
+    $v0                                      0x000006b0   Number         0  lcd_init.o(routines)
+    routines                                 0x00000714   Section      972  timer_init.o(routines)
+    $v0                                      0x00000714   Number         0  timer_init.o(routines)
+    routines                                 0x00000ae0   Section      212  battleship.o(routines)
+    $v0                                      0x00000ae0   Number         0  battleship.o(routines)
+    routines                                 0x00000bb4   Section      212  civilian.o(routines)
+    $v0                                      0x00000bb4   Number         0  civilian.o(routines)
+    routines                                 0x00000c88   Section       48  transmit.o(routines)
+    $v0                                      0x00000c88   Number         0  transmit.o(routines)
+    routines                                 0x00000cb8   Section      236  boundary.o(routines)
+    $v0                                      0x00000cb8   Number         0  boundary.o(routines)
+    routines                                 0x00000da4   Section      620  gpio_inter_init.o(routines)
+    $v0                                      0x00000da4   Number         0  gpio_inter_init.o(routines)
+    routines                                 0x00001010   Section      320  final.o(routines)
+    $v0                                      0x00001010   Number         0  final.o(routines)
+    routines                                 0x00001150   Section      724  win.o(routines)
+    $v0                                      0x00001150   Number         0  win.o(routines)
+    routines                                 0x00001424   Section      988  lose_b.o(routines)
+    $v0                                      0x00001424   Number         0  lose_b.o(routines)
+    routines                                 0x00001800   Section      788  lose_c.o(routines)
+    $v0                                      0x00001800   Number         0  lose_c.o(routines)
+    STACK                                    0x20000000   Section     1024  startup.o(STACK)
+    StackMem                                 0x20000000   Data           0  startup.o(STACK)
+
+    Global Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    BuildAttributes$$THM_ISAv4$E$P$D$K$B$S$7EM$VFPi3$EXTD16$VFPS$VFMA$PE$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OSPACE$ROPI$EBA8$STANDARDLIB$REQ8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    __Vectors                                0x00000000   Data           0  startup.o(RESET)
+    Reset_Handler                            0x0000026d   Thumb Code     0  startup.o(RESET)
+    NMI_Handler                              0x00000271   Thumb Code     2  startup.o(RESET)
+    HardFault_Handler                        0x00000273   Thumb Code     2  startup.o(RESET)
+    MemManage_Handler                        0x00000275   Thumb Code     2  startup.o(RESET)
+    BusFault_Handler                         0x00000277   Thumb Code     2  startup.o(RESET)
+    UsageFault_Handler                       0x00000279   Thumb Code     2  startup.o(RESET)
+    SVC_Handler                              0x0000027b   Thumb Code     2  startup.o(RESET)
+    DebugMon_Handler                         0x0000027d   Thumb Code     2  startup.o(RESET)
+    PendSV_Handler                           0x0000027f   Thumb Code     2  startup.o(RESET)
+    SysTick_Handler                          0x00000281   Thumb Code     2  startup.o(RESET)
+    ADC0Seq0_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC0Seq1_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC0Seq2_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC0Seq3_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC1Seq0_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC1Seq1_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC1Seq2_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC1Seq3_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    CAN0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    CAN1_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    CAN2_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    Comp0_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    Comp1_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    Comp2_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    Ethernet_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ExtBus_Handler                           0x00000283   Thumb Code     0  startup.o(RESET)
+    FPU_Handler                              0x00000283   Thumb Code     0  startup.o(RESET)
+    Fan0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    FlashCtl_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortA_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortB_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortC_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortD_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortE_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortG_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortH_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortJ_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortK_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortL_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortM_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortN_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP1_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP2_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP3_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP4_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP5_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP6_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP7_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortP_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ1_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ2_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ3_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ4_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ5_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ6_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ7_Handler                       0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortR_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortS_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    Hibernate_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    I2C0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    I2C1_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    I2C2_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    I2C3_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    I2C4_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    I2C5_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    I2S0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    LPC0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    PECI0_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Fault_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Generator0_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Generator1_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Generator2_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Generator3_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM1Fault_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM1Generator0_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM1Generator1_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM1Generator2_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM1Generator3_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    Quadrature0_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    Quadrature1_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    Quadrature2_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    SSI0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    SSI1_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    SSI2_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    SSI3_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    SysCtl_Handler                           0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer0B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer1A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer1B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer2A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer2B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer3A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer3B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer4A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer4B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer5A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer5B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    UART0_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART1_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART2_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART3_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART4_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART5_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART6_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART7_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    USB0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    WDT_Handler                              0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer0A_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer0B_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer1A_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer1B_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer2A_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer2B_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer3A_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer3B_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer4A_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer4B_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer5A_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    WideTimer5B_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    uDMA_Error                               0x00000283   Thumb Code     0  startup.o(RESET)
+    uDMA_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    __use_two_region_memory                  0x00000285   Thumb Code     2  heapauxi.o(.text)
+    __rt_heap_escrow$2region                 0x00000287   Thumb Code     2  heapauxi.o(.text)
+    __rt_heap_expand$2region                 0x00000289   Thumb Code     2  heapauxi.o(.text)
+    __main                                   0x0000028d   Thumb Code     0  __main.o(main)
+    Init                                     0x00000539   Thumb Code   276  init.o(routines)
+    DELAY                                    0x000006a9   Thumb Code     6  delay.o(routines)
+    LCD_INIT                                 0x000006b1   Thumb Code    94  lcd_init.o(routines)
+    Timer0A_Handler                          0x00000715   Thumb Code   834  timer_init.o(routines)
+    TIMER_INIT                               0x00000a57   Thumb Code    88  timer_init.o(routines)
+    BATTLESHIP                               0x00000ae1   Thumb Code     0  battleship.o(routines)
+    CIVILIAN                                 0x00000bb5   Thumb Code     0  civilian.o(routines)
+    TRANSMIT                                 0x00000c89   Thumb Code    38  transmit.o(routines)
+    BOUNDARY                                 0x00000cb9   Thumb Code     0  boundary.o(routines)
+    GPIOPortF_Handler                        0x00000da5   Thumb Code   370  gpio_inter_init.o(routines)
+    GPIO_INIT                                0x00000f17   Thumb Code   122  gpio_inter_init.o(routines)
+    FINAL                                    0x00001011   Thumb Code   296  final.o(routines)
+    WIN                                      0x00001151   Thumb Code   720  win.o(routines)
+    LOSE_B                                   0x00001425   Thumb Code   984  lose_b.o(routines)
+    LOSE_C                                   0x00001801   Thumb Code   784  lose_c.o(routines)
+
+
+
+==============================================================================
+
+Memory Map of the image
+
+  Image Entry point : 0x0000026d
+
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00001f14, Max: 0xffffffff, ABSOLUTE)
+
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00001b14, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00000000   0x00000000   0x00000284   Code   RO            3  * RESET               startup.o
+    0x00000284   0x00000284   0x00000006   Code   RO           69    .text               c_w.l(heapauxi.o)
+    0x0000028a   0x0000028a   0x00000002   PAD
+    0x0000028c   0x0000028c   0x000002ac   Code   RO           16    main                __main.o
+    0x00000538   0x00000538   0x00000170   Code   RO           12    routines            init.o
+    0x000006a8   0x000006a8   0x00000008   Code   RO           19    routines            delay.o
+    0x000006b0   0x000006b0   0x00000064   Code   RO           23    routines            lcd_init.o
+    0x00000714   0x00000714   0x000003cc   Code   RO           27    routines            timer_init.o
+    0x00000ae0   0x00000ae0   0x000000d4   Code   RO           34    routines            battleship.o
+    0x00000bb4   0x00000bb4   0x000000d4   Code   RO           37    routines            civilian.o
+    0x00000c88   0x00000c88   0x00000030   Code   RO           40    routines            transmit.o
+    0x00000cb8   0x00000cb8   0x000000ec   Code   RO           44    routines            boundary.o
+    0x00000da4   0x00000da4   0x0000026c   Code   RO           47    routines            gpio_inter_init.o
+    0x00001010   0x00001010   0x00000140   Code   RO           51    routines            final.o
+    0x00001150   0x00001150   0x000002d4   Code   RO           55    routines            win.o
+    0x00001424   0x00001424   0x000003dc   Code   RO           59    routines            lose_b.o
+    0x00001800   0x00001800   0x00000314   Code   RO           63    routines            lose_c.o
+
+
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00001b14, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000000   0x00001b14   0x00000400   Data   RW            1    STACK               startup.o
+
+
+    Execution Region ER_ZI (Exec base: 0x20000400, Load base: 0x00001f14, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+
+    **** No section assigned to this execution region ****
+
+
+==============================================================================
+
+Image component sizes
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+       684         76          0          0          0        408   __main.o
+       212          4          0          0          0        272   battleship.o
+       236          4          0          0          0        280   boundary.o
+       212          4          0          0          0        272   civilian.o
+         8          2          0          0          0        332   delay.o
+       320         24          0          0          0        416   final.o
+       620        130          0          0          0        588   gpio_inter_init.o
+       368         92          0          0          0        436   init.o
+       100          6          0          0          0        364   lcd_init.o
+       988          4          0          0          0        588   lose_b.o
+       788          4          0          0          0        536   lose_c.o
+       644        620          0       1024          0        772   startup.o
+       972         50          0          0          0        664   timer_init.o
+        48         10          0          0          0        356   transmit.o
+       724          4          0          0          0        520   win.o
+
+    ----------------------------------------------------------------------
+      6924       1034          0       1024          0       6804   Object Totals
+         0          0          0          0          0          0   (incl. Generated)
+         0          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+         6          0          0          0          0        152   heapauxi.o
+
+    ----------------------------------------------------------------------
+         8          0          0          0          0        152   Library Totals
+         2          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
+
+         6          0          0          0          0        152   c_w.l
+
+    ----------------------------------------------------------------------
+         8          0          0          0          0        152   Library Totals
+
+    ----------------------------------------------------------------------
+
+==============================================================================
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
+
+      6932       1034          0       1024          0       5956   Grand Totals
+      6932       1034          0       1024          0       5956   ELF Image Totals
+      6932       1034          0       1024          0          0   ROM Totals
+
+==============================================================================
+
+    Total RO  Size (Code + RO Data)                 6932 (   6.77kB)
+    Total RW  Size (RW Data + ZI Data)              1024 (   1.00kB)
+    Total ROM Size (Code + RO Data + RW Data)       7956 (   7.77kB)
+
+==============================================================================
+

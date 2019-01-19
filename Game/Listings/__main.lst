@@ -1,0 +1,1167 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 40038004 
+                       ADC0_RIS
+                               EQU              0x40038004  ; Interrupt status
+    2 00000000 40038088 
+                       ADC0_SSFIFO2
+                               EQU              0x40038088  ; Channel 2 results
+                                                            
+    3 00000000 400380A8 
+                       ADC0_SSFIFO3
+                               EQU              0x400380A8  ; Channel 3 results
+                                                             
+    4 00000000 40038028 
+                       ADC0_PSSI
+                               EQU              0x40038028  ; Initiate sample
+    5 00000000 4003800C 
+                       ADC0_ISC
+                               EQU              0x4003800C  ; ISC
+    6 00000000 4003808C 
+                       ADC0_SSFSTAT2
+                               EQU              0X4003808C
+    7 00000000 400043FC 
+                       PORTA_DATA
+                               EQU              0x400043FC
+    8 00000000 20000400 
+                       POSITION
+                               EQU              0X20000400
+    9 00000000 2000040F 
+                       BATTLE_COUNTER
+                               EQU              0X2000040F
+   10 00000000 20000410 
+                       CIV_COUNTER
+                               EQU              0X20000410
+   11 00000000 20000411 
+                       SCREEN_COUNTER
+                               EQU              0X20000411
+   12 00000000 20000412 
+                       MINE_POSITION
+                               EQU              0X20000412
+   13 00000000 4003000C 
+                       TIMER0_CTL
+                               EQU              0x4003000C
+   14 00000000 20000424 
+                       MINE_COUNTER
+                               EQU              0X20000424
+   15 00000000 20000428 
+                       RESTART EQU              0X20000428
+   16 00000000         
+   17 00000000                 AREA             main, CODE, READONLY
+   18 00000000                 THUMB
+   19 00000000                 IMPORT           LCD_INIT
+   20 00000000                 IMPORT           Init
+   21 00000000                 IMPORT           DELAY
+   22 00000000                 EXTERN           OutChar
+   23 00000000                 EXTERN           TRANSMIT
+   24 00000000                 EXTERN           TIMER_INIT
+   25 00000000                 EXTERN           BATTLESHIP
+   26 00000000                 EXTERN           BOUNDARY
+   27 00000000                 EXTERN           CIVILIAN
+   28 00000000                 EXTERN           Timer0A_Handler
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   29 00000000                 EXTERN           GPIOPortF_Handler
+   30 00000000                 EXTERN           GPIO_INIT
+   31 00000000                 EXTERN           FINAL
+   32 00000000                 EXPORT           __main
+   33 00000000         
+   34 00000000         __main
+   35 00000000         
+   36 00000000         Start
+   37 00000000 F7FF FFFE       BL               Init
+   38 00000004 F7FF FFFE       BL               LCD_INIT
+   39 00000008 F7FF FFFE       BL               GPIO_INIT
+   40 0000000C         
+   41 0000000C 4994            LDR              R1,=PORTA_DATA
+   42 0000000E 6808            LDR              R0,[R1]
+   43 00000010 F040 0040       ORR              R0,#0x40
+   44 00000014 6008            STR              R0,[R1]
+   45 00000016 F000 F8D6       BL               CLEAR
+   46 0000001A F7FF FFFE       BL               BOUNDARY
+   47 0000001E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   48 0000001E         ;;;;; REGISTERS
+   49 0000001E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   50 0000001E         ;;;;; R0  ==> GENERAL PURPOSES
+   51 0000001E         ;;;;; R1  ==> GENERAL PURPOSES
+   52 0000001E         ;;;;; R2  ==> CURSOR'S POSITION
+   53 0000001E         ;;;;; R3  ==> X POSITION
+   54 0000001E         ;;;;; R4  ==> CURSOR'S POSITION
+   55 0000001E         ;;;;; R5  ==> DISPLAY REGISTER
+   56 0000001E         ;;;;; R6  ==> Y POSITION
+   57 0000001E         ;;;;; R7  ==> TIMER'S COUNTER
+   58 0000001E         ;;;;; R8  ==> ADC RESULT 
+   59 0000001E         ;;;;; R9  ==> ADC RESULT
+   60 0000001E         ;;;;; R10 ==> FREE
+   61 0000001E         ;;;;; R11 ==> FREE
+   62 0000001E         ;;;;; R12 ==> FREE
+   63 0000001E         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   64 0000001E F04F 0A00       MOV              R10, #0
+   65 00000022 F64F 79FF 
+              F6CF 79FF        MOV32            R9,  #0xFFFFFFFF
+   66 0000002A 488E            LDR              R0, =BATTLE_COUNTER
+   67 0000002C F8C0 A000       STR              R10, [R0]
+   68 00000030 498D            LDR              R1, =CIV_COUNTER
+   69 00000032 F8C1 A000       STR              R10, [R1]
+   70 00000036 498D            LDR              R1, =SCREEN_COUNTER
+   71 00000038 F8C1 A000       STR              R10, [R1]
+   72 0000003C 498C            LDR              R1,=POSITION
+   73 0000003E F8C1 9000       STR              R9, [R1]
+   74 00000042 498C            LDR              R1,=MINE_POSITION
+   75 00000044 F8C1 A000       STR              R10, [R1]
+   76 00000048 498B            LDR              R1,=MINE_COUNTER
+   77 0000004A F8C1 A000       STR              R10, [R1]
+   78 0000004E 498B            LDR              R1,=RESTART
+   79 00000050 F8C1 A000       STR              R10, [R1]
+   80 00000054         
+   81 00000054 498A    getsample
+                               LDR              R1,=ADC0_PSSI 
+                                                            ; request a sample
+   82 00000056 6808            LDR              R0,[R1]     ;
+   83 00000058 F040 000C       ORR              R0,R0,#0x0C ; get a sample
+   84 0000005C 6008            STR              R0,[R1]     ;
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   85 0000005E         
+   86 0000005E 4989    loop    LDR              R1,=ADC0_RIS ; check for interr
+                                                            up flag
+   87 00000060 6808            LDR              R0,[R1]     ;
+   88 00000062 F010 000C       ANDS             R0,#0x0C    ;
+   89 00000066 D0FA            BEQ              loop
+   90 00000068         
+   91 00000068 4987            LDR              R1,=ADC0_ISC ; clear the interr
+                                                            upt flag
+   92 0000006A 6808            LDR              R0,[R1]     ;
+   93 0000006C F040 000C       ORR              R0,#0x0C    ;
+   94 00000070 6008            STR              R0,[R1]     ; Interrupt flag is
+                                                             cleared
+   95 00000072         
+   96 00000072 497E            LDR              R1, =SCREEN_COUNTER
+   97 00000074 780C            LDRB             R4, [R1]
+   98 00000076 2C00            CMP              R4, #0
+   99 00000078 BF08 F000 
+              F878             BLEQ             DISPLAY_SHIP
+  100 0000007E 2C01            CMP              R4, #1
+  101 00000080 BF08 F000 
+              F874             BLEQ             DISPLAY_SHIP
+  102 00000086 2C02            CMP              R4, #2
+  103 00000088 BF08 F000 
+              F8BF             BLEQ             CLEARBOX
+  104 0000008E 2C04            CMP              R4, #4
+  105 00000090 BF08 F000 
+              F8A8             BLEQ             DELAY_5MS
+  106 00000096 4975            LDR              R1, =SCREEN_COUNTER
+  107 00000098 780C            LDRB             R4, [R1]
+  108 0000009A 2C06            CMP              R4, #6
+  109 0000009C BF08 3401       ADDEQ            R4,#1
+  110 000000A0 700C            STRB             R4,[R1]
+  111 000000A2 BF08 F7FF 
+              FFFE             BLEQ             TIMER_INIT
+  112 000000A8 BF08 2714       MOVEQ            R7, #20     ;this counter for t
+                                                            imer
+  113 000000AC F8DF A1BC       LDR              R10, =SCREEN_COUNTER
+  114 000000B0 F89A 9000       LDRB             R9,[R10]
+  115 000000B4 F1B9 0F0C       CMP              R9,#12
+  116 000000B8 BF08 F7FF 
+              FFFE             BLEQ             FINAL
+  117 000000BE 496B            LDR              R1, =SCREEN_COUNTER
+  118 000000C0 780C            LDRB             R4, [R1]
+  119 000000C2 2C0D            CMP              R4, #13
+  120 000000C4 D89C            BHI              Start
+  121 000000C6 4969            LDR              R1, =SCREEN_COUNTER
+  122 000000C8 780C            LDRB             R4, [R1]
+  123 000000CA 2C0B            CMP              R4, #11
+  124 000000CC D8C2            BHI              getsample
+  125 000000CE         
+  126 000000CE         CURSOR
+  127 000000CE 496F            LDR              R1,=ADC0_SSFIFO2 ;
+  128 000000D0 F8D1 8000       LDR              R8,[R1]     ; R8 is the data PE
+                                                            3
+  129 000000D4 F04F 00AB       MOV              R0,#171     ; get the first dig
+                                                            it
+  130 000000D8 FBB8 F8F0       UDIV             R8,R8,R0    ;   
+  131 000000DC 496C            LDR              R1, =ADC0_SSFIFO3
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  132 000000DE F8D1 9000       LDR              R9,[R1]
+  133 000000E2 F04F 004B       MOV              R0,#75      ; get the first dig
+                                                            it
+  134 000000E6 FBB9 F3F0       UDIV             R3,R9,R0    ;
+  135 000000EA F103 0385       ADD              R3, R3,#0x85
+  136 000000EE F04F 0641       MOV              R6, #0x41
+  137 000000F2 F1B8 0801       SUBS             R8, #1
+  138 000000F6 BF0B 2201       MOVEQ            R2, #0x1
+  139 000000FA 2202            MOVNE            R2, #0x2
+  140 000000FC 2403            MOVEQ            R4, #0x3
+  141 000000FE 2407            MOVNE            R4, #0x7
+  142 00000100         
+  143 00000100         LOP
+  144 00000100 4957            LDR              R1,=PORTA_DATA
+  145 00000102 6808            LDR              R0,[R1]
+  146 00000104 F020 0040       BIC              R0,#0x40
+  147 00000108 6008            STR              R0,[R1]
+  148 0000010A         
+  149 0000010A 461D            MOV              R5, R3
+  150 0000010C F7FF FFFE       BL               TRANSMIT
+  151 00000110 4635            MOV              R5, R6
+  152 00000112 F7FF FFFE       BL               TRANSMIT
+  153 00000116         
+  154 00000116 4952            LDR              R1,=PORTA_DATA
+  155 00000118 6808            LDR              R0,[R1]
+  156 0000011A F040 0040       ORR              R0,#0x40
+  157 0000011E 6008            STR              R0,[R1]
+  158 00000120 2E41            CMP              R6, #0x41
+  159 00000122 BF04 FA02 
+              F208             LSLEQ            R2, R8
+  160 00000128 FA04 F408       LSLEQ            R4, R8
+  161 0000012C D007            BEQ              WORK
+  162 0000012E 2E42            CMP              R6, #0X42
+  163 00000130 BF04 BA52       REV16EQ          R2, R2
+  164 00000134 BA64            REV16EQ          R4, R4
+  165 00000136 2E43            CMP              R6, #0X43
+  166 00000138 BF04 BA12       REVEQ            R2, R2
+  167 0000013C BA24            REVEQ            R4, R4
+  168 0000013E         WORK
+  169 0000013E 2B85            CMP              R3, #0x85
+  170 00000140 BF0C 25FF       MOVEQ            R5, #0XFF
+  171 00000144 2500            MOVNE            R5, #0X0
+  172 00000146 F7FF FFFE       BL               TRANSMIT
+  173 0000014A 4615            MOV              R5, R2      ;NE
+  174 0000014C F7FF FFFE       BL               TRANSMIT
+  175 00000150 4625            MOV              R5, R4
+  176 00000152 F7FF FFFE       BL               TRANSMIT
+  177 00000156 4615            MOV              R5, R2
+  178 00000158 F7FF FFFE       BL               TRANSMIT
+  179 0000015C F04F 0500       MOV              R5, #0X0
+  180 00000160 F7FF FFFE       BL               TRANSMIT
+  181 00000164 F106 0601       ADD              R6, #1
+  182 00000168 2E44            CMP              R6, #0X44
+  183 0000016A D1C9            BNE              LOP
+  184 0000016C E772            B                getsample   ;      
+  185 0000016E         
+  186 0000016E         DISPLAY_SHIP
+  187 0000016E B510            PUSH             {R4, LR}
+  188 00000170 493D            LDR              R1, =CIV_COUNTER
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  189 00000172 780C            LDRB             R4, [R1]
+  190 00000174 2C00            CMP              R4, #0
+  191 00000176 D90C            BLS              BATTLE
+  192 00000178 493D            LDR              R1, =POSITION
+  193 0000017A F7FF FFFE       BL               CIVILIAN
+  194 0000017E 2C01            CMP              R4, #1
+  195 00000180 D907            BLS              BATTLE
+  196 00000182 4944            LDR              R1, =(POSITION + 2)
+  197 00000184 F7FF FFFE       BL               CIVILIAN
+  198 00000188 2C02            CMP              R4, #2
+  199 0000018A D902            BLS              BATTLE
+  200 0000018C 4942            LDR              R1, =(POSITION + 4)
+  201 0000018E F7FF FFFE       BL               CIVILIAN
+  202 00000192         
+  203 00000192         BATTLE
+  204 00000192 4834            LDR              R0, =BATTLE_COUNTER
+  205 00000194 7802            LDRB             R2, [R0]
+  206 00000196 2A00            CMP              R2, #0
+  207 00000198 D912            BLS              FINISH
+  208 0000019A 4940            LDR              R1, =(POSITION + 6)
+  209 0000019C F7FF FFFE       BL               BATTLESHIP
+  210 000001A0 2A01            CMP              R2, #1
+  211 000001A2 D90D            BLS              FINISH
+  212 000001A4 493E            LDR              R1, =(POSITION + 8)
+  213 000001A6 F7FF FFFE       BL               BATTLESHIP
+  214 000001AA 2A02            CMP              R2, #2
+  215 000001AC D908            BLS              FINISH
+  216 000001AE 493D            LDR              R1, =(POSITION + 10)
+  217 000001B0 F7FF FFFE       BL               BATTLESHIP
+  218 000001B4 2A03            CMP              R2, #3
+  219 000001B6 D903            BLS              FINISH
+  220 000001B8 493B            LDR              R1, =(POSITION + 12)
+  221 000001BA F7FF FFFE       BL               BATTLESHIP
+  222 000001BE E7FF            B                FINISH
+  223 000001C0         FINISH
+  224 000001C0 E8BD 4010       POP              {R4, LR}
+  225 000001C4 4770            BX               LR
+  226 000001C6         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  227 000001C6         ;;;;;; CLEAR WHOLE SCREEN
+  228 000001C6         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  229 000001C6 B503    CLEAR   PUSH             {R0,R1,LR}
+  230 000001C8 F04F 0000       MOV              R0,#0
+  231 000001CC F240 11F7       MOV              R1, #503
+  232 000001D0 F04F 0500 
+                       LOOP    MOV              R5, #0X0
+  233 000001D4 F7FF FFFE       BL               TRANSMIT
+  234 000001D8 F100 0001       ADD              R0, #1
+  235 000001DC 4288            CMP              R0,R1
+  236 000001DE D1F7            BNE              LOOP
+  237 000001E0 E8BD 4003       POP              {R0,R1,LR}
+  238 000001E4 4770            BX               LR
+  239 000001E6         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  240 000001E6         
+  241 000001E6         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  242 000001E6         ;;;;;; 5 msec delay
+  243 000001E6         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  244 000001E6         DELAY_5MS
+  245 000001E6 B500            PUSH             {LR}
+  246 000001E8 F7FF FFC1       BL               DISPLAY_SHIP
+
+
+
+ARM Macro Assembler    Page 6 
+
+
+  247 000001EC F640 1000 
+              F2C0 003D        MOV32            R0, #4000000
+  248 000001F4 F7FF FFFE       BL               DELAY
+  249 000001F8 F000 F808       BL               CLEARBOX
+  250 000001FC 491B            LDR              R1, =SCREEN_COUNTER
+  251 000001FE 780C            LDRB             R4, [R1]
+  252 00000200 F104 0401       ADD              R4, #1
+  253 00000204 700C            STRB             R4, [R1]
+  254 00000206 F85D EB04       POP              {LR}
+  255 0000020A 4770            BX               LR
+  256 0000020C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  257 0000020C         ;;;;;; CLEAR Y = 1-2-3-4 ROWS
+  258 0000020C         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  259 0000020C B507    CLEARBOX
+                               PUSH{R0,         R1, R2, LR}
+  260 0000020E F04F 0641       MOV              R6, #0X41
+  261 00000212         LOOP_CL
+  262 00000212 4913            LDR              R1,=PORTA_DATA
+  263 00000214 6808            LDR              R0,[R1]
+  264 00000216 F020 0040       BIC              R0,#0x40
+  265 0000021A 6008            STR              R0,[R1]
+  266 0000021C         
+  267 0000021C F04F 0586       MOV              R5, #0X86
+  268 00000220 F7FF FFFE       BL               TRANSMIT
+  269 00000224 4635            MOV              R5, R6
+  270 00000226 F7FF FFFE       BL               TRANSMIT
+  271 0000022A         
+  272 0000022A 490D            LDR              R1,=PORTA_DATA
+  273 0000022C 6808            LDR              R0,[R1]
+  274 0000022E F040 0040       ORR              R0,#0x40
+  275 00000232 6008            STR              R0,[R1]
+  276 00000234         
+  277 00000234 F04F 0286       MOV              R2, #0X86
+  278 00000238 F04F 0500 
+                       LOOP_C  MOV              R5, #0X0
+  279 0000023C F7FF FFFE       BL               TRANSMIT
+  280 00000240 F102 0201       ADD              R2, #1
+  281 00000244 2AC5            CMP              R2, #0XC5
+  282 00000246 D1F7            BNE              LOOP_C
+  283 00000248 F106 0601       ADD              R6, #1
+  284 0000024C 2E45            CMP              R6, #0X45
+  285 0000024E D1E0            BNE              LOOP_CL
+  286 00000250         
+  287 00000250 4906            LDR              R1, =SCREEN_COUNTER
+  288 00000252 780C            LDRB             R4, [R1]
+  289 00000254 F104 0401       ADD              R4, #1
+  290 00000258 700C            STRB             R4, [R1]
+  291 0000025A E8BD 4007       POP{R0,          R1, R2, LR}
+  292 0000025E 4770            BX               LR
+  293 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  294 00000260         ;;;;; NUMBERS 0-9 BEGINNING
+  295 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  296 00000260         ;N0   PUSH  {LR} 
+  297 00000260         ;   MOV  R5, #0X3E
+  298 00000260         ;   BL  TRANSMIT
+  299 00000260         ;   MOV  R5, #0X51
+  300 00000260         ;   BL  TRANSMIT
+  301 00000260         ;   MOV  R5, #0X49
+  302 00000260         ;   BL  TRANSMIT   
+
+
+
+ARM Macro Assembler    Page 7 
+
+
+  303 00000260         ;   MOV  R5, #0X45
+  304 00000260         ;   BL  TRANSMIT
+  305 00000260         ;   MOV  R5, #0X3E
+  306 00000260         ;   BL  TRANSMIT   
+  307 00000260         ;   POP  {LR}
+  308 00000260         ;   BX  LR
+  309 00000260         
+  310 00000260         ;N1   PUSH  {LR} 
+  311 00000260         ;   MOV  R5, #0X0
+  312 00000260         ;   BL  TRANSMIT
+  313 00000260         ;   MOV  R5, #0X42
+  314 00000260         ;   BL  TRANSMIT
+  315 00000260         ;   MOV  R5, #0X7F
+  316 00000260         ;   BL  TRANSMIT   
+  317 00000260         ;   MOV  R5, #0X40
+  318 00000260         ;   BL  TRANSMIT
+  319 00000260         ;   MOV  R5, #0X0
+  320 00000260         ;   BL  TRANSMIT   
+  321 00000260         ;   POP  {LR}
+  322 00000260         ;   BX  LR
+  323 00000260         
+  324 00000260         ;N2   PUSH  {LR} 
+  325 00000260         ;   MOV  R5, #0X42
+  326 00000260         ;   BL  TRANSMIT
+  327 00000260         ;   MOV  R5, #0X61
+  328 00000260         ;   BL  TRANSMIT
+  329 00000260         ;   MOV  R5, #0X51
+  330 00000260         ;   BL  TRANSMIT   
+  331 00000260         ;   MOV  R5, #0X49
+  332 00000260         ;   BL  TRANSMIT
+  333 00000260         ;   MOV  R5, #0X46
+  334 00000260         ;   BL  TRANSMIT   
+  335 00000260         ;   POP  {LR}
+  336 00000260         ;   BX  LR
+  337 00000260         ; 
+  338 00000260         ;N3   PUSH  {LR} 
+  339 00000260         ;   MOV  R5, #0X21
+  340 00000260         ;   BL  TRANSMIT
+  341 00000260         ;   MOV  R5, #0X41
+  342 00000260         ;   BL  TRANSMIT
+  343 00000260         ;   MOV  R5, #0X45
+  344 00000260         ;   BL  TRANSMIT   
+  345 00000260         ;   MOV  R5, #0X4B
+  346 00000260         ;   BL  TRANSMIT
+  347 00000260         ;   MOV  R5, #0X31
+  348 00000260         ;   BL  TRANSMIT   
+  349 00000260         ;   POP  {LR}
+  350 00000260         ;   BX  LR
+  351 00000260         
+  352 00000260         ;N4   PUSH  {LR} 
+  353 00000260         ;   MOV  R5, #0X18
+  354 00000260         ;   BL  TRANSMIT
+  355 00000260         ;   MOV  R5, #0X14
+  356 00000260         ;   BL  TRANSMIT
+  357 00000260         ;   MOV  R5, #0X12
+  358 00000260         ;   BL  TRANSMIT   
+  359 00000260         ;   MOV  R5, #0X7F
+  360 00000260         ;   BL  TRANSMIT
+  361 00000260         ;   MOV  R5, #0X10
+
+
+
+ARM Macro Assembler    Page 8 
+
+
+  362 00000260         ;   BL  TRANSMIT   
+  363 00000260         ;   POP  {LR}
+  364 00000260         ;   BX  LR
+  365 00000260         
+  366 00000260         ;N5   PUSH  {LR} 
+  367 00000260         ;   MOV  R5, #0X27
+  368 00000260         ;   BL  TRANSMIT
+  369 00000260         ;   MOV  R5, #0X45
+  370 00000260         ;   BL  TRANSMIT
+  371 00000260         ;   MOV  R5, #0X45
+  372 00000260         ;   BL  TRANSMIT   
+  373 00000260         ;   MOV  R5, #0X45
+  374 00000260         ;   BL  TRANSMIT
+  375 00000260         ;   MOV  R5, #0X39
+  376 00000260         ;   BL  TRANSMIT   
+  377 00000260         ;   POP  {LR}
+  378 00000260         ;   BX  LR
+  379 00000260         
+  380 00000260         ;N6   PUSH  {LR} 
+  381 00000260         ;   MOV  R5, #0X3C
+  382 00000260         ;   BL  TRANSMIT
+  383 00000260         ;   MOV  R5, #0X4A
+  384 00000260         ;   BL  TRANSMIT
+  385 00000260         ;   MOV  R5, #0X49
+  386 00000260         ;   BL  TRANSMIT   
+  387 00000260         ;   MOV  R5, #0X49
+  388 00000260         ;   BL  TRANSMIT
+  389 00000260         ;   MOV  R5, #0X30
+  390 00000260         ;   BL  TRANSMIT   
+  391 00000260         ;   POP  {LR}
+  392 00000260         ;   BX  LR
+  393 00000260         
+  394 00000260         ;N7   PUSH  {LR} 
+  395 00000260         ;   MOV  R5, #0X1
+  396 00000260         ;   BL  TRANSMIT
+  397 00000260         ;   MOV  R5, #0X71
+  398 00000260         ;   BL  TRANSMIT
+  399 00000260         ;   MOV  R5, #0X9
+  400 00000260         ;   BL  TRANSMIT   
+  401 00000260         ;   MOV  R5, #0X5
+  402 00000260         ;   BL  TRANSMIT
+  403 00000260         ;   MOV  R5, #0X3
+  404 00000260         ;   BL  TRANSMIT   
+  405 00000260         ;   POP  {LR}
+  406 00000260         ;   BX  LR
+  407 00000260         
+  408 00000260         ;N8   PUSH  {LR} 
+  409 00000260         ;   MOV  R5, #0X36
+  410 00000260         ;   BL  TRANSMIT
+  411 00000260         ;   MOV  R5, #0X49
+  412 00000260         ;   BL  TRANSMIT
+  413 00000260         ;   MOV  R5, #0X49
+  414 00000260         ;   BL  TRANSMIT   
+  415 00000260         ;   MOV  R5, #0X49
+  416 00000260         ;   BL  TRANSMIT
+  417 00000260         ;   MOV  R5, #0X36
+  418 00000260         ;   BL  TRANSMIT   
+  419 00000260         ;   POP  {LR}
+  420 00000260         ;   BX  LR
+
+
+
+ARM Macro Assembler    Page 9 
+
+
+  421 00000260         
+  422 00000260         ;N9   PUSH  {LR} 
+  423 00000260         ;   MOV  R5, #0X6
+  424 00000260         ;   BL  TRANSMIT
+  425 00000260         ;   MOV  R5, #0X49
+  426 00000260         ;   BL  TRANSMIT
+  427 00000260         ;   MOV  R5, #0X49
+  428 00000260         ;   BL  TRANSMIT   
+  429 00000260         ;   MOV  R5, #0X29
+  430 00000260         ;   BL  TRANSMIT
+  431 00000260         ;   MOV  R5, #0X1E
+  432 00000260         ;   BL  TRANSMIT   
+  433 00000260         ;   POP  {LR}
+  434 00000260         ;   BX  LR
+  435 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  436 00000260         ;;;;; NUMBERS 0-9 FINISH
+  437 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+  438 00000260         
+  439 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  440 00000260         ;;;;; CHAR A-Z BEGINNING
+  441 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  442 00000260         ;A   
+  443 00000260         ;   PUSH  {LR}
+  444 00000260         ;   MOV  R5, #0X7E
+  445 00000260         ;   BL  TRANSMIT
+  446 00000260         ;   MOV  R5, #0X11
+  447 00000260         ;   BL  TRANSMIT
+  448 00000260         ;   MOV  R5, #0X11
+  449 00000260         ;   BL  TRANSMIT   
+  450 00000260         ;   MOV  R5, #0X11
+  451 00000260         ;   BL  TRANSMIT
+  452 00000260         ;   MOV  R5, #0X7E
+  453 00000260         ;   BL  TRANSMIT 
+  454 00000260         ;   POP  {LR}
+  455 00000260         ;   BX  LR
+  456 00000260         ;B_   PUSH  {LR} 
+  457 00000260         ;   
+  458 00000260         ;   POP  {LR}
+  459 00000260         ;   BX  LR   
+  460 00000260         ;C   PUSH  {LR} 
+  461 00000260         ;   
+  462 00000260         ;   POP  {LR}
+  463 00000260         ;   BX  LR
+  464 00000260         ;D   PUSH  {LR} 
+  465 00000260         ;   
+  466 00000260         ;   POP  {LR}
+  467 00000260         ;   BX  LR
+  468 00000260         ;E   PUSH  {LR} 
+  469 00000260         ;   
+  470 00000260         ;   POP  {LR}
+  471 00000260         ;   BX  LR   
+  472 00000260         
+  473 00000260         ;I   PUSH  {LR} 
+  474 00000260         ;   MOV  R5, #0X00
+  475 00000260         ;   BL  TRANSMIT
+  476 00000260         ;   MOV  R5, #0X41
+  477 00000260         ;   BL  TRANSMIT
+  478 00000260         ;   MOV  R5, #0X7F
+  479 00000260         ;   BL  TRANSMIT   
+
+
+
+ARM Macro Assembler    Page 10 
+
+
+  480 00000260         ;   MOV  R5, #0X41
+  481 00000260         ;   BL  TRANSMIT
+  482 00000260         ;   MOV  R5, #0X00
+  483 00000260         ;   BL  TRANSMIT
+  484 00000260         ;   POP  {LR}
+  485 00000260         ;   BX  LR
+  486 00000260         ; 
+  487 00000260         ;K   PUSH  {LR}
+  488 00000260         ;   MOV  R5, #0X7F
+  489 00000260         ;   BL  TRANSMIT
+  490 00000260         ;   MOV  R5, #0X8
+  491 00000260         ;   BL  TRANSMIT
+  492 00000260         ;   MOV  R5, #0X14
+  493 00000260         ;   BL  TRANSMIT
+  494 00000260         ;   MOV  R5, #0X22
+  495 00000260         ;   BL  TRANSMIT   
+  496 00000260         ;   MOV  R5, #0X41
+  497 00000260         ;   BL  TRANSMIT
+  498 00000260         ;   POP  {LR}
+  499 00000260         ;   BX  LR 
+  500 00000260         ;   
+  501 00000260         ;L   PUSH  {LR}
+  502 00000260         ;   MOV  R5, #0X7F
+  503 00000260         ;   BL  TRANSMIT
+  504 00000260         ;   MOV  R5, #0X40
+  505 00000260         ;   BL  TRANSMIT
+  506 00000260         ;   MOV  R5, #0X40
+  507 00000260         ;   BL  TRANSMIT
+  508 00000260         ;   MOV  R5, #0X40
+  509 00000260         ;   BL  TRANSMIT   
+  510 00000260         ;   MOV  R5, #0X40
+  511 00000260         ;   BL  TRANSMIT   
+  512 00000260         ;   POP  {LR}
+  513 00000260         ;   BX  LR 
+  514 00000260         
+  515 00000260         
+  516 00000260         
+  517 00000260         ;M   PUSH  {LR}
+  518 00000260         ;   MOV  R5, #0X7F
+  519 00000260         ;   BL  TRANSMIT
+  520 00000260         ;   MOV  R5, #0X02
+  521 00000260         ;   BL  TRANSMIT
+  522 00000260         ;   MOV  R5, #0XC
+  523 00000260         ;   BL  TRANSMIT
+  524 00000260         ;   MOV  R5, #0X2
+  525 00000260         ;   BL  TRANSMIT   
+  526 00000260         ;   MOV  R5, #0X7F
+  527 00000260         ;   BL  TRANSMIT    
+  528 00000260         ;   POP  {LR}
+  529 00000260         ;   BX  LR
+  530 00000260         
+  531 00000260         ;N   PUSH  {LR}   
+  532 00000260         ;   MOV  R5, #0X7F
+  533 00000260         ;   BL  TRANSMIT
+  534 00000260         ;   MOV  R5, #0X04
+  535 00000260         ;   BL  TRANSMIT
+  536 00000260         ;   MOV  R5, #0X8
+  537 00000260         ;   BL  TRANSMIT
+  538 00000260         ;   MOV  R5, #0X10
+
+
+
+ARM Macro Assembler    Page 11 
+
+
+  539 00000260         ;   BL  TRANSMIT   
+  540 00000260         ;   MOV  R5, #0X7F
+  541 00000260         ;   BL  TRANSMIT   
+  542 00000260         ;   POP  {LR}
+  543 00000260         ;   BX  LR 
+  544 00000260         
+  545 00000260         ;S   PUSH  {LR}   
+  546 00000260         ;   MOV  R5, #0X46
+  547 00000260         ;   BL  TRANSMIT
+  548 00000260         ;   MOV  R5, #0X49
+  549 00000260         ;   BL  TRANSMIT
+  550 00000260         ;   MOV  R5, #0X49
+  551 00000260         ;   BL  TRANSMIT
+  552 00000260         ;   MOV  R5, #0X49
+  553 00000260         ;   BL  TRANSMIT   
+  554 00000260         ;   MOV  R5, #0X31
+  555 00000260         ;   BL  TRANSMIT   
+  556 00000260         ;   POP  {LR}
+  557 00000260         ;   BX  LR  
+  558 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  559 00000260         ;;;;; CHAR A-Z FINISH
+  560 00000260         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  561 00000260                 ALIGN
+  562 00000260                 END
+              400043FC 
+              2000040F 
+              20000410 
+              20000411 
+              20000400 
+              20000412 
+              20000424 
+              20000428 
+              40038028 
+              40038004 
+              4003800C 
+              40038088 
+              400380A8 
+              20000402 
+              20000404 
+              20000406 
+              20000408 
+              2000040A 
+              2000040C 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\__main.d -o.\objects\__main.o -I.\RTE\_Target_1 -IC:\
+Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CM
+SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
+" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\__main.lst __main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+BATTLE 00000192
+
+Symbol: BATTLE
+   Definitions
+      At line 203 in file __main.s
+   Uses
+      At line 191 in file __main.s
+      At line 195 in file __main.s
+      At line 199 in file __main.s
+
+CLEAR 000001C6
+
+Symbol: CLEAR
+   Definitions
+      At line 229 in file __main.s
+   Uses
+      At line 45 in file __main.s
+Comment: CLEAR used once
+CLEARBOX 0000020C
+
+Symbol: CLEARBOX
+   Definitions
+      At line 259 in file __main.s
+   Uses
+      At line 103 in file __main.s
+      At line 249 in file __main.s
+
+CURSOR 000000CE
+
+Symbol: CURSOR
+   Definitions
+      At line 126 in file __main.s
+   Uses
+      None
+Comment: CURSOR unused
+DELAY_5MS 000001E6
+
+Symbol: DELAY_5MS
+   Definitions
+      At line 244 in file __main.s
+   Uses
+      At line 105 in file __main.s
+Comment: DELAY_5MS used once
+DISPLAY_SHIP 0000016E
+
+Symbol: DISPLAY_SHIP
+   Definitions
+      At line 186 in file __main.s
+   Uses
+      At line 99 in file __main.s
+      At line 101 in file __main.s
+      At line 246 in file __main.s
+
+FINISH 000001C0
+
+Symbol: FINISH
+   Definitions
+      At line 223 in file __main.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 207 in file __main.s
+      At line 211 in file __main.s
+      At line 215 in file __main.s
+      At line 219 in file __main.s
+      At line 222 in file __main.s
+
+LOOP 000001D0
+
+Symbol: LOOP
+   Definitions
+      At line 232 in file __main.s
+   Uses
+      At line 236 in file __main.s
+Comment: LOOP used once
+LOOP_C 00000238
+
+Symbol: LOOP_C
+   Definitions
+      At line 278 in file __main.s
+   Uses
+      At line 282 in file __main.s
+Comment: LOOP_C used once
+LOOP_CL 00000212
+
+Symbol: LOOP_CL
+   Definitions
+      At line 261 in file __main.s
+   Uses
+      At line 285 in file __main.s
+Comment: LOOP_CL used once
+LOP 00000100
+
+Symbol: LOP
+   Definitions
+      At line 143 in file __main.s
+   Uses
+      At line 183 in file __main.s
+Comment: LOP used once
+Start 00000000
+
+Symbol: Start
+   Definitions
+      At line 36 in file __main.s
+   Uses
+      At line 120 in file __main.s
+Comment: Start used once
+WORK 0000013E
+
+Symbol: WORK
+   Definitions
+      At line 168 in file __main.s
+   Uses
+      At line 161 in file __main.s
+Comment: WORK used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 34 in file __main.s
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Relocatable symbols
+
+   Uses
+      At line 32 in file __main.s
+Comment: __main used once
+getsample 00000054
+
+Symbol: getsample
+   Definitions
+      At line 81 in file __main.s
+   Uses
+      At line 124 in file __main.s
+      At line 184 in file __main.s
+
+loop 0000005E
+
+Symbol: loop
+   Definitions
+      At line 86 in file __main.s
+   Uses
+      At line 89 in file __main.s
+Comment: loop used once
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 17 in file __main.s
+   Uses
+      None
+Comment: main unused
+17 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+ADC0_ISC 4003800C
+
+Symbol: ADC0_ISC
+   Definitions
+      At line 5 in file __main.s
+   Uses
+      At line 91 in file __main.s
+Comment: ADC0_ISC used once
+ADC0_PSSI 40038028
+
+Symbol: ADC0_PSSI
+   Definitions
+      At line 4 in file __main.s
+   Uses
+      At line 81 in file __main.s
+Comment: ADC0_PSSI used once
+ADC0_RIS 40038004
+
+Symbol: ADC0_RIS
+   Definitions
+      At line 1 in file __main.s
+   Uses
+      At line 86 in file __main.s
+Comment: ADC0_RIS used once
+ADC0_SSFIFO2 40038088
+
+Symbol: ADC0_SSFIFO2
+   Definitions
+      At line 2 in file __main.s
+   Uses
+      At line 127 in file __main.s
+Comment: ADC0_SSFIFO2 used once
+ADC0_SSFIFO3 400380A8
+
+Symbol: ADC0_SSFIFO3
+   Definitions
+      At line 3 in file __main.s
+   Uses
+      At line 131 in file __main.s
+Comment: ADC0_SSFIFO3 used once
+ADC0_SSFSTAT2 4003808C
+
+Symbol: ADC0_SSFSTAT2
+   Definitions
+      At line 6 in file __main.s
+   Uses
+      None
+Comment: ADC0_SSFSTAT2 unused
+BATTLE_COUNTER 2000040F
+
+Symbol: BATTLE_COUNTER
+   Definitions
+      At line 9 in file __main.s
+   Uses
+      At line 66 in file __main.s
+      At line 204 in file __main.s
+
+CIV_COUNTER 20000410
+
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Absolute symbols
+
+Symbol: CIV_COUNTER
+   Definitions
+      At line 10 in file __main.s
+   Uses
+      At line 68 in file __main.s
+      At line 188 in file __main.s
+
+MINE_COUNTER 20000424
+
+Symbol: MINE_COUNTER
+   Definitions
+      At line 14 in file __main.s
+   Uses
+      At line 76 in file __main.s
+Comment: MINE_COUNTER used once
+MINE_POSITION 20000412
+
+Symbol: MINE_POSITION
+   Definitions
+      At line 12 in file __main.s
+   Uses
+      At line 74 in file __main.s
+Comment: MINE_POSITION used once
+PORTA_DATA 400043FC
+
+Symbol: PORTA_DATA
+   Definitions
+      At line 7 in file __main.s
+   Uses
+      At line 41 in file __main.s
+      At line 144 in file __main.s
+      At line 154 in file __main.s
+      At line 262 in file __main.s
+      At line 272 in file __main.s
+
+POSITION 20000400
+
+Symbol: POSITION
+   Definitions
+      At line 8 in file __main.s
+   Uses
+      At line 72 in file __main.s
+      At line 192 in file __main.s
+      At line 196 in file __main.s
+      At line 200 in file __main.s
+      At line 208 in file __main.s
+      At line 212 in file __main.s
+      At line 216 in file __main.s
+      At line 220 in file __main.s
+
+RESTART 20000428
+
+Symbol: RESTART
+   Definitions
+      At line 15 in file __main.s
+   Uses
+      At line 78 in file __main.s
+Comment: RESTART used once
+SCREEN_COUNTER 20000411
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Absolute symbols
+
+
+Symbol: SCREEN_COUNTER
+   Definitions
+      At line 11 in file __main.s
+   Uses
+      At line 70 in file __main.s
+      At line 96 in file __main.s
+      At line 106 in file __main.s
+      At line 113 in file __main.s
+      At line 117 in file __main.s
+      At line 121 in file __main.s
+      At line 250 in file __main.s
+      At line 287 in file __main.s
+
+TIMER0_CTL 4003000C
+
+Symbol: TIMER0_CTL
+   Definitions
+      At line 13 in file __main.s
+   Uses
+      None
+Comment: TIMER0_CTL unused
+15 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+BATTLESHIP 00000000
+
+Symbol: BATTLESHIP
+   Definitions
+      At line 25 in file __main.s
+   Uses
+      At line 209 in file __main.s
+      At line 213 in file __main.s
+      At line 217 in file __main.s
+      At line 221 in file __main.s
+
+BOUNDARY 00000000
+
+Symbol: BOUNDARY
+   Definitions
+      At line 26 in file __main.s
+   Uses
+      At line 46 in file __main.s
+Comment: BOUNDARY used once
+CIVILIAN 00000000
+
+Symbol: CIVILIAN
+   Definitions
+      At line 27 in file __main.s
+   Uses
+      At line 193 in file __main.s
+      At line 197 in file __main.s
+      At line 201 in file __main.s
+
+DELAY 00000000
+
+Symbol: DELAY
+   Definitions
+      At line 21 in file __main.s
+   Uses
+      At line 248 in file __main.s
+Comment: DELAY used once
+FINAL 00000000
+
+Symbol: FINAL
+   Definitions
+      At line 31 in file __main.s
+   Uses
+      At line 116 in file __main.s
+Comment: FINAL used once
+GPIOPortF_Handler 00000000
+
+Symbol: GPIOPortF_Handler
+   Definitions
+      At line 29 in file __main.s
+   Uses
+      None
+Comment: GPIOPortF_Handler unused
+GPIO_INIT 00000000
+
+Symbol: GPIO_INIT
+   Definitions
+      At line 30 in file __main.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+External symbols
+
+      At line 39 in file __main.s
+Comment: GPIO_INIT used once
+Init 00000000
+
+Symbol: Init
+   Definitions
+      At line 20 in file __main.s
+   Uses
+      At line 37 in file __main.s
+Comment: Init used once
+LCD_INIT 00000000
+
+Symbol: LCD_INIT
+   Definitions
+      At line 19 in file __main.s
+   Uses
+      At line 38 in file __main.s
+Comment: LCD_INIT used once
+OutChar 00000000
+
+Symbol: OutChar
+   Definitions
+      At line 22 in file __main.s
+   Uses
+      None
+Comment: OutChar unused
+TIMER_INIT 00000000
+
+Symbol: TIMER_INIT
+   Definitions
+      At line 24 in file __main.s
+   Uses
+      At line 111 in file __main.s
+Comment: TIMER_INIT used once
+TRANSMIT 00000000
+
+Symbol: TRANSMIT
+   Definitions
+      At line 23 in file __main.s
+   Uses
+      At line 150 in file __main.s
+      At line 152 in file __main.s
+      At line 172 in file __main.s
+      At line 174 in file __main.s
+      At line 176 in file __main.s
+      At line 178 in file __main.s
+      At line 180 in file __main.s
+      At line 233 in file __main.s
+      At line 268 in file __main.s
+      At line 270 in file __main.s
+      At line 279 in file __main.s
+
+Timer0A_Handler 00000000
+
+Symbol: Timer0A_Handler
+   Definitions
+      At line 28 in file __main.s
+   Uses
+      None
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+External symbols
+
+Comment: Timer0A_Handler unused
+13 symbols
+381 symbols in table
