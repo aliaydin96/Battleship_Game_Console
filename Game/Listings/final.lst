@@ -34,13 +34,13 @@ ARM Macro Assembler    Page 1
    14 00000000                 EXTERN           WIN
    15 00000000                 EXTERN           LOSE_B
    16 00000000                 EXTERN           LOSE_C
-   17 00000000                 EXPORT           FINAL
-   18 00000000         
+   17 00000000                 EXTERN           TIMER_INIT
+   18 00000000                 EXPORT           FINAL
    19 00000000         
    20 00000000         
-   21 00000000         FINAL   PROC
-   22 00000000 B500            PUSH{LR}
-   23 00000002         
+   21 00000000         
+   22 00000000         FINAL   PROC
+   23 00000000 B500            PUSH{LR}
    24 00000002 F04F 0900       MOV              R9,#0
    25 00000006 F04F 0A00       MOV              R10,#0
    26 0000000A         
@@ -193,9 +193,9 @@ FINAL 00000000
 
 Symbol: FINAL
    Definitions
-      At line 21 in file FINAL.s
+      At line 22 in file FINAL.s
    Uses
-      At line 17 in file FINAL.s
+      At line 18 in file FINAL.s
 Comment: FINAL used once
 FINAL_BAT 00000084
 
@@ -332,6 +332,14 @@ Symbol: LOSE_C
    Uses
       At line 60 in file FINAL.s
 Comment: LOSE_C used once
+TIMER_INIT 00000000
+
+Symbol: TIMER_INIT
+   Definitions
+      At line 17 in file FINAL.s
+   Uses
+      None
+Comment: TIMER_INIT unused
 TRANSMIT 00000000
 
 Symbol: TRANSMIT
@@ -348,5 +356,5 @@ Symbol: WIN
    Uses
       At line 111 in file FINAL.s
 Comment: WIN used once
-4 symbols
-352 symbols in table
+5 symbols
+353 symbols in table

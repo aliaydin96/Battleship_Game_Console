@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Jan 20 00:29:26 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Jan 20 17:38:25 2019
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -14,16 +14,15 @@ Functions with no stack information
 </H3><UL>
  <LI><a href="#[7c]">Reset_Handler</a>
  <LI><a href="#[7d]">__main</a>
- <LI><a href="#[86]">BATTLESHIP</a>
- <LI><a href="#[85]">CIVILIAN</a>
- <LI><a href="#[81]">BOUNDARY</a>
+ <LI><a href="#[87]">BATTLESHIP</a>
+ <LI><a href="#[86]">CIVILIAN</a>
+ <LI><a href="#[88]">BOUNDARY</a>
 </UL>
 </UL>
 <P>
 <H3>
 Mutually Recursive functions
-</H3> <LI><a href="#[87]">DELAY</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[87]">DELAY</a><BR>
- <LI><a href="#[7d]">__main</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[7d]">__main</a><BR>
+</H3> <LI><a href="#[82]">DELAY</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[82]">DELAY</a><BR>
  <LI><a href="#[1]">NMI_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[1]">NMI_Handler</a><BR>
  <LI><a href="#[2]">HardFault_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2]">HardFault_Handler</a><BR>
  <LI><a href="#[3]">MemManage_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[3]">MemManage_Handler</a><BR>
@@ -575,83 +574,83 @@ Global Symbols
 <P><STRONG><a name="[38]"></a>uDMA_Handler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup.o(RESET))
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[8b]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[8c]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
-<P><STRONG><a name="[8c]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[8d]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
-<P><STRONG><a name="[8d]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[8e]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
 <P><STRONG><a name="[7d]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __main.o(main))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_INIT
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_INIT
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_INIT
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BEGINING
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Handler
+<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Handler
 </UL>
 
 <P><STRONG><a name="[7e]"></a>Init</STRONG> (Thumb, 276 bytes, Stack size 0 bytes, init.o(routines))
 <BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[87]"></a>DELAY</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, delay.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<P><STRONG><a name="[82]"></a>DELAY</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, delay.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
 <P><STRONG><a name="[7f]"></a>LCD_INIT</STRONG> (Thumb, 94 bytes, Stack size 0 bytes, lcd_init.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
 <P><STRONG><a name="[1d]"></a>Timer0A_Handler</STRONG> (Thumb, 834 bytes, Stack size 0 bytes, timer_init.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[82]"></a>TIMER_INIT</STRONG> (Thumb, 88 bytes, Stack size 0 bytes, timer_init.o(routines))
+<P><STRONG><a name="[84]"></a>TIMER_INIT</STRONG> (Thumb, 88 bytes, Stack size 0 bytes, timer_init.o(routines))
 <BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[86]"></a>BATTLESHIP</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, battleship.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<P><STRONG><a name="[87]"></a>BATTLESHIP</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, battleship.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[85]"></a>CIVILIAN</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, civilian.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<P><STRONG><a name="[86]"></a>CIVILIAN</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, civilian.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[84]"></a>TRANSMIT</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, transmit.o(routines))
-<BR><BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIN
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_C
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_B
+<P><STRONG><a name="[83]"></a>TRANSMIT</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, transmit.o(routines))
+<BR><BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIN
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_C
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_B
 <LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer0A_Handler
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CIVILIAN
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUNDARY
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BEGINING
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BATTLESHIP
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[81]"></a>BOUNDARY</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, boundary.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<P><STRONG><a name="[88]"></a>BOUNDARY</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, boundary.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
@@ -663,30 +662,36 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[83]"></a>FINAL</STRONG> (Thumb, 296 bytes, Stack size 0 bytes, final.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIN
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_C
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_B
+<P><STRONG><a name="[85]"></a>FINAL</STRONG> (Thumb, 296 bytes, Stack size 0 bytes, final.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIN
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_C
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_B
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[8a]"></a>WIN</STRONG> (Thumb, 720 bytes, Stack size 0 bytes, win.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<P><STRONG><a name="[8b]"></a>WIN</STRONG> (Thumb, 720 bytes, Stack size 0 bytes, win.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
-<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
-</UL>
-
-<P><STRONG><a name="[89]"></a>LOSE_B</STRONG> (Thumb, 984 bytes, Stack size 0 bytes, lose_b.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
-</UL>
-<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
+<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
 </UL>
 
-<P><STRONG><a name="[88]"></a>LOSE_C</STRONG> (Thumb, 784 bytes, Stack size 0 bytes, lose_c.o(routines))
-<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<P><STRONG><a name="[8a]"></a>LOSE_B</STRONG> (Thumb, 984 bytes, Stack size 0 bytes, lose_b.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
 </UL>
-<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
+<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
+</UL>
+
+<P><STRONG><a name="[89]"></a>LOSE_C</STRONG> (Thumb, 784 bytes, Stack size 0 bytes, lose_c.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+</UL>
+<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FINAL
+</UL>
+
+<P><STRONG><a name="[81]"></a>BEGINING</STRONG> (Thumb, 804 bytes, Stack size 0 bytes, begining.o(routines))
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 <P>
 <H3>

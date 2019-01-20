@@ -29,21 +29,38 @@ RESTART			EQU	0X20000428
 			EXTERN	GPIOPortF_Handler
 			EXTERN 	GPIO_INIT
 			EXTERN  FINAL
+			EXTERN	BEGINING
 			EXPORT __main
 				
 __main
 
-Start
+
 			BL Init
 			BL	LCD_INIT
 			BL	GPIO_INIT
-			
 			LDR R1,=PORTA_DATA		
 			LDR	R0,[R1]
 			ORR	R0,#0x40				
+			STR	R0,[R1]
+			BL	CLEAR
+			BL	BEGINING
+			MOV32	R0, #0XFFFFFF
+			BL	DELAY
+						LDR R1,=PORTA_DATA
+			LDR	R0,[R1]
+			BIC	R0,#0x40				
+			STR	R0,[R1]
+			
+			MOV	R5, #0x80
+			BL	TRANSMIT
+			MOV	R5, #0X40
+			BL	TRANSMIT
+			MOV	R5, #0X0C
+			BL	TRANSMIT
+			LDR R1,=PORTA_DATA
+			LDR	R0,[R1]
+			ORR	R0,#0x40				
 			STR	R0,[R1]	
-			BL		CLEAR
-			BL		BOUNDARY
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;	REGISTERS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -61,23 +78,15 @@ Start
 ;;;;;	R11 ==> FREE
 ;;;;;	R12 ==> FREE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-			MOV		R10, #0
+			BL		CL_REG
 			MOV32	R9,	 #0xFFFFFFFF
-			LDR		R0, =BATTLE_COUNTER
-			STR		R10, [R0]
-			LDR		R1, =CIV_COUNTER
-			STR		R10, [R1]
-			LDR		R1, =SCREEN_COUNTER
 			STR		R10, [R1]
 			LDR 	R1,=POSITION
 			STR		R9, [R1]
 			LDR 	R1,=MINE_POSITION
 			STR		R10, [R1]
-			LDR 	R1,=MINE_COUNTER
-			STR		R10, [R1]
 			LDR 	R1,=RESTART
-			STR		R10, [R1]
-			
+			STR		R10, [R1]			
 getsample	LDR		R1,=ADC0_PSSI; request a sample
 			LDR		R0,[R1];
 			ORR		R0,R0,#0x0C; get a sample
@@ -108,19 +117,24 @@ loop		LDR		R1,=ADC0_RIS; check for interrup flag
 			CMP		R4, #6
 			ADDEQ   R4,#1
 			STRB    R4,[R1]
+			MOVEQ	R3, #0X03
 			BLEQ	TIMER_INIT
 			MOVEQ	R7, #20		;this counter for timer
 			LDR 	R10, =SCREEN_COUNTER
 			LDRB	R9,[R10]
 			CMP 	R9,#12
-			BLEQ  FINAL
+			MOVEQ	R3, #0X0
+			BLEQ	TIMER_INIT
+			BLEQ  	FINAL
 			LDR		R1, =SCREEN_COUNTER
 			LDRB	R4, [R1]
 			CMP		R4, #13
-			BHI   	Start			
+			BLEQ   	CL_REG		
 			LDR		R1, =SCREEN_COUNTER
 			LDRB	R4, [R1]
 			CMP		R4, #11
+			MOV32HI	R0, #0XFFFF
+			BLHI	DELAY
 			BHI   	getsample
 			
 CURSOR
@@ -290,6 +304,28 @@ LOOP_C		MOV		R5, #0X0
 			STRB 	R4, [R1]
 			POP{R0, R1, R2, LR}
 			BX	LR
+			
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CL_REG		
+			PUSH  {LR}
+;			LDR R1,=PORTA_DATA		
+;			LDR	R0,[R1]
+;			ORR	R0,#0x40				
+;			STR	R0,[R1]	
+			BL		CLEAR
+			BL		BOUNDARY
+			MOV		R10, #0		
+			LDR		R0, =BATTLE_COUNTER
+			STR		R10, [R0]
+			LDR		R1, =CIV_COUNTER
+			STR		R10, [R1]
+			LDR		R1, =SCREEN_COUNTER
+			LDR 	R1,=MINE_COUNTER
+			STR		R10, [R1]
+			POP		{LR}
+			BX		LR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;	NUMBERS	0-9	BEGINNING
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

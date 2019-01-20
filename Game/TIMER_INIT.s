@@ -20,6 +20,7 @@ SCREEN_COUNTER  	EQU 0X20000411
 			THUMB
 			EXTERN TRANSMIT
 			EXTERN FINAL
+			EXTERN	DELAY
 			EXPORT 	Timer0A_Handler
 			EXPORT	TIMER_INIT
 
@@ -87,7 +88,7 @@ Timer0A_Handler	PROC
 			BLEQ	N1
 			CMP R7, #0
 			BLEQ	N0 
-			
+
 			B	FINISH
 			
 TWENTY			
@@ -323,7 +324,7 @@ TIMER_INIT	PROC
 			LDR R2, =15999999 ;1 SEC 
 			STR R2, [R1]
 			LDR R1, =TIMER0_IMR ; enable timeout interrupt
-			MOV R2, #0x01
+			MOV	R2, #0X01
 			STR R2, [R1]
 ; Configure interrupt priorities
 ; Timer0A is interrupt #19.
@@ -345,7 +346,7 @@ TIMER_INIT	PROC
 ; Enable timer
 			LDR R1, =TIMER0_CTL
 			LDR R2, [R1]
-			ORR R2, R2, #0x03 ; set bit0 to enable
+			ORR R2, R2, R3;#0x03 ; set bit0 to enable
 			STR R2, [R1] ; and bit 1 to stall on debug			
 			
 			BX	LR

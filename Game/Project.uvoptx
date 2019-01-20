@@ -119,6 +119,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -149,32 +153,48 @@
           <Type>0</Type>
           <LineNumber>192</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>3828</Address>
+          <Address>3856</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\GPIO_INTER_INIT.s</Filename>
+          <Filename>C:\Users\ROG\Desktop\2093177-2093326\GPIO_INTER_INIT.s</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\Project\GPIO_INTER_INIT.s\192</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>22</LineNumber>
+          <LineNumber>178</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>4104</Address>
+          <Address>3822</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\FINAL.s</Filename>
+          <Filename>C:\Users\ROG\Desktop\2093177-2093326\GPIO_INTER_INIT.s</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Project\FINAL.s\22</Expression>
+          <Expression>\\Project\GPIO_INTER_INIT.s\178</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>64</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>682</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\__main.s</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Project\__main.s\64</Expression>
         </Bp>
       </Breakpoint>
       <MemoryWindow1>
@@ -425,6 +445,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\LOSE_C.s</PathWithFileName>
       <FilenameWithoutPath>LOSE_C.s</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>17</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\BEGINING.s</PathWithFileName>
+      <FilenameWithoutPath>BEGINING.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
