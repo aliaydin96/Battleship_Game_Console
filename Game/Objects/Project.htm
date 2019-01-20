@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Jan 20 17:38:25 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Jan 20 19:16:22 2019
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -603,7 +603,8 @@ Global Symbols
 <P><STRONG><a name="[82]"></a>DELAY</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, delay.o(routines))
 <BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
+<BR>[Called By]<UL><LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer0A_Handler
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_INIT
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
@@ -615,8 +616,9 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[1d]"></a>Timer0A_Handler</STRONG> (Thumb, 834 bytes, Stack size 0 bytes, timer_init.o(routines))
+<P><STRONG><a name="[1d]"></a>Timer0A_Handler</STRONG> (Thumb, 848 bytes, Stack size 0 bytes, timer_init.o(routines))
 <BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TRANSMIT
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DELAY
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
@@ -655,14 +657,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 370 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
+<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 352 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[80]"></a>GPIO_INIT</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
+<P><STRONG><a name="[80]"></a>GPIO_INIT</STRONG> (Thumb, 120 bytes, Stack size 0 bytes, gpio_inter_init.o(routines))
 <BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[85]"></a>FINAL</STRONG> (Thumb, 296 bytes, Stack size 0 bytes, final.o(routines))
+<P><STRONG><a name="[85]"></a>FINAL</STRONG> (Thumb, 308 bytes, Stack size 0 bytes, final.o(routines))
 <BR><BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIN
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_C
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LOSE_B

@@ -184,13 +184,13 @@ FINISH
 			POP	{R0, R1, R2, R4, R5, LR}
 			BX	LR
 			
-REST		
-			LDR		R1, =RESTART
-			LDR		R10,[R1]
-			MOV  	R10, #7
-			STRB    R4,[R1]
-			POP	{R0, R1, R2, R4, R5, LR}
-			BX LR
+;REST		
+;			LDR		R1, =RESTART
+;			LDR		R10,[R1]
+;			MOV  	R10, #7
+;			STRB    R4,[R1]
+;			POP	{R0, R1, R2, R4, R5, LR}
+;			BX LR
 			
 		
 				

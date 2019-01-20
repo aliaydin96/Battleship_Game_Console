@@ -54,15 +54,15 @@ ARM Macro Assembler    Page 1
    33 0000001C BF04 F04F 
               0A00             MOVEQ            R10,#0
    34 00000022 F04F 0900       MOVEQ            R9,#0
-   35 00000026 D02D            BEQ              FINAL_BAT
-   36 00000028 493F            LDR              R1,=MINE_POSITION
+   35 00000026 D02F            BEQ              FINAL_BAT
+   36 00000028 4942            LDR              R1,=MINE_POSITION
    37 0000002A F811 000A       LDRB             R0,[R1,R10]
    38 0000002E 28FF            CMP              R0,#0xFF
    39 00000030 BF02 F04F 
               0A06             MOVEQ            R10,#6
    40 00000036 F04F 0906       MOVEQ            R9,#6
    41 0000003A F7FF FFE6       BLEQ             FINAL_CIV
-   42 0000003E 493B            LDR              R1,=POSITION
+   42 0000003E 493E            LDR              R1,=POSITION
 
 
 
@@ -79,9 +79,9 @@ ARM Macro Assembler    Page 2
    49 00000054 BFC8 F109 
               0902             ADDGT            R9,#2
    50 0000005A DCD6            BGT              FINAL_CIV
-   51 0000005C 4934            LDR              R1,=(MINE_POSITION  + 1)
+   51 0000005C 4937            LDR              R1,=(MINE_POSITION  + 1)
    52 0000005E F811 000A       LDRB             R0,[R1,R10]
-   53 00000062 4934            LDR              R1,=(POSITION  + 1)
+   53 00000062 4937            LDR              R1,=(POSITION  + 1)
    54 00000064 F811 2009       LDRB             R2,[R1,R9]
    55 00000068 4290            CMP              R0,R2
    56 0000006A BF38 F109 
@@ -89,81 +89,87 @@ ARM Macro Assembler    Page 2
    57 00000070 D3CB            BLO              FINAL_CIV
    58 00000072 F102 0208       ADD              R2,R2,#8
    59 00000076 4290            CMP              R0,R2
-   60 00000078 F67F AFFE       BLS              LOSE_C
-   61 0000007C BFC8 F109 
+   60 00000078 BF98 F7FF 
+              FFFE             BLLS             LOSE_C
+   61 0000007E D956            BLS              FINISH
+   62 00000080 BFC8 F109 
               0902             ADDGT            R9,#2
-   62 00000082 E7C2            B                FINAL_CIV
-   63 00000084         
-   64 00000084         FINAL_BAT
-   65 00000084 F1B9 0F08       CMP              R9,#8
-   66 00000088 BF04 F10A 
+   63 00000086 E7C0            B                FINAL_CIV
+   64 00000088         
+   65 00000088         FINAL_BAT
+   66 00000088 F1B9 0F08       CMP              R9,#8
+   67 0000008C BF04 F10A 
               0A02             ADDEQ            R10,#2
-   67 0000008E F04F 0900       MOVEQ            R9,#0
-   68 00000092 F1BA 0F08       CMP              R10,#8
-   69 00000096 BF04 F04F 
+   68 00000092 F04F 0900       MOVEQ            R9,#0
+   69 00000096 F1BA 0F08       CMP              R10,#8
+   70 0000009A BF04 F04F 
               0A00             MOVEQ            R10,#0
-   70 0000009C F04F 0900       MOVEQ            R9,#0
-   71 000000A0 D037            BEQ              CHECK_BAT
-   72 000000A2 4921            LDR              R1,=MINE_POSITION
-   73 000000A4 F811 000A       LDRB             R0,[R1,R10]
-   74 000000A8 28FF            CMP              R0,#0xFF
-   75 000000AA BF02 F04F 
+   71 000000A0 F04F 0900       MOVEQ            R9,#0
+   72 000000A4 D037            BEQ              CHECK_BAT
+   73 000000A6 4923            LDR              R1,=MINE_POSITION
+   74 000000A8 F811 000A       LDRB             R0,[R1,R10]
+   75 000000AC 28FF            CMP              R0,#0xFF
+   76 000000AE BF02 F04F 
               0A06             MOVEQ            R10,#6
-   76 000000B0 F04F 0908       MOVEQ            R9,#8
-   77 000000B4 F7FF FFE6       BLEQ             FINAL_BAT
-   78 000000B8 491F            LDR              R1,=POSITION+ 6
-   79 000000BA F811 2009       LDRB             R2,[R1,R9]
-   80 000000BE 4290            CMP              R0,R2
-   81 000000C0 BF38 F109 
+   77 000000B4 F04F 0908       MOVEQ            R9,#8
+   78 000000B8 F7FF FFE6       BLEQ             FINAL_BAT
+   79 000000BC 4921            LDR              R1,=POSITION+ 6
+   80 000000BE F811 2009       LDRB             R2,[R1,R9]
+   81 000000C2 4290            CMP              R0,R2
+   82 000000C4 BF38 F109 
               0902             ADDLO            R9,#2
-   82 000000C6 D3DD            BLO              FINAL_BAT
-   83 000000C8 F102 0208       ADD              R2,R2,#8
-   84 000000CC 4290            CMP              R0,R2
-   85 000000CE BFC8 F109 
+   83 000000CA D3DD            BLO              FINAL_BAT
+   84 000000CC F102 0208       ADD              R2,R2,#8
+   85 000000D0 4290            CMP              R0,R2
+   86 000000D2 BFC8 F109 
               0902             ADDGT            R9,#2
-   86 000000D4 DCD6            BGT              FINAL_BAT
-   87 000000D6 4916            LDR              R1,=(MINE_POSITION + 1)
-   88 000000D8 F811 000A       LDRB             R0,[R1,R10]
-   89 000000DC 4917            LDR              R1,=(POSITION + 7)
-   90 000000DE F811 2009       LDRB             R2,[R1,R9]
-   91 000000E2 4290            CMP              R0,R2
-   92 000000E4 BF38 F109 
+   87 000000D8 DCD6            BGT              FINAL_BAT
+   88 000000DA 4918            LDR              R1,=(MINE_POSITION + 1)
+   89 000000DC F811 000A       LDRB             R0,[R1,R10]
+   90 000000E0 4919            LDR              R1,=(POSITION + 7)
+   91 000000E2 F811 2009       LDRB             R2,[R1,R9]
 
 
 
 ARM Macro Assembler    Page 3 
 
 
+   92 000000E6 4290            CMP              R0,R2
+   93 000000E8 BF38 F109 
               0902             ADDLO            R9,#2
-   93 000000EA D3CB            BLO              FINAL_BAT
-   94 000000EC F102 0208       ADD              R2,R2,#8
-   95 000000F0 4290            CMP              R0,R2
-   96 000000F2 BFC8 F109 
+   94 000000EE D3CB            BLO              FINAL_BAT
+   95 000000F0 F102 0208       ADD              R2,R2,#8
+   96 000000F4 4290            CMP              R0,R2
+   97 000000F6 BFC8 F109 
               0902             ADDGT            R9,#2
-   97 000000F8 DCC4            BGT              FINAL_BAT
-   98 000000FA F04F 00FF       MOV              R0,#0xFF
-   99 000000FE 490E            LDR              R1,=(POSITION+6)
-  100 00000100 F801 0009       STRB             R0,[R1,R9]
-  101 00000104 490D            LDR              R1,=(POSITION+7)
-  102 00000106 F801 0009       STRB             R0,[R1,R9]
-  103 0000010A BF98 F109 
+   98 000000FC DCC4            BGT              FINAL_BAT
+   99 000000FE F04F 00FF       MOV              R0,#0xFF
+  100 00000102 4910            LDR              R1,=(POSITION+6)
+  101 00000104 F801 0009       STRB             R0,[R1,R9]
+  102 00000108 490F            LDR              R1,=(POSITION+7)
+  103 0000010A F801 0009       STRB             R0,[R1,R9]
+  104 0000010E BF98 F109 
               0902             ADDLS            R9,#2
-  104 00000110 E7B8            B                FINAL_BAT
-  105 00000112         
-  106 00000112         CHECK_BAT
-  107 00000112 4909            LDR              R1,=POSITION+6
-  108 00000114 6808            LDR              R0,[R1]
-  109 00000116 F1B0 3FFF       CMP              R0,#0xFFFFFFFF
-  110 0000011A F47F AFFE       BNE              LOSE_B
-  111 0000011E F7FF BFFE       B                WIN
-  112 00000122         
-  113 00000122         
-  114 00000122 F85D EB04       POP              {LR}
-  115 00000126 4770            BX               LR
-  116 00000128         
-  117 00000128         
-  118 00000128                 ENDP
-  119 00000128                 END
+  105 00000114 E7B8            B                FINAL_BAT
+  106 00000116         
+  107 00000116         CHECK_BAT
+  108 00000116 490B            LDR              R1,=POSITION+6
+  109 00000118 6808            LDR              R0,[R1]
+  110 0000011A F1B0 3FFF       CMP              R0,#0xFFFFFFFF
+  111 0000011E BF18 F7FF 
+              FFFE             BLNE             LOSE_B
+  112 00000124 F1B0 3FFF       CMP              R0,#0xFFFFFFFF
+  113 00000128 BF08 F7FF 
+              FFFE             BLEQ             WIN
+  114 0000012E         
+  115 0000012E         FINISH
+  116 0000012E F85D EB04       POP              {LR}
+  117 00000132 4770            BX               LR
+  118 00000134         
+  119 00000134         
+  120 00000134                 ENDP
+  121 00000134                 ALIGN
+  122 00000134                 END
               20000412 
               20000400 
               20000413 
@@ -181,13 +187,13 @@ S\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526"
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-CHECK_BAT 00000112
+CHECK_BAT 00000116
 
 Symbol: CHECK_BAT
    Definitions
-      At line 106 in file FINAL.s
+      At line 107 in file FINAL.s
    Uses
-      At line 71 in file FINAL.s
+      At line 72 in file FINAL.s
 Comment: CHECK_BAT used once
 FINAL 00000000
 
@@ -197,19 +203,19 @@ Symbol: FINAL
    Uses
       At line 18 in file FINAL.s
 Comment: FINAL used once
-FINAL_BAT 00000084
+FINAL_BAT 00000088
 
 Symbol: FINAL_BAT
    Definitions
-      At line 64 in file FINAL.s
+      At line 65 in file FINAL.s
    Uses
       At line 35 in file FINAL.s
-      At line 77 in file FINAL.s
-      At line 82 in file FINAL.s
-      At line 86 in file FINAL.s
-      At line 93 in file FINAL.s
-      At line 97 in file FINAL.s
-      At line 104 in file FINAL.s
+      At line 78 in file FINAL.s
+      At line 83 in file FINAL.s
+      At line 87 in file FINAL.s
+      At line 94 in file FINAL.s
+      At line 98 in file FINAL.s
+      At line 105 in file FINAL.s
 
 FINAL_CIV 0000000A
 
@@ -221,8 +227,16 @@ Symbol: FINAL_CIV
       At line 46 in file FINAL.s
       At line 50 in file FINAL.s
       At line 57 in file FINAL.s
-      At line 62 in file FINAL.s
+      At line 63 in file FINAL.s
 
+FINISH 0000012E
+
+Symbol: FINISH
+   Definitions
+      At line 115 in file FINAL.s
+   Uses
+      At line 61 in file FINAL.s
+Comment: FINISH used once
 routines 00000000
 
 Symbol: routines
@@ -231,7 +245,7 @@ Symbol: routines
    Uses
       None
 Comment: routines unused
-5 symbols
+6 symbols
 
 
 
@@ -270,8 +284,8 @@ Symbol: MINE_POSITION
    Uses
       At line 36 in file FINAL.s
       At line 51 in file FINAL.s
-      At line 72 in file FINAL.s
-      At line 87 in file FINAL.s
+      At line 73 in file FINAL.s
+      At line 88 in file FINAL.s
 
 PORTA_DATA 400043FC
 
@@ -289,11 +303,11 @@ Symbol: POSITION
    Uses
       At line 42 in file FINAL.s
       At line 53 in file FINAL.s
-      At line 78 in file FINAL.s
-      At line 89 in file FINAL.s
-      At line 99 in file FINAL.s
-      At line 101 in file FINAL.s
-      At line 107 in file FINAL.s
+      At line 79 in file FINAL.s
+      At line 90 in file FINAL.s
+      At line 100 in file FINAL.s
+      At line 102 in file FINAL.s
+      At line 108 in file FINAL.s
 
 SCREEN_COUNTER 20000411
 
@@ -322,7 +336,7 @@ Symbol: LOSE_B
    Definitions
       At line 15 in file FINAL.s
    Uses
-      At line 110 in file FINAL.s
+      At line 111 in file FINAL.s
 Comment: LOSE_B used once
 LOSE_C 00000000
 
@@ -354,7 +368,7 @@ Symbol: WIN
    Definitions
       At line 14 in file FINAL.s
    Uses
-      At line 111 in file FINAL.s
+      At line 113 in file FINAL.s
 Comment: WIN used once
 5 symbols
-353 symbols in table
+354 symbols in table

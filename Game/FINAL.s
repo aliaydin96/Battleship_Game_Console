@@ -57,7 +57,8 @@ FINAL_CIV
 			BLO	FINAL_CIV
 			ADD R2,R2,#8
 			CMP R0,R2
-			BLS LOSE_C
+			BLLS LOSE_C
+			BLS	FINISH
 			ADDGT R9,#2
 			B	FINAL_CIV
 			
@@ -107,13 +108,15 @@ CHECK_BAT
 			LDR R1,=POSITION+6
 			LDR R0,[R1]
 			CMP R0,#0xFFFFFFFF
-			BNE LOSE_B
-			B  WIN
+			BLNE LOSE_B
+			CMP R0,#0xFFFFFFFF
+			BLEQ  WIN
 			
-			
+FINISH			
 			POP		{LR}
 			BX		LR
 			
 			
 			ENDP
+			ALIGN
 			END

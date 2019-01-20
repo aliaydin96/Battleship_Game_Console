@@ -88,7 +88,8 @@ Timer0A_Handler	PROC
 			BLEQ	N1
 			CMP R7, #0
 			BLEQ	N0 
-
+			MOV32EQ	R0, #0XFFFF
+			BLEQ	DELAY
 			B	FINISH
 			
 TWENTY			

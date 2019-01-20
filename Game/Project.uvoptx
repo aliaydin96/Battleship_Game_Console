@@ -120,6 +120,8 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name>�������������������������������������������������������������������������������������������������������������������������������������`�
+�b�Gt��</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -151,50 +153,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>192</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>3856</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\ROG\Desktop\2093177-2093326\GPIO_INTER_INIT.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\Project\GPIO_INTER_INIT.s\192</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
           <LineNumber>178</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>3822</Address>
+          <Address>3910</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\ROG\Desktop\2093177-2093326\GPIO_INTER_INIT.s</Filename>
+          <Filename>.\GPIO_INTER_INIT.s</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\Project\GPIO_INTER_INIT.s\178</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>64</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>682</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\__main.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\Project\__main.s\64</Expression>
         </Bp>
       </Breakpoint>
       <MemoryWindow1>
